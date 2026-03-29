@@ -1,0 +1,11 @@
+{
+  "name": "comp-verdict",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node generate.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

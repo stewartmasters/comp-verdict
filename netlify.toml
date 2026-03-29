@@ -1,4 +1,5 @@
 [build]
+  command = "node generate.js"
   publish = "."
 
 # Security headers
