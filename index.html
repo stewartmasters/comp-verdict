@@ -392,7 +392,9 @@
   </div>
 
   <!-- Context line -->
-  <p id="r-context" style="font-size: 13px; color: #555; margin: 0 0 18px; line-height: 1.5;"></p>
+  <p id="r-context" style="font-size: 13px; color: #555; margin: 0 0 6px; line-height: 1.5;"></p>
+  <!-- Fallback notice (shown when data is approximated from market default) -->
+  <p id="r-fallback" style="display:none; font-size: 11px; color: #4a3a1a; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.15); border-radius: 6px; padding: 7px 10px; margin: 0 0 14px; line-height: 1.5;"></p>
 
   <!-- Verdict -->
   <div id="r-verdict-card" class="verdict-card fade-in delay-1"></div>
@@ -437,89 +439,80 @@
 </div>
 
 
+<script src="data.js"></script>
 <script>
 // ════════════════════════════════════════════════════
-// DATA LAYER
+// LISTS  (CV_DATA loaded from data.js)
 // ════════════════════════════════════════════════════
 
-const ROLES = [
-  "Software Engineer","Frontend Engineer","Backend Engineer","Full Stack Engineer",
-  "Mobile Engineer","iOS Engineer","Android Engineer","Data Scientist","Data Engineer",
-  "Machine Learning Engineer","DevOps Engineer","Site Reliability Engineer",
-  "Platform Engineer","Security Engineer","QA Engineer","Product Manager",
-  "Engineering Manager","UX Designer","UI Designer","Product Designer",
-  "Marketing Manager","Growth Manager","Finance Analyst","Operations Manager"
-];
+const ROLES = Object.keys(CV_DATA.roles);
 
 const CITIES = [
-  "Barcelona","Madrid","London","Amsterdam","Berlin","Paris","Dublin","Lisbon",
-  "Milan","Stockholm","Copenhagen","Zurich","Geneva","Warsaw","Prague","Bucharest",
-  "Remote (Europe)","San Francisco","New York","Seattle","Austin","Boston",
-  "Chicago","Los Angeles","Miami","Remote (US)","Toronto","Sydney","Singapore","Dubai"
+  // Spain
+  "Barcelona","Madrid","Valencia","Seville","Bilbao","Remote (Spain)",
+  // UK
+  "London","Manchester","Edinburgh","Bristol","Remote (UK)",
+  // Germany
+  "Berlin","Munich","Hamburg","Frankfurt","Cologne","Stuttgart","Remote (Germany)",
+  // Rest of Europe
+  "Amsterdam","Paris","Dublin","Lisbon","Milan","Stockholm","Copenhagen",
+  "Zurich","Geneva","Warsaw","Prague","Bucharest","Remote (Europe)",
+  // Americas
+  "San Francisco","New York","Seattle","Austin","Boston",
+  "Chicago","Los Angeles","Miami","Remote (US)","Toronto",
+  // APAC / MENA
+  "Sydney","Singapore","Dubai"
 ];
 
-// Benchmark: Software Engineer, 4-6 YoE, annual gross in local currency
-// p10, p25, p50, p75, p90
-const CITY = {
-  "Barcelona":      { sym:"€",  p10:28000,  p25:38000,  p50:50000,  p75:65000,  p90:85000  },
-  "Madrid":         { sym:"€",  p10:30000,  p25:40000,  p50:53000,  p75:69000,  p90:90000  },
-  "London":         { sym:"£",  p10:42000,  p25:56000,  p50:74000,  p75:97000,  p90:130000 },
-  "Amsterdam":      { sym:"€",  p10:46000,  p25:60000,  p50:76000,  p75:97000,  p90:126000 },
-  "Berlin":         { sym:"€",  p10:42000,  p25:56000,  p50:70000,  p75:89000,  p90:116000 },
-  "Paris":          { sym:"€",  p10:38000,  p25:50000,  p50:63000,  p75:81000,  p90:105000 },
-  "Dublin":         { sym:"€",  p10:44000,  p25:58000,  p50:74000,  p75:95000,  p90:124000 },
-  "Lisbon":         { sym:"€",  p10:20000,  p25:26000,  p50:36000,  p75:50000,  p90:68000  },
-  "Milan":          { sym:"€",  p10:30000,  p25:40000,  p50:53000,  p75:70000,  p90:92000  },
-  "Stockholm":      { sym:"kr ", p10:440000, p25:540000, p50:660000, p75:820000, p90:1030000 },
-  "Copenhagen":     { sym:"kr ", p10:400000, p25:490000, p50:600000, p75:745000, p90:920000 },
-  "Zurich":         { sym:"CHF ", p10:90000, p25:112000, p50:134000, p75:160000, p90:194000 },
-  "Geneva":         { sym:"CHF ", p10:94000, p25:116000, p50:138000, p75:166000, p90:200000 },
-  "Warsaw":         { sym:"zł ", p10:80000, p25:106000, p50:140000, p75:182000, p90:228000 },
-  "Prague":         { sym:"Kč ", p10:760000, p25:1020000, p50:1320000, p75:1680000, p90:2100000 },
-  "Bucharest":      { sym:"lei ", p10:58000, p25:78000, p50:106000, p75:140000, p90:182000 },
-  "Remote (Europe)":{ sym:"€",  p10:38000,  p25:50000,  p50:66000,  p75:86000,  p90:114000 },
-  "San Francisco":  { sym:"$",  p10:116000, p25:150000, p50:192000, p75:250000, p90:330000 },
-  "New York":       { sym:"$",  p10:106000, p25:138000, p50:178000, p75:230000, p90:304000 },
-  "Seattle":        { sym:"$",  p10:112000, p25:144000, p50:184000, p75:240000, p90:316000 },
-  "Austin":         { sym:"$",  p10:86000,  p25:112000, p50:146000, p75:192000, p90:254000 },
-  "Boston":         { sym:"$",  p10:90000,  p25:118000, p50:154000, p75:200000, p90:264000 },
-  "Chicago":        { sym:"$",  p10:86000,  p25:112000, p50:144000, p75:188000, p90:248000 },
-  "Los Angeles":    { sym:"$",  p10:96000,  p25:126000, p50:164000, p75:214000, p90:282000 },
-  "Miami":          { sym:"$",  p10:78000,  p25:102000, p50:134000, p75:176000, p90:232000 },
-  "Remote (US)":    { sym:"$",  p10:100000, p25:132000, p50:168000, p75:218000, p90:286000 },
-  "Toronto":        { sym:"CA$", p10:76000, p25:98000,  p50:128000, p75:164000, p90:210000 },
-  "Sydney":         { sym:"A$", p10:86000,  p25:112000, p50:145000, p75:184000, p90:236000 },
-  "Singapore":      { sym:"S$", p10:66000,  p25:86000,  p50:110000, p75:140000, p90:180000 },
-  "Dubai":          { sym:"AED ", p10:146000, p25:190000, p50:250000, p75:322000, p90:418000 }
-};
+// ════════════════════════════════════════════════════
+// ENGINE
+// ════════════════════════════════════════════════════
 
-const ROLE_MUL = {
-  "Software Engineer":1.00,"Backend Engineer":1.00,"Data Engineer":1.00,"DevOps Engineer":1.00,
-  "Full Stack Engineer":0.95,"Mobile Engineer":0.97,"iOS Engineer":0.97,"Android Engineer":0.95,
-  "Frontend Engineer":0.93,"Data Scientist":1.02,"Machine Learning Engineer":1.12,
-  "Site Reliability Engineer":1.05,"Platform Engineer":1.05,"Security Engineer":1.07,
-  "QA Engineer":0.80,"Product Manager":1.08,"Engineering Manager":1.32,
-  "UX Designer":0.82,"UI Designer":0.80,"Product Designer":0.85,
-  "Marketing Manager":0.80,"Growth Manager":0.86,"Finance Analyst":0.78,"Operations Manager":0.82
-};
-
-function yoeMul(y) {
-  y = parseInt(y) || 0;
-  if (y < 1)  return 0.60;
-  if (y === 1) return 0.72;
-  if (y === 2) return 0.83;
-  if (y === 3) return 0.92;
-  if (y <= 5)  return 1.00;
-  if (y <= 7)  return 1.15;
-  if (y <= 10) return 1.36;
-  if (y <= 14) return 1.54;
-  if (y <= 18) return 1.68;
-  return 1.78;
+function yoeToBand(yoe) {
+  const y = parseInt(yoe) || 0;
+  if (y <= 2)  return 'junior';
+  if (y <= 5)  return 'mid';
+  if (y <= 10) return 'senior';
+  return 'staff';
 }
 
-// ════════════════════════════════════════════════════
-// UTILITIES
-// ════════════════════════════════════════════════════
+// Returns adjusted range for role+city+yoe, or null if no data.
+// Falls back to market default city with a note.
+function getRange(role, city, yoe) {
+  const band     = yoeToBand(yoe);
+  const cityMeta = CV_DATA.cities[city];
+  if (!cityMeta) return null;
+
+  let benchmarks  = CV_DATA.benchmarks[city];
+  let fallbackCity = null;
+
+  if (!benchmarks) {
+    const marketDef = CV_DATA.markets[cityMeta.market]?.defaultCity;
+    if (marketDef && CV_DATA.benchmarks[marketDef]) {
+      fallbackCity = marketDef;
+      benchmarks   = CV_DATA.benchmarks[marketDef];
+    }
+  }
+  if (!benchmarks) return null;
+
+  const bandData = benchmarks[band];
+  if (!bandData) return null;
+
+  // Role multiplier — prefer market override when available
+  const roleConfig = CV_DATA.roles[role] || { mul: 1.0 };
+  const mul = roleConfig.override?.[cityMeta.market] ?? roleConfig.mul;
+
+  const p25 = Math.round(bandData.p25 * mul);
+  const p50 = Math.round(bandData.p50 * mul);
+  const p75 = Math.round(bandData.p75 * mul);
+  // Estimate extremes for bar visualization
+  const p10 = Math.round(p25 - 0.85 * (p50 - p25));
+  const p90 = Math.round(p75 + 0.80 * (p75 - p50));
+
+  return { p10, p25, p50, p75, p90, band, fallbackCity, symbol: cityMeta.symbol };
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────
 
 function fmt(v, sym) {
   v = Math.round(v);
@@ -528,7 +521,7 @@ function fmt(v, sym) {
   return sym + v.toLocaleString();
 }
 
-function pct(val, p10, p25, p50, p75, p90) {
+function scorePct(val, p10, p25, p50, p75, p90) {
   if (val <= p10) return Math.max(0, (val/p10)*10);
   if (val <= p25) return 10 + ((val-p10)/(p25-p10))*15;
   if (val <= p50) return 25 + ((val-p25)/(p50-p25))*25;
@@ -604,8 +597,8 @@ function makeAC(inputId, dropId, list, onPick) {
 // Wire up autocompletes
 makeAC('f-role','d-role',ROLES, val => {});
 makeAC('f-city','d-city',CITIES, val => {
-  const c = CITY[val];
-  if (c) ['sym-base','sym-bonus','sym-equity'].forEach(id => document.getElementById(id).textContent = c.sym);
+  const meta = CV_DATA.cities[val];
+  if (meta) ['sym-base','sym-bonus','sym-equity'].forEach(id => document.getElementById(id).textContent = meta.symbol);
 });
 
 // ════════════════════════════════════════════════════
@@ -645,17 +638,16 @@ function runVerdict() {
   if (!salaryRaw || isNaN(salaryRaw) || salaryRaw <= 0) { errEl.textContent = 'Please enter a valid base salary.'; errEl.style.display='block'; return; }
   errEl.style.display = 'none';
 
-  const c    = CITY[city];
-  const rmul = ROLE_MUL[role] || 1.0;
-  const ymul = yoeMul(yoeRaw);
-  const adj  = rmul * ymul;
-
-  const r = { p10: c.p10*adj, p25: c.p25*adj, p50: c.p50*adj, p75: c.p75*adj, p90: c.p90*adj };
+  const r = getRange(role, city, yoeRaw);
+  if (!r) { errEl.textContent = "We don't have benchmark data for this combination yet."; errEl.style.display='block'; return; }
 
   const totalComp = salaryRaw + bonusRaw + equityRaw;
-  const p = pct(totalComp, r.p10, r.p25, r.p50, r.p75, r.p90);
+  const p = scorePct(totalComp, r.p10, r.p25, r.p50, r.p75, r.p90);
 
-  const yoeLabel = parseInt(yoeRaw) === 1 ? '1 yr exp' : `${parseInt(yoeRaw)||0} yrs exp`;
+  const yoeNum   = parseInt(yoeRaw) || 0;
+  const bandConf = CV_DATA.bands.find(b => b.id === r.band);
+  const bandLabel = bandConf ? bandConf.label : '';
+  const yoeLabel  = yoeNum === 1 ? '1 yr exp' : `${yoeNum} yrs exp`;
 
   // ── Verdict
   let vType, vTitle, vColor;
@@ -676,9 +668,9 @@ function runVerdict() {
 
   // ── Negotiation
   let negText = null;
-  if      (p < 25) negText = `You could reasonably ask for ${fmt(r.p50,c.sym)}–${fmt(r.p75,c.sym)}`;
-  else if (p < 50) negText = `Push toward ${fmt(r.p75,c.sym)} — that's mid-market for this profile`;
-  else if (p < 75) negText = `Consider targeting ${fmt(r.p90,c.sym)} if you have leverage`;
+  if      (p < 25) negText = `You could reasonably ask for ${fmt(r.p50,r.symbol)}–${fmt(r.p75,r.symbol)}`;
+  else if (p < 50) negText = `Push toward ${fmt(r.p75,r.symbol)} — that's mid-market for this profile`;
+  else if (p < 75) negText = `Consider targeting ${fmt(r.p90,r.symbol)} if you have leverage`;
 
   // ── Emotional
   let emoText;
@@ -696,7 +688,16 @@ function runVerdict() {
 
   // Context
   document.getElementById('r-context').innerHTML =
-    `<strong style="color:#999;">${role}</strong> &nbsp;·&nbsp; <strong style="color:#999;">${city}</strong> &nbsp;·&nbsp; ${yoeLabel}`;
+    `<strong style="color:#999;">${role}</strong> &nbsp;·&nbsp; <strong style="color:#999;">${city}</strong> &nbsp;·&nbsp; ${yoeLabel} &nbsp;·&nbsp; <span style="color:#666;">${bandLabel}</span>`;
+
+  // Fallback notice
+  const fbEl = document.getElementById('r-fallback');
+  if (r.fallbackCity) {
+    fbEl.textContent = `No direct data for ${city}. Showing ${r.fallbackCity} as the nearest reference.`;
+    fbEl.style.display = 'block';
+  } else {
+    fbEl.style.display = 'none';
+  }
 
   // Verdict card
   const vc = document.getElementById('r-verdict-card');
@@ -708,16 +709,16 @@ function runVerdict() {
     </div>
     <div class="verdict-headline" style="color:${vColor};">${vTitle}</div>
     <div class="verdict-comp">
-      Base: <strong style="color:#aaa;">${fmt(salaryRaw,c.sym)}</strong>
-      ${bonusRaw > 0 || equityRaw > 0 ? `&nbsp;·&nbsp; Total comp: <strong style="color:#aaa;">${fmt(totalComp,c.sym)}</strong>` : ''}
+      Base: <strong style="color:#aaa;">${fmt(salaryRaw,r.symbol)}</strong>
+      ${bonusRaw > 0 || equityRaw > 0 ? `&nbsp;·&nbsp; Total comp: <strong style="color:#aaa;">${fmt(totalComp,r.symbol)}</strong>` : ''}
     </div>`;
 
   // Range
-  document.getElementById('r-range-headline').textContent = `${fmt(r.p25,c.sym)} – ${fmt(r.p75,c.sym)}`;
-  document.getElementById('r-range-sub').textContent = `Typical range · 25th–75th percentile`;
+  document.getElementById('r-range-headline').textContent = `${fmt(r.p25,r.symbol)} – ${fmt(r.p75,r.symbol)}`;
+  document.getElementById('r-range-sub').textContent = `Typical range for ${bandLabel} ${role} in ${r.fallbackCity || city}`;
 
   // Bar
-  renderBar(r, totalComp, c, p, vColor);
+  renderBar(r, totalComp, p, vColor);
 
   // Position
   document.getElementById('r-position').textContent = posText;
@@ -743,7 +744,7 @@ function runVerdict() {
 // RANGE BAR
 // ════════════════════════════════════════════════════
 
-function renderBar(r, userVal, c, percentile, vColor) {
+function renderBar(r, userVal, percentile, vColor) {
   const bar = document.getElementById('r-bar');
   bar.innerHTML = '';
 
@@ -761,7 +762,7 @@ function renderBar(r, userVal, c, percentile, vColor) {
     const label = document.createElement('div');
     label.className = 'range-tick-label';
     label.style.left = p + '%';
-    label.innerHTML = `${fmt(v, c.sym)}<br><span style="color:#3a3a3a">${lbl}</span>`;
+    label.innerHTML = `${fmt(v, r.symbol)}<br><span style="color:#3a3a3a">${lbl}</span>`;
     bar.appendChild(label);
   });
 
