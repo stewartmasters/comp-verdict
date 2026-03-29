@@ -1,0 +1,89 @@
+name: Update salary data
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC — BLS updates weekly, ECB daily
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: 'Comma-separated sources to run (ecb,bls,ons,ine,so)'
+        required: false
+        default: 'ecb,bls,ons,ine,so'
+      version:
+        description: 'Data version override (e.g. 2025-Q2)'
+        required: false
+        default: ''
+      force_refresh:
+        description: 'Force re-fetch even if data is fresh'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # needed to commit updated data.js
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: pipeline/package.json
+
+      - name: Install pipeline dependencies
+        working-directory: pipeline
+        run: npm ci
+
+      - name: Restore pipeline DB cache
+        uses: actions/cache@v4
+        with:
+          path: pipeline/data
+          key: pipeline-data-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            pipeline-data-${{ runner.os }}-
+
+      - name: Run pipeline
+        working-directory: pipeline
+        env:
+          FORCE_REFRESH: ${{ github.event.inputs.force_refresh }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.sources }}" ]; then
+            ARGS="$ARGS --sources=${{ github.event.inputs.sources }}"
+          fi
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            ARGS="$ARGS --version=${{ github.event.inputs.version }}"
+          fi
+          node pipeline.js $ARGS
+
+      - name: Check for data changes
+        id: check_changes
+        run: |
+          git diff --quiet data.js && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit updated data
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config user.name  'CompVerdict Pipeline'
+          git config user.email 'pipeline@comp-verdict.noreply'
+          git add data.js
+          git commit -m "data: update salary benchmarks [$(date +%Y-%m-%d)]
+
+          Sources: BLS OEWS, ONS ASHE, INE EES, ECB rates
+          Pipeline run: ${{ github.run_id }}
+          "
+          git push
+
+      - name: No changes
+        if: steps.check_changes.outputs.changed == 'false'
+        run: echo "data.js unchanged — no commit needed"
