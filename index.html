@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CompVerdict — Is this offer worth taking?</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing: border-box; }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: #0a0a0a;
+      color: #f0f0f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      min-height: 100dvh;
+    }
+
+    .screen {
+      min-height: 100dvh;
+      padding: 28px 20px 56px;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    /* ─── Inputs ─── */
+    .field-label {
+      display: block;
+      font-size: 11px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .input-wrap { position: relative; }
+
+    .input-field {
+      width: 100%;
+      background: #141414;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 16px;
+      color: #f0f0f0;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .input-field:focus { border-color: rgba(255,255,255,0.28); }
+    .input-field::placeholder { color: #444; }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+
+    .currency-prefix {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      font-size: 16px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .input-with-prefix { padding-left: 30px !important; }
+
+    /* ─── Autocomplete ─── */
+    .ac-dropdown {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0; right: 0;
+      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      max-height: 204px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .ac-item {
+      padding: 11px 14px;
+      font-size: 15px;
+      color: #c0c0c0;
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+    .ac-item:hover, .ac-item.active {
+      background: rgba(255,255,255,0.06);
+      color: #f5f5f5;
+    }
+    .ac-item:first-child { border-radius: 10px 10px 0 0; }
+    .ac-item:last-child { border-radius: 0 0 10px 10px; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: #f0f0f0;
+      color: #0a0a0a;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      border: none;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary:hover { background: #ddd; }
+    .btn-primary:active { transform: scale(0.99); background: #ccc; }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: #666;
+      font-size: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.09);
+      transition: color 0.15s, border-color 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .btn-ghost:hover { color: #f0f0f0; border-color: rgba(255,255,255,0.2); }
+
+    .toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 13px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #777;
+      transition: all 0.15s;
+    }
+    .toggle-pill:hover { border-color: rgba(255,255,255,0.22); color: #bbb; }
+    .toggle-pill.on { border-color: rgba(255,255,255,0.25); color: #e0e0e0; background: rgba(255,255,255,0.05); }
+
+    /* ─── Error ─── */
+    .error-msg {
+      padding: 11px 14px;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 8px;
+      font-size: 14px;
+      color: #f87171;
+      margin-top: 14px;
+    }
+
+    /* ─── Result cards ─── */
+    .stat-card {
+      background: #131313;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 18px 18px;
+      margin-bottom: 12px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+    .stat-value {
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: #f0f0f0;
+    }
+
+    /* Verdict card */
+    .verdict-card {
+      border-radius: 16px;
+      padding: 24px 20px 22px;
+      margin-bottom: 12px;
+    }
+    .verdict-weak   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.22); }
+    .verdict-fair   { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.22); }
+    .verdict-strong { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.22); }
+
+    .verdict-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+    .verdict-tag-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .verdict-headline {
+      font-size: 25px;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .verdict-comp {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* ─── Range bar ─── */
+    .range-wrap {
+      margin: 10px 0 6px;
+      position: relative;
+      padding-bottom: 32px;
+    }
+    .range-bar {
+      height: 5px;
+      border-radius: 100px;
+      background: linear-gradient(to right, #ef4444 0%, #f59e0b 42%, #10b981 100%);
+      position: relative;
+    }
+    .range-tick {
+      position: absolute;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      width: 1.5px;
+      height: 12px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 1px;
+    }
+    .range-tick-label {
+      position: absolute;
+      top: 12px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: #555;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .range-user-dot {
+      position: absolute;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 2.5px rgba(255,255,255,0.2), 0 2px 8px rgba(0,0,0,0.4);
+      left: 2%;
+      transition: left 0.85s cubic-bezier(0.34,1.4,0.64,1);
+      z-index: 2;
+    }
+    .range-user-label {
+      position: absolute;
+      bottom: 16px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      left: 2%;
+      transition: left 0.85s cubic-bezier(0.34,1.4,0.64,1);
+    }
+
+    /* ─── Divider ─── */
+    .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 20px 0; }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp 0.38s ease-out both; }
+    .delay-1 { animation-delay: 0.04s; }
+    .delay-2 { animation-delay: 0.10s; }
+    .delay-3 { animation-delay: 0.17s; }
+    .delay-4 { animation-delay: 0.24s; }
+    .delay-5 { animation-delay: 0.32s; }
+    .delay-6 { animation-delay: 0.40s; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     SCREEN 1 — INPUT
+═══════════════════════════════════════════ -->
+<div id="s-input" class="screen">
+
+  <!-- Brand -->
+  <div style="margin-bottom: 44px; padding-top: 8px;">
+    <span style="font-size: 12px; letter-spacing: 0.14em; font-weight: 700; color: #444; text-transform: uppercase;">CompVerdict</span>
+  </div>
+
+  <!-- Headline -->
+  <div style="margin-bottom: 36px;">
+    <h1 style="font-size: 30px; font-weight: 780; letter-spacing: -0.035em; line-height: 1.12; margin: 0 0 11px; color: #f2f2f2;">Is this offer<br>worth taking?</h1>
+    <p style="font-size: 15px; color: #666; line-height: 1.55; margin: 0;">Enter the package. We'll give you the verdict.</p>
+  </div>
+
+  <!-- ── Form ── -->
+  <div style="display: flex; flex-direction: column; gap: 15px;">
+
+    <!-- Role -->
+    <div>
+      <label class="field-label">Role</label>
+      <div class="input-wrap">
+        <input id="f-role" type="text" class="input-field" placeholder="e.g. Software Engineer" autocomplete="off" spellcheck="false">
+        <div id="d-role" class="ac-dropdown" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- City -->
+    <div>
+      <label class="field-label">City</label>
+      <div class="input-wrap">
+        <input id="f-city" type="text" class="input-field" placeholder="e.g. Barcelona" autocomplete="off" spellcheck="false">
+        <div id="d-city" class="ac-dropdown" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Salary -->
+    <div>
+      <label class="field-label">Base Salary</label>
+      <div class="input-wrap">
+        <span id="sym-base" class="currency-prefix">€</span>
+        <input id="f-salary" type="number" class="input-field input-with-prefix" placeholder="50,000" min="1">
+      </div>
+    </div>
+
+    <!-- YoE -->
+    <div>
+      <label class="field-label">Years of Experience</label>
+      <input id="f-yoe" type="number" class="input-field" placeholder="e.g. 5" min="0" max="40">
+    </div>
+
+    <!-- Optional toggles -->
+    <div style="margin-top: 2px;">
+      <div style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 10px;">Optional</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="toggle-pill" id="t-bonus" onclick="toggleField('bonus')">+ Bonus</button>
+        <button class="toggle-pill" id="t-equity" onclick="toggleField('equity')">+ Equity</button>
+      </div>
+    </div>
+
+    <!-- Bonus -->
+    <div id="wrap-bonus" style="display:none;">
+      <label class="field-label">Annual Bonus</label>
+      <div class="input-wrap">
+        <span id="sym-bonus" class="currency-prefix">€</span>
+        <input id="f-bonus" type="number" class="input-field input-with-prefix" placeholder="5,000" min="0">
+      </div>
+    </div>
+
+    <!-- Equity -->
+    <div id="wrap-equity" style="display:none;">
+      <label class="field-label">Equity — annual value</label>
+      <div class="input-wrap">
+        <span id="sym-equity" class="currency-prefix">€</span>
+        <input id="f-equity" type="number" class="input-field input-with-prefix" placeholder="10,000" min="0">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Error -->
+  <div id="form-err" class="error-msg" style="display:none;"></div>
+
+  <!-- CTA -->
+  <div style="margin-top: 28px;">
+    <button class="btn-primary" onclick="runVerdict()">Get Verdict →</button>
+  </div>
+
+  <p style="text-align:center; font-size: 11px; color: #333; margin-top: 18px; line-height: 1.5;">Based on aggregated market benchmarks. Results are estimates.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     SCREEN 2 — RESULTS
+═══════════════════════════════════════════ -->
+<div id="s-results" class="screen" style="display:none;">
+
+  <!-- Nav -->
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 28px; padding-top: 8px;">
+    <button onclick="goBack()" style="background:none; border:none; cursor:pointer; color:#555; font-size:14px; padding: 4px 0; display:flex; align-items:center; gap:6px; transition: color 0.15s;" onmouseover="this.style.color='#bbb'" onmouseout="this.style.color='#555'">← Back</button>
+    <span style="font-size: 12px; letter-spacing: 0.14em; font-weight: 700; color: #333; text-transform: uppercase;">CompVerdict</span>
+  </div>
+
+  <!-- Context line -->
+  <p id="r-context" style="font-size: 13px; color: #555; margin: 0 0 18px; line-height: 1.5;"></p>
+
+  <!-- Verdict -->
+  <div id="r-verdict-card" class="verdict-card fade-in delay-1"></div>
+
+  <!-- Market Range -->
+  <div class="stat-card fade-in delay-2">
+    <div class="stat-label">Market Range</div>
+    <div id="r-range-headline" class="stat-value" style="margin-bottom: 3px;"></div>
+    <div id="r-range-sub" style="font-size: 12px; color: #4a4a4a; margin-bottom: 10px;"></div>
+    <!-- Bar -->
+    <div class="range-wrap">
+      <div class="range-bar" id="r-bar">
+        <!-- injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Position -->
+  <div class="stat-card fade-in delay-3">
+    <div class="stat-label">Your Position</div>
+    <div id="r-position" class="stat-value"></div>
+  </div>
+
+  <!-- Negotiation -->
+  <div id="r-neg-card" class="stat-card fade-in delay-4" style="display:none;">
+    <div class="stat-label">Negotiation Signal</div>
+    <div id="r-negotiation" class="stat-value"></div>
+  </div>
+
+  <!-- Emotional line -->
+  <div class="fade-in delay-5" style="padding: 14px 2px 6px;">
+    <p id="r-emotional" style="font-size: 15px; color: #666; font-style: italic; line-height: 1.65; margin: 0;"></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="fade-in delay-6">
+    <button class="btn-ghost" onclick="goBack()">Analyze another offer</button>
+  </div>
+
+  <p style="text-align:center; font-size: 11px; color: #2a2a2a; margin-top: 18px; line-height: 1.5;">CompVerdict uses static market benchmarks. Data is indicative.</p>
+</div>
+
+
+<script>
+// ════════════════════════════════════════════════════
+// DATA LAYER
+// ════════════════════════════════════════════════════
+
+const ROLES = [
+  "Software Engineer","Frontend Engineer","Backend Engineer","Full Stack Engineer",
+  "Mobile Engineer","iOS Engineer","Android Engineer","Data Scientist","Data Engineer",
+  "Machine Learning Engineer","DevOps Engineer","Site Reliability Engineer",
+  "Platform Engineer","Security Engineer","QA Engineer","Product Manager",
+  "Engineering Manager","UX Designer","UI Designer","Product Designer",
+  "Marketing Manager","Growth Manager","Finance Analyst","Operations Manager"
+];
+
+const CITIES = [
+  "Barcelona","Madrid","London","Amsterdam","Berlin","Paris","Dublin","Lisbon",
+  "Milan","Stockholm","Copenhagen","Zurich","Geneva","Warsaw","Prague","Bucharest",
+  "Remote (Europe)","San Francisco","New York","Seattle","Austin","Boston",
+  "Chicago","Los Angeles","Miami","Remote (US)","Toronto","Sydney","Singapore","Dubai"
+];
+
+// Benchmark: Software Engineer, 4-6 YoE, annual gross in local currency
+// p10, p25, p50, p75, p90
+const CITY = {
+  "Barcelona":      { sym:"€",  p10:28000,  p25:38000,  p50:50000,  p75:65000,  p90:85000  },
+  "Madrid":         { sym:"€",  p10:30000,  p25:40000,  p50:53000,  p75:69000,  p90:90000  },
+  "London":         { sym:"£",  p10:42000,  p25:56000,  p50:74000,  p75:97000,  p90:130000 },
+  "Amsterdam":      { sym:"€",  p10:46000,  p25:60000,  p50:76000,  p75:97000,  p90:126000 },
+  "Berlin":         { sym:"€",  p10:42000,  p25:56000,  p50:70000,  p75:89000,  p90:116000 },
+  "Paris":          { sym:"€",  p10:38000,  p25:50000,  p50:63000,  p75:81000,  p90:105000 },
+  "Dublin":         { sym:"€",  p10:44000,  p25:58000,  p50:74000,  p75:95000,  p90:124000 },
+  "Lisbon":         { sym:"€",  p10:20000,  p25:26000,  p50:36000,  p75:50000,  p90:68000  },
+  "Milan":          { sym:"€",  p10:30000,  p25:40000,  p50:53000,  p75:70000,  p90:92000  },
+  "Stockholm":      { sym:"kr ", p10:440000, p25:540000, p50:660000, p75:820000, p90:1030000 },
+  "Copenhagen":     { sym:"kr ", p10:400000, p25:490000, p50:600000, p75:745000, p90:920000 },
+  "Zurich":         { sym:"CHF ", p10:90000, p25:112000, p50:134000, p75:160000, p90:194000 },
+  "Geneva":         { sym:"CHF ", p10:94000, p25:116000, p50:138000, p75:166000, p90:200000 },
+  "Warsaw":         { sym:"zł ", p10:80000, p25:106000, p50:140000, p75:182000, p90:228000 },
+  "Prague":         { sym:"Kč ", p10:760000, p25:1020000, p50:1320000, p75:1680000, p90:2100000 },
+  "Bucharest":      { sym:"lei ", p10:58000, p25:78000, p50:106000, p75:140000, p90:182000 },
+  "Remote (Europe)":{ sym:"€",  p10:38000,  p25:50000,  p50:66000,  p75:86000,  p90:114000 },
+  "San Francisco":  { sym:"$",  p10:116000, p25:150000, p50:192000, p75:250000, p90:330000 },
+  "New York":       { sym:"$",  p10:106000, p25:138000, p50:178000, p75:230000, p90:304000 },
+  "Seattle":        { sym:"$",  p10:112000, p25:144000, p50:184000, p75:240000, p90:316000 },
+  "Austin":         { sym:"$",  p10:86000,  p25:112000, p50:146000, p75:192000, p90:254000 },
+  "Boston":         { sym:"$",  p10:90000,  p25:118000, p50:154000, p75:200000, p90:264000 },
+  "Chicago":        { sym:"$",  p10:86000,  p25:112000, p50:144000, p75:188000, p90:248000 },
+  "Los Angeles":    { sym:"$",  p10:96000,  p25:126000, p50:164000, p75:214000, p90:282000 },
+  "Miami":          { sym:"$",  p10:78000,  p25:102000, p50:134000, p75:176000, p90:232000 },
+  "Remote (US)":    { sym:"$",  p10:100000, p25:132000, p50:168000, p75:218000, p90:286000 },
+  "Toronto":        { sym:"CA$", p10:76000, p25:98000,  p50:128000, p75:164000, p90:210000 },
+  "Sydney":         { sym:"A$", p10:86000,  p25:112000, p50:145000, p75:184000, p90:236000 },
+  "Singapore":      { sym:"S$", p10:66000,  p25:86000,  p50:110000, p75:140000, p90:180000 },
+  "Dubai":          { sym:"AED ", p10:146000, p25:190000, p50:250000, p75:322000, p90:418000 }
+};
+
+const ROLE_MUL = {
+  "Software Engineer":1.00,"Backend Engineer":1.00,"Data Engineer":1.00,"DevOps Engineer":1.00,
+  "Full Stack Engineer":0.95,"Mobile Engineer":0.97,"iOS Engineer":0.97,"Android Engineer":0.95,
+  "Frontend Engineer":0.93,"Data Scientist":1.02,"Machine Learning Engineer":1.12,
+  "Site Reliability Engineer":1.05,"Platform Engineer":1.05,"Security Engineer":1.07,
+  "QA Engineer":0.80,"Product Manager":1.08,"Engineering Manager":1.32,
+  "UX Designer":0.82,"UI Designer":0.80,"Product Designer":0.85,
+  "Marketing Manager":0.80,"Growth Manager":0.86,"Finance Analyst":0.78,"Operations Manager":0.82
+};
+
+function yoeMul(y) {
+  y = parseInt(y) || 0;
+  if (y < 1)  return 0.60;
+  if (y === 1) return 0.72;
+  if (y === 2) return 0.83;
+  if (y === 3) return 0.92;
+  if (y <= 5)  return 1.00;
+  if (y <= 7)  return 1.15;
+  if (y <= 10) return 1.36;
+  if (y <= 14) return 1.54;
+  if (y <= 18) return 1.68;
+  return 1.78;
+}
+
+// ════════════════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════════════════
+
+function fmt(v, sym) {
+  v = Math.round(v);
+  if (v >= 1000000) return sym + (v/1000000).toFixed(1) + 'M';
+  if (v >= 10000)   return sym + Math.round(v/1000) + 'k';
+  return sym + v.toLocaleString();
+}
+
+function pct(val, p10, p25, p50, p75, p90) {
+  if (val <= p10) return Math.max(0, (val/p10)*10);
+  if (val <= p25) return 10 + ((val-p10)/(p25-p10))*15;
+  if (val <= p50) return 25 + ((val-p25)/(p50-p25))*25;
+  if (val <= p75) return 50 + ((val-p50)/(p75-p50))*25;
+  if (val <= p90) return 75 + ((val-p75)/(p90-p75))*15;
+  return Math.min(100, 90 + ((val-p90)/p90)*10);
+}
+
+function closestMatch(input, list) {
+  if (!input) return null;
+  const v = input.toLowerCase().trim();
+  return list.find(x => x.toLowerCase() === v) ||
+         list.find(x => x.toLowerCase().startsWith(v)) ||
+         list.find(x => x.toLowerCase().includes(v)) ||
+         null;
+}
+
+// ════════════════════════════════════════════════════
+// AUTOCOMPLETE ENGINE
+// ════════════════════════════════════════════════════
+
+function makeAC(inputId, dropId, list, onPick) {
+  const inp = document.getElementById(inputId);
+  const drop = document.getElementById(dropId);
+  let activeIdx = -1;
+
+  function show(items) {
+    if (!items.length) { drop.style.display = 'none'; return; }
+    drop.innerHTML = items.slice(0,9).map((m,i) =>
+      `<div class="ac-item" data-val="${m}">${m}</div>`
+    ).join('');
+    drop.style.display = 'block';
+    drop.querySelectorAll('.ac-item').forEach(el => {
+      el.addEventListener('mousedown', e => { e.preventDefault(); pick(el.dataset.val); });
+    });
+    activeIdx = -1;
+  }
+
+  function pick(val) {
+    inp.value = val;
+    drop.style.display = 'none';
+    onPick(val);
+  }
+
+  inp.addEventListener('input', () => {
+    const v = inp.value.toLowerCase().trim();
+    if (!v) { show(list.slice(0,9)); return; }
+    show(list.filter(x => x.toLowerCase().includes(v)));
+  });
+
+  inp.addEventListener('focus', () => {
+    const v = inp.value.toLowerCase().trim();
+    show(v ? list.filter(x => x.toLowerCase().includes(v)) : list.slice(0,9));
+  });
+
+  inp.addEventListener('keydown', e => {
+    const els = drop.querySelectorAll('.ac-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx+1,els.length-1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx-1,-1); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIdx >= 0 && els[activeIdx]) pick(els[activeIdx].dataset.val);
+      else if (els.length > 0) pick(els[0].dataset.val);
+    } else if (e.key === 'Escape') { drop.style.display = 'none'; }
+    els.forEach((el,i) => el.classList.toggle('active', i === activeIdx));
+  });
+
+  document.addEventListener('click', e => {
+    if (!inp.contains(e.target) && !drop.contains(e.target)) drop.style.display = 'none';
+  });
+}
+
+// Wire up autocompletes
+makeAC('f-role','d-role',ROLES, val => {});
+makeAC('f-city','d-city',CITIES, val => {
+  const c = CITY[val];
+  if (c) ['sym-base','sym-bonus','sym-equity'].forEach(id => document.getElementById(id).textContent = c.sym);
+});
+
+// ════════════════════════════════════════════════════
+// OPTIONAL FIELDS
+// ════════════════════════════════════════════════════
+
+function toggleField(name) {
+  const wrap = document.getElementById(`wrap-${name}`);
+  const btn  = document.getElementById(`t-${name}`);
+  const on   = wrap.style.display === 'none';
+  wrap.style.display = on ? 'block' : 'none';
+  btn.classList.toggle('on', on);
+  btn.textContent = on ? `− ${name.charAt(0).toUpperCase()+name.slice(1)}` : `+ ${name.charAt(0).toUpperCase()+name.slice(1)}`;
+  if (!on) document.getElementById(`f-${name}`).value = '';
+}
+
+// ════════════════════════════════════════════════════
+// VERDICT LOGIC
+// ════════════════════════════════════════════════════
+
+function runVerdict() {
+  const roleRaw   = document.getElementById('f-role').value.trim();
+  const cityRaw   = document.getElementById('f-city').value.trim();
+  const salaryRaw = parseFloat(document.getElementById('f-salary').value);
+  const yoeRaw    = document.getElementById('f-yoe').value;
+  const bonusRaw  = parseFloat(document.getElementById('f-bonus').value) || 0;
+  const equityRaw = parseFloat(document.getElementById('f-equity').value) || 0;
+
+  // Resolve role/city with fuzzy fallback
+  const role = closestMatch(roleRaw, ROLES);
+  const city = closestMatch(cityRaw, CITIES);
+
+  const errEl = document.getElementById('form-err');
+
+  if (!role) { errEl.textContent = 'Role not recognized. Pick one from the list.'; errEl.style.display='block'; return; }
+  if (!city) { errEl.textContent = 'City not recognized. Pick one from the list.'; errEl.style.display='block'; return; }
+  if (!salaryRaw || isNaN(salaryRaw) || salaryRaw <= 0) { errEl.textContent = 'Please enter a valid base salary.'; errEl.style.display='block'; return; }
+  errEl.style.display = 'none';
+
+  const c    = CITY[city];
+  const rmul = ROLE_MUL[role] || 1.0;
+  const ymul = yoeMul(yoeRaw);
+  const adj  = rmul * ymul;
+
+  const r = { p10: c.p10*adj, p25: c.p25*adj, p50: c.p50*adj, p75: c.p75*adj, p90: c.p90*adj };
+
+  const totalComp = salaryRaw + bonusRaw + equityRaw;
+  const p = pct(totalComp, r.p10, r.p25, r.p50, r.p75, r.p90);
+
+  const yoeLabel = parseInt(yoeRaw) === 1 ? '1 yr exp' : `${parseInt(yoeRaw)||0} yrs exp`;
+
+  // ── Verdict
+  let vType, vTitle, vColor;
+  if (p < 25)      { vType='weak';   vTitle='This is a weak offer';   vColor='#ef4444'; }
+  else if (p < 63) { vType='fair';   vTitle='This is a fair offer';   vColor='#f59e0b'; }
+  else             { vType='strong'; vTitle='This is a strong offer'; vColor='#10b981'; }
+
+  // ── Position
+  const pp = Math.round(p);
+  let posText;
+  if      (pp < 10) posText = `You're in the bottom 10% for this role and market`;
+  else if (pp < 25) posText = `You're in the bottom 25%`;
+  else if (pp < 40) posText = `You're slightly below the median`;
+  else if (pp < 60) posText = `You're near the market median`;
+  else if (pp < 75) posText = `You're in the top 40% — above median`;
+  else if (pp < 90) posText = `You're in the top 25%`;
+  else              posText = `You're in the top 10% — exceptional`;
+
+  // ── Negotiation
+  let negText = null;
+  if      (p < 25) negText = `You could reasonably ask for ${fmt(r.p50,c.sym)}–${fmt(r.p75,c.sym)}`;
+  else if (p < 50) negText = `Push toward ${fmt(r.p75,c.sym)} — that's mid-market for this profile`;
+  else if (p < 75) negText = `Consider targeting ${fmt(r.p90,c.sym)} if you have leverage`;
+
+  // ── Emotional
+  let emoText;
+  if      (p < 15) emoText = "Most candidates in your position receive significantly better offers. This one needs work before you sign.";
+  else if (p < 25) emoText = "This offer is below what your profile commands. You have real room to negotiate.";
+  else if (p < 40) emoText = "In range, but not outstanding. A conversation about the top of the band is worth having.";
+  else if (p < 63) emoText = "Competitive, but there's still a gap between here and exceptional.";
+  else if (p < 80) emoText = "This is a solid offer. Your profile is valued at the right level.";
+  else if (p < 92) emoText = "This company is serious about getting you. The package reflects that.";
+  else             emoText = "Rare. You're being offered top-of-market compensation. Pay attention to this signal.";
+
+  // ════════════════════════════════════════════
+  // RENDER
+  // ════════════════════════════════════════════
+
+  // Context
+  document.getElementById('r-context').innerHTML =
+    `<strong style="color:#999;">${role}</strong> &nbsp;·&nbsp; <strong style="color:#999;">${city}</strong> &nbsp;·&nbsp; ${yoeLabel}`;
+
+  // Verdict card
+  const vc = document.getElementById('r-verdict-card');
+  vc.className = `verdict-card fade-in delay-1 verdict-${vType}`;
+  vc.innerHTML = `
+    <div class="verdict-tag" style="color:${vColor};">
+      <span class="verdict-tag-dot" style="background:${vColor};"></span>
+      Verdict
+    </div>
+    <div class="verdict-headline" style="color:${vColor};">${vTitle}</div>
+    <div class="verdict-comp">
+      Base: <strong style="color:#aaa;">${fmt(salaryRaw,c.sym)}</strong>
+      ${bonusRaw > 0 || equityRaw > 0 ? `&nbsp;·&nbsp; Total comp: <strong style="color:#aaa;">${fmt(totalComp,c.sym)}</strong>` : ''}
+    </div>`;
+
+  // Range
+  document.getElementById('r-range-headline').textContent = `${fmt(r.p25,c.sym)} – ${fmt(r.p75,c.sym)}`;
+  document.getElementById('r-range-sub').textContent = `Typical range · 25th–75th percentile`;
+
+  // Bar
+  renderBar(r, totalComp, c, p, vColor);
+
+  // Position
+  document.getElementById('r-position').textContent = posText;
+
+  // Negotiation
+  if (negText) {
+    document.getElementById('r-negotiation').textContent = negText;
+    document.getElementById('r-neg-card').style.display = 'block';
+  } else {
+    document.getElementById('r-neg-card').style.display = 'none';
+  }
+
+  // Emotional
+  document.getElementById('r-emotional').textContent = emoText;
+
+  // Switch screens
+  document.getElementById('s-input').style.display = 'none';
+  document.getElementById('s-results').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════════════════
+// RANGE BAR
+// ════════════════════════════════════════════════════
+
+function renderBar(r, userVal, c, percentile, vColor) {
+  const bar = document.getElementById('r-bar');
+  bar.innerHTML = '';
+
+  // Map a value to 0–100% position within p10–p90 range
+  const pos = v => Math.max(2, Math.min(98, ((v - r.p10) / (r.p90 - r.p10)) * 100));
+
+  // Tick marks at p25, p50, p75
+  [[r.p25,'25th'],[r.p50,'Median'],[r.p75,'75th']].forEach(([v, lbl]) => {
+    const p = pos(v);
+    const tick = document.createElement('div');
+    tick.className = 'range-tick';
+    tick.style.left = p + '%';
+    bar.appendChild(tick);
+
+    const label = document.createElement('div');
+    label.className = 'range-tick-label';
+    label.style.left = p + '%';
+    label.innerHTML = `${fmt(v, c.sym)}<br><span style="color:#3a3a3a">${lbl}</span>`;
+    bar.appendChild(label);
+  });
+
+  // User dot
+  const userPos = pos(userVal);
+
+  const dotLabel = document.createElement('div');
+  dotLabel.className = 'range-user-label';
+  dotLabel.textContent = 'You';
+  dotLabel.style.color = vColor;
+  bar.appendChild(dotLabel);
+
+  const dot = document.createElement('div');
+  dot.className = 'range-user-dot';
+  dot.style.background = '#fff';
+  dot.style.boxShadow = `0 0 0 3px ${vColor}55, 0 2px 8px rgba(0,0,0,0.5)`;
+  bar.appendChild(dot);
+
+  // Animate dot into position
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      dot.style.left = userPos + '%';
+      dotLabel.style.left = userPos + '%';
+    }, 80);
+  });
+}
+
+// ════════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════════
+
+function goBack() {
+  document.getElementById('s-results').style.display = 'none';
+  document.getElementById('s-input').style.display = 'block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
