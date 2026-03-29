@@ -462,6 +462,117 @@
     }
     .modal-body strong { color: var(--text-1); font-weight: 600; }
     .modal-divider { height: 1px; background: var(--border-sub); margin: 16px 0; }
+
+    /* ─── Share row ─── */
+    .share-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 16px;
+      background: rgba(96,165,250,0.07);
+      border: 1px solid rgba(96,165,250,0.22);
+      border-radius: 12px;
+      color: var(--cv-accent);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .share-btn:hover { background: rgba(96,165,250,0.13); border-color: rgba(96,165,250,0.35); }
+    .share-btn:active { transform: scale(0.99); }
+
+    /* ─── Copy toast ─── */
+    .copy-toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      z-index: 400;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── Peer comparison ─── */
+    .peer-line {
+      font-size: 13px;
+      color: var(--text-3);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .peer-line strong { font-weight: 600; }
+
+    /* ─── Negotiation script card ─── */
+    .script-pre {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.75;
+      white-space: pre-wrap;
+      font-family: inherit;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border-sub);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 10px 0 10px;
+    }
+    .copy-script-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-3);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 13px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .copy-script-btn:hover { color: var(--cv-accent); border-color: var(--cv-accent); }
+
+    /* ─── Strong-offer tips ─── */
+    .tips-list {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .tips-list li {
+      font-size: 14px;
+      color: var(--text-2);
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      line-height: 1.5;
+    }
+    .tips-list li::before {
+      content: '→';
+      color: #10b981;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 13px;
+      margin-top: 1px;
+    }
   </style>
 </head>
 <body>
@@ -587,6 +698,12 @@
   <!-- Verdict -->
   <div id="r-verdict-card" class="verdict-card fade-in delay-1"></div>
 
+  <!-- Share -->
+  <button class="share-btn fade-in delay-2" onclick="shareResult()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    Share verdict
+  </button>
+
   <!-- Market Range -->
   <div class="stat-card fade-in delay-2">
     <div class="stat-label">Market Range</div>
@@ -612,6 +729,7 @@
   <div class="stat-card fade-in delay-3">
     <div class="stat-label">Your Position</div>
     <div id="r-position" class="stat-value"></div>
+    <p id="r-peer" class="peer-line" style="display:none;"></p>
   </div>
 
   <!-- Negotiation -->
@@ -620,15 +738,21 @@
     <div id="r-negotiation" class="stat-value"></div>
   </div>
 
+  <!-- Negotiation script / Next steps -->
+  <div id="r-script-card" class="stat-card fade-in delay-5" style="display:none;">
+    <div id="r-script-label" class="stat-label">Negotiation Script</div>
+    <div id="r-script-body"></div>
+  </div>
+
   <!-- Emotional line -->
-  <div class="fade-in delay-5" style="padding: 14px 2px 6px;">
+  <div class="fade-in delay-6" style="padding: 14px 2px 6px;">
     <p id="r-emotional" style="font-size: 15px; color: #666; font-style: italic; line-height: 1.65; margin: 0;"></p>
   </div>
 
   <div class="divider"></div>
 
-  <div class="fade-in delay-6">
-    <button class="btn-ghost" onclick="goBack()">Analyze another offer</button>
+  <div>
+    <button class="btn-ghost" onclick="goBack()">Compare another offer</button>
   </div>
 
   <!-- Verdict Network -->
@@ -649,6 +773,12 @@
   <p style="font-size: 11px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">Data is indicative. Results are based on aggregated market benchmarks, not guaranteed offers.</p>
 </div>
 
+
+<!-- Copy toast -->
+<div id="copy-toast" class="copy-toast">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  Copied to clipboard
+</div>
 
 <!-- ════════════════════════════════════════
      METHODOLOGY MODAL
@@ -1009,6 +1139,41 @@ function runVerdict() {
   // Emotional
   document.getElementById('r-emotional').textContent = emoText;
 
+  // Save share data
+  _shareData = { role, city, bandLabel, yoe: yoeNum, pp, vType, r };
+
+  // Peer comparison
+  const peerEl = document.getElementById('r-peer');
+  peerEl.innerHTML = getPeerComparison(pp, role, city);
+  peerEl.style.display = 'block';
+
+  // Negotiation script / next steps
+  const scriptCard  = document.getElementById('r-script-card');
+  const scriptLabel = document.getElementById('r-script-label');
+  const scriptBody  = document.getElementById('r-script-body');
+  scriptCard.style.display = 'block';
+
+  if (vType === 'strong') {
+    scriptLabel.textContent = 'Next Steps';
+    scriptBody.innerHTML = `
+      <p style="font-size:14px;color:var(--text-2);line-height:1.6;margin:0 0 10px;">Your base is already strong. If you negotiate, focus on:</p>
+      <ul class="tips-list">
+        <li>Equity / RSUs — often more flexible than base salary</li>
+        <li>Signing bonus — one-time, lower ongoing risk for the company</li>
+        <li>Extra PTO or flexible remote arrangements</li>
+        <li>Accelerated first review (e.g. 6-month instead of 12-month)</li>
+      </ul>`;
+  } else {
+    scriptLabel.textContent = 'Negotiation Script';
+    const script = buildNegScript(role, city, bandLabel, yoeNum, r);
+    scriptBody.innerHTML = `
+      <div class="script-pre">${script.replace(/\n/g,'<br>')}</div>
+      <button class="copy-script-btn" onclick="copyScript()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy script
+      </button>`;
+  }
+
   // Switch screens
   document.getElementById('s-input').style.display = 'none';
   document.getElementById('s-results').style.display = 'block';
@@ -1063,6 +1228,79 @@ function renderBar(r, userVal, percentile, vColor) {
       dotLabel.style.left = userPos + '%';
     }, 80);
   });
+}
+
+// ════════════════════════════════════════════════════
+// SHARE + ENGAGEMENT
+// ════════════════════════════════════════════════════
+
+let _shareData = null; // set on each runVerdict()
+
+function buildShareText(role, city, bandLabel, pp, vType) {
+  const url = 'https://comp-verdict.netlify.app';
+  const above = 100 - pp;
+  if (vType === 'weak') {
+    return `Just checked my ${role} offer in ${city} with CompVerdict.\n\nVerdict: weak offer — bottom ${pp}% for a ${bandLabel}. Time to negotiate.\n\nCheck yours → ${url}`;
+  } else if (vType === 'fair') {
+    return `Ran my ${role} offer in ${city} through CompVerdict.\n\nFair offer — ${pp}th percentile for a ${bandLabel}. Could be better.\n\nIs yours better? → ${url}`;
+  } else {
+    return `CompVerdict: my ${role} offer in ${city} is in the top ${above}% for a ${bandLabel}. Strong offer. 💪\n\nCheck yours → ${url}`;
+  }
+}
+
+function buildNegScript(role, city, bandLabel, yoe, r) {
+  const target = fmt(r.p75, r.symbol);
+  const range  = `${fmt(r.p50, r.symbol)}–${fmt(r.p75, r.symbol)}`;
+  return `Hi [Name],\n\nThank you for the offer — I'm genuinely excited about this role.\n\nI've looked at current market data for ${role}s in ${city} at ${bandLabel} level. The typical range runs ${range}, and I'd like to discuss getting closer to ${target}.\n\nIs there flexibility on the base?\n\nBest,\n[Your name]`;
+}
+
+function getPeerComparison(pp, role, city) {
+  const above = 100 - pp;
+  if (pp < 25)  return `Roughly <strong>${above}%</strong> of ${role}s in ${city} earn more than this.`;
+  if (pp < 50)  return `About <strong>${above}%</strong> of ${role}s in ${city} earn more than this.`;
+  if (pp < 75)  return `You earn more than roughly <strong>${pp}%</strong> of ${role}s in ${city}.`;
+  return `Fewer than <strong>${above}%</strong> of ${role}s in ${city} earn more.`;
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('Copied to clipboard');
+  } catch {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied to clipboard');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('copy-toast');
+  t.querySelector('svg').nextSibling.textContent = ' ' + msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function shareResult() {
+  if (!_shareData) return;
+  const { role, city, bandLabel, pp, vType } = _shareData;
+  const text = buildShareText(role, city, bandLabel, pp, vType);
+  if (navigator.share) {
+    navigator.share({ text }).catch(() => copyText(text));
+  } else {
+    copyText(text);
+  }
+}
+
+function copyScript() {
+  if (!_shareData) return;
+  const { role, city, bandLabel, yoe, r } = _shareData;
+  copyText(buildNegScript(role, city, bandLabel, yoe, r));
 }
 
 // ════════════════════════════════════════════════════
