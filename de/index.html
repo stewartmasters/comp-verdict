@@ -50,11 +50,44 @@
     }
 
     .screen {
-      min-height: 100dvh;
       padding: 28px 20px 56px;
       max-width: 460px;
       margin: 0 auto;
     }
+
+    /* ─── Site header ─── */
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(248,250,252,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .site-header-inner { max-width: 460px; margin: 0 auto; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .site-nav { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+    .site-nav a { font-size: 13px; font-weight: 500; color: var(--text-3); text-decoration: none; padding: 5px 8px; border-radius: 7px; transition: color 0.15s; white-space: nowrap; }
+    .site-nav a:hover { color: var(--cv-primary); }
+    .site-nav .nav-pill { font-size: 12px; font-weight: 700; color: #fff !important; background: var(--cv-primary); padding: 6px 14px; border-radius: 20px; margin-left: 4px; }
+    .site-nav .nav-pill:hover { background: var(--cv-accent) !important; }
+    .header-lang { display: flex; align-items: center; gap: 3px; margin-right: 6px; }
+    .header-lang a, .header-lang span { font-size: 11px; color: var(--text-3); text-decoration: none; padding: 2px 4px; border-radius: 4px; }
+    .header-lang a:hover { color: var(--cv-primary); }
+    .header-lang .lang-on { color: var(--cv-primary); font-weight: 700; }
+    @media (max-width: 380px) { .site-nav .nav-text { display: none; } }
+
+    /* ─── Site footer ─── */
+    .site-footer { border-top: 1px solid var(--border); background: var(--surface); padding: 40px 0 24px; }
+    .site-footer-inner { max-width: 460px; margin: 0 auto; padding: 0 20px; }
+    .footer-top { margin-bottom: 24px; }
+    .footer-brand-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; margin: 6px 0 4px; }
+    .footer-data-note { font-size: 11px; color: var(--text-3); }
+    .footer-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; margin-bottom: 24px; }
+    .footer-col-head { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .footer-col a { display: block; font-size: 13px; color: var(--text-2); text-decoration: none; line-height: 1.9; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--cv-primary); }
+    .footer-network-row { border-top: 1px solid var(--border); padding: 16px 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .footer-net-label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; }
+    .footer-net-sep { font-size: 12px; color: var(--border); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+    .footer-copy { font-size: 11px; color: var(--text-3); }
+    .footer-bottom-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .footer-bottom-links a { font-size: 11px; color: var(--text-3); text-decoration: none; transition: color 0.15s; }
+    .footer-bottom-links a:hover { color: var(--text-2); }
+    .footer-bottom-sep { font-size: 11px; color: var(--border); }
 
     /* ─── Inputs ─── */
     .field-label {
@@ -656,28 +689,30 @@
 <body>
 
 <!-- ════════════════════════════════════════
+     SITE HEADER
+═══════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="/de/" class="cv-brand" style="text-decoration:none; flex-shrink:0;"><span class="word">Comp</span><span class="accent">Verdict</span></a>
+    <nav class="site-nav">
+      <a href="/de/gehalt/" class="nav-text">Gehälter</a>
+      <a href="/de/verhandlung/" class="nav-text">Verhandeln</a>
+      <div class="header-lang">
+        <a href="/">EN</a>
+        <span style="color:var(--border);">·</span>
+        <a href="/es/">ES</a>
+        <span style="color:var(--border);">·</span>
+        <span class="lang-on">DE</span>
+      </div>
+      <a href="#" onclick="document.getElementById('s-results').style.display='none';document.getElementById('s-input').style.display='block';window.scrollTo(0,0);return false;" class="nav-pill">Urteil →</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
      SCREEN 1 — INPUT
 ═══════════════════════════════════════════ -->
 <div id="s-input" class="screen">
-
-  <!-- Brand + Network -->
-  <div style="margin-bottom: 32px; padding-top: 8px;">
-    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px;">
-      <span class="cv-brand"><span class="word">Comp</span><span class="accent">Verdict</span></span>
-      <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style="font-size:11px; color:#f97316; font-weight:600; text-decoration:none;">SalaryVerdict</a>
-        <span style="font-size:11px; color:var(--border);">·</span>
-        <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style="font-size:11px; color:#a78bfa; font-weight:600; text-decoration:none;">SpendVerdict</a>
-      </div>
-    </div>
-    <div style="display:flex; align-items:center; gap:4px;">
-      <a href="/" style="font-size:11px; color:var(--text-3); text-decoration:none; font-weight:500;">EN</a>
-      <span style="font-size:11px; color:var(--border); padding:0 1px;">·</span>
-      <a href="/es/" style="font-size:11px; color:var(--text-3); text-decoration:none; font-weight:500;">ES</a>
-      <span style="font-size:11px; color:var(--border); padding:0 1px;">·</span>
-      <span style="font-size:11px; font-weight:700; color:var(--cv-primary);">DE</span>
-    </div>
-  </div>
 
   <!-- Headline -->
   <div style="margin-bottom: 20px;">
@@ -779,9 +814,8 @@
 <div id="s-results" class="screen" style="display:none;">
 
   <!-- Nav -->
-  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 28px; padding-top: 8px;">
+  <div style="margin-bottom: 20px; padding-top: 8px;">
     <button onclick="goBack()" style="background:none; border:none; cursor:pointer; color:var(--text-3); font-size:14px; padding: 4px 0; display:flex; align-items:center; gap:6px; transition: color 0.15s;" onmouseover="this.style.color='var(--cv-primary)'" onmouseout="this.style.color='var(--text-3)'">← Zurück</button>
-    <span class="cv-brand" style="font-size:13px;"><span class="word">Comp</span><span class="accent">Verdict</span></span>
   </div>
 
   <!-- Context line -->
@@ -861,6 +895,53 @@
   <p style="font-size: 11px; color: var(--text-3); margin-top: 14px; line-height: 1.6;">Daten sind indikativ. Ergebnisse basieren auf aggregierten Markt-Benchmarks, keine garantierten Angebote. <a href="/privacy/" style="color:var(--text-3);">Datenschutz</a></p>
 </div>
 
+
+<!-- ════════════════════════════════════════
+     SITE FOOTER
+═══════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-top">
+      <a href="/de/" class="cv-brand" style="text-decoration:none; display:inline-block; margin-bottom:6px;"><span class="word">Comp</span><span class="accent">Verdict</span></a>
+      <p class="footer-brand-desc">Lohnt sich dieses Angebot? Gib dein Paket ein und erhalte in Sekunden ein datenbasiertes Urteil. Kostenlos, keine Anmeldung.</p>
+      <p class="footer-data-note">BLS OEWS · ONS ASHE · INE EES · Stack Overflow Developer Survey · Aktualisiert Q1 2025</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <p class="footer-col-head">Tools</p>
+        <a href="/de/">Angebot prüfen</a>
+        <a href="/de/gehalt/">Gehaltsbenchmarks</a>
+        <a href="/de/verhandlung/">Verhandlungsguides</a>
+        <a href="/privacy/">Datenschutz</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-head">Beliebte Guides</p>
+        <a href="/de/gehalt/software-engineer-gehalt-berlin/">SE Gehalt · Berlin</a>
+        <a href="/de/gehalt/software-engineer-gehalt-munich/">SE Gehalt · München</a>
+        <a href="/de/gehalt/product-manager-gehalt-berlin/">PM Gehalt · Berlin</a>
+        <a href="/de/verhandlung/software-engineer-verhandlung-berlin/">Verhandeln · Berlin</a>
+      </div>
+    </div>
+    <div class="footer-network-row">
+      <span class="footer-net-label">Verdict-Netzwerk:</span>
+      <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style="font-size:13px; font-weight:700; text-decoration:none; color:#111827;">Salary<span style="color:#f97316;">Verdict</span></a>
+      <span class="footer-net-sep">·</span>
+      <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style="font-size:13px; font-weight:700; text-decoration:none; color:#111827;">Spend<span style="color:#a78bfa;">Verdict</span></a>
+      <span class="footer-net-sep">·</span>
+      <span style="font-size:13px; font-weight:700; color:#111827;">Comp<span style="color:#2563EB;">Verdict</span></span>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 CompVerdict — Gehaltsdaten sind Richtwerte.</p>
+      <div class="footer-bottom-links">
+        <a href="/privacy/">Datenschutz</a>
+        <span class="footer-bottom-sep">·</span>
+        <a href="/">EN</a>
+        <span class="footer-bottom-sep">·</span>
+        <a href="/es/">ES</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <!-- Copy toast -->
 <div id="copy-toast" class="copy-toast">
