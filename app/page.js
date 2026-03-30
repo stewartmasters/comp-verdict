@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CV_DATA } from '../lib/cv-data.js'
-import { getSalaryPath, en, SALARY_ROLES } from '../lib/page-helpers.js'
+import { getSalaryPath, en } from '../lib/page-helpers.js'
+import { slugify } from '../lib/seo-pages.js'
 import VerdictTool from '../components/VerdictTool.jsx'
 import Navigation from '../components/Navigation.jsx'
 import Footer from '../components/Footer.jsx'
@@ -19,27 +20,34 @@ export const metadata = {
 }
 
 const FEATURED_CHECKS = [
-  { role: 'Software Engineer', city: 'London', label: 'Software Engineer · London' },
-  { role: 'Product Manager', city: 'Berlin', label: 'Product Manager · Berlin' },
-  { role: 'Data Scientist', city: 'Amsterdam', label: 'Data Scientist · Amsterdam' },
-  { role: 'Engineering Manager', city: 'London', label: 'Engineering Manager · London' },
-  { role: 'Frontend Engineer', city: 'Barcelona', label: 'Frontend Engineer · Barcelona' },
-  { role: 'DevOps Engineer', city: 'Dublin', label: 'DevOps Engineer · Dublin' },
+  { role: 'Software Engineer',  city: 'London',        label: 'Software Engineer · London' },
+  { role: 'Product Manager',    city: 'Berlin',         label: 'Product Manager · Berlin' },
+  { role: 'Marketing Manager',  city: 'Amsterdam',      label: 'Marketing Manager · Amsterdam' },
+  { role: 'Data Scientist',     city: 'Paris',          label: 'Data Scientist · Paris' },
+  { role: 'Finance Analyst',    city: 'London',         label: 'Finance Analyst · London' },
+  { role: 'Engineering Manager',city: 'San Francisco',  label: 'Engineering Manager · San Francisco' },
 ]
 
 const CURATED_GUIDES = [
-  { role: 'Software Engineer', city: 'London' },
-  { role: 'Product Manager', city: 'Berlin' },
-  { role: 'Data Scientist', city: 'Amsterdam' },
-  { role: 'Engineering Manager', city: 'London' },
-  { role: 'Frontend Engineer', city: 'Barcelona' },
-  { role: 'Backend Engineer', city: 'Paris' },
-  { role: 'DevOps Engineer', city: 'Dublin' },
-  { role: 'UX Designer', city: 'Amsterdam' },
+  { role: 'Software Engineer',   city: 'London' },
+  { role: 'Product Manager',     city: 'Berlin' },
+  { role: 'Marketing Manager',   city: 'Amsterdam' },
+  { role: 'Data Scientist',      city: 'Paris' },
+  { role: 'Engineering Manager', city: 'San Francisco' },
+  { role: 'Finance Analyst',     city: 'London' },
+  { role: 'Backend Engineer',    city: 'Dublin' },
+  { role: 'UX Designer',         city: 'Stockholm' },
+  { role: 'Operations Manager',  city: 'Zurich' },
   { role: 'Machine Learning Engineer', city: 'Berlin' },
-  { role: 'Software Engineer', city: 'San Francisco' },
-  { role: 'Product Manager', city: 'London' },
-  { role: 'Full Stack Engineer', city: 'Madrid' },
+  { role: 'Growth Manager',      city: 'New York' },
+  { role: 'Product Designer',    city: 'Amsterdam' },
+]
+
+const WEAK_OFFER_SIGNALS = [
+  { signal: "It\u2019s the first number they gave you", note: "Recruiters routinely open below their ceiling. The first offer is almost never the final offer." },
+  { signal: "It\u2019s a suspiciously round number", note: "\u00a350k, $100k, \u20ac80k \u2014 these are placeholders, not benchmarked figures. They have room." },
+  { signal: "They offered quickly without asking about your current salary", note: "Fast offers without anchoring questions often mean the band is wide and they guessed low." },
+  { signal: "It\u2019s below the midpoint for your experience band", note: "If your offer sits at or below the 40th percentile for your role and city, you\u2019re being underpaid before you even start." },
 ]
 
 export default function HomePage() {
@@ -51,25 +59,25 @@ export default function HomePage() {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-20 pb-8">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-          {/* Copy — first on mobile (top), left on desktop */}
+          {/* Copy */}
           <div className="space-y-6">
-            <div className="inline-block bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
-              Free · No signup · Instant verdict
+            <div className="inline-block bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+              Got an offer? Check it before you reply.
             </div>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
               Is this job offer{' '}
               <span className="text-blue-600">actually good?</span>
             </h1>
             <p className="text-lg text-gray-500 leading-relaxed">
-              Compare your offer to market benchmarks across 39 cities worldwide. Get a clear verdict — fair, weak, or strong — and see exactly how much you could negotiate.
+              Most people accept the first offer. Most of them regret it. Compare your offer to market data across 44 cities — and find out exactly how much you can push back on.
             </p>
 
             {/* Trust stats */}
             <div className="grid grid-cols-3 gap-4 pt-2">
               {[
-                { value: '10', label: 'Role types' },
-                { value: '39', label: 'Cities' },
-                { value: 'Free', label: 'No sign-up' },
+                { value: '24',    label: 'Role types' },
+                { value: '44',    label: 'Cities' },
+                { value: '1,700+', label: 'Offer guides' },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="text-2xl font-extrabold text-gray-900">{value}</div>
@@ -88,7 +96,7 @@ export default function HomePage() {
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Popular checks</p>
               <div className="flex flex-wrap gap-2">
                 {FEATURED_CHECKS.map(({ role, city, label }) => {
-                  const href = getSalaryPath(en, role, city)
+                  const href = `/salary/${slugify(role)}-salary-${slugify(city)}/`
                   return (
                     <Link
                       key={`${role}-${city}`}
@@ -103,32 +111,60 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Offer tool — second on mobile (below copy), right on desktop */}
+          {/* Offer tool */}
           <div id="offer-tool">
             <VerdictTool cvData={CV_DATA} locale="en" />
           </div>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Signs your offer is weak — unique to CompVerdict */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-gray-100 mt-8">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-10 items-start">
+          <div className="space-y-3">
+            <h2 className="text-2xl font-bold text-gray-900 leading-tight">
+              Signs your offer<br />is weak
+            </h2>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Most offers have room. These are the patterns that suggest yours does too.
+            </p>
+            <Link href="/#offer-tool" className="inline-block text-sm font-semibold text-blue-600 hover:underline">
+              Check this offer →
+            </Link>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {WEAK_OFFER_SIGNALS.map(({ signal, note }) => (
+              <div key={signal} className="p-4 rounded-xl border border-gray-100 bg-white space-y-1.5">
+                <div className="flex items-start gap-2">
+                  <span className="text-red-400 font-bold text-sm mt-0.5 flex-shrink-0">✗</span>
+                  <div className="text-sm font-semibold text-gray-900">{signal}</div>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed pl-5">{note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-gray-100">
         <h2 className="text-2xl font-bold text-gray-900 mb-10 text-center">How it works</h2>
         <div className="grid sm:grid-cols-3 gap-8">
           {[
             {
               step: '01',
-              title: 'Enter your offer',
-              desc: 'Add the role, city, base salary, and your years of experience. Bonus and equity are optional.',
+              title: 'Enter the offer',
+              desc: 'Role, city, base salary, years of experience. Add bonus or equity if you have them.',
             },
             {
               step: '02',
               title: 'We benchmark it',
-              desc: 'We compare your offer to market data for your specific role, city, and seniority band.',
+              desc: 'We compare your offer to market data for your exact role, city, and seniority band.',
             },
             {
               step: '03',
-              title: 'Get your verdict',
-              desc: 'See if it\'s weak, fair, or strong — plus your exact negotiation range and a ready-to-use script.',
+              title: 'Know your number',
+              desc: 'Weak, fair, or strong — plus the exact range you can ask for and a script to do it.',
             },
           ].map(({ step, title, desc }) => (
             <div key={step} className="space-y-3">
@@ -145,15 +181,14 @@ export default function HomePage() {
         <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">What you get</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { icon: '⚡', title: 'Clear verdict', desc: 'Weak, fair, or strong — no ambiguous percentile jargon.' },
-            { icon: '📊', title: 'Market range', desc: 'Typical p25–p75 range for your exact role, city, and experience band.' },
-            { icon: '🎯', title: 'Negotiation range', desc: 'The exact range you can reasonably push back on, in your currency.' },
-            { icon: '📝', title: 'Negotiation script', desc: 'A ready-to-send email template based on your offer and market data.' },
-            { icon: '👥', title: 'Peer comparison', desc: 'See how your offer stacks up against similar candidates in your market.' },
-            { icon: '⚠️', title: 'Risk signal', desc: 'A clear warning if accepting this offer may lock you below market.' },
-          ].map(({ icon, title, desc }) => (
+            { title: 'Clear verdict',        desc: 'Weak, fair, or strong — no ambiguous percentile jargon.' },
+            { title: 'Market range',          desc: 'The p25–p75 range for your exact role, city, and experience band.' },
+            { title: 'Negotiation range',     desc: 'The exact band you can reasonably push back on, in your currency.' },
+            { title: 'Negotiation script',    desc: 'A ready-to-send email based on your offer and market data.' },
+            { title: 'Peer comparison',       desc: 'See where your offer sits against similar candidates in your market.' },
+            { title: 'Risk signal',           desc: 'A clear warning if accepting now anchors you below market long-term.' },
+          ].map(({ title, desc }) => (
             <div key={title} className="p-4 rounded-xl border border-gray-100 bg-white">
-              <div className="text-2xl mb-2">{icon}</div>
               <div className="text-sm font-bold text-gray-900 mb-1">{title}</div>
               <div className="text-xs text-gray-500 leading-relaxed">{desc}</div>
             </div>
@@ -174,7 +209,7 @@ export default function HomePage() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {CURATED_GUIDES.map(({ role, city }) => {
-            const href = getSalaryPath(en, role, city)
+            const href = `/salary/${slugify(role)}-salary-${slugify(city)}/`
             return (
               <Link
                 key={`${role}-${city}`}
@@ -205,9 +240,9 @@ export default function HomePage() {
               Salary<span className="text-orange-500">Verdict</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Already employed? Check if you&apos;re underpaid at your current job. Compare your salary against market data.
+              Already employed? Find out if you're underpaid at your current job — before you even start looking.
             </p>
-            <p className="text-xs text-orange-500 mt-2 font-semibold">Check my salary →</p>
+            <p className="text-xs text-orange-500 mt-2 font-semibold">Check my current salary →</p>
           </a>
           <a
             href="https://www.spendverdict.com"
@@ -219,7 +254,7 @@ export default function HomePage() {
               Spend<span className="text-violet-500">Verdict</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Does this salary actually work for your lifestyle? See what it means for rent, savings, and spending in your city.
+              Offer looks good on paper — but does it actually work for your lifestyle? See what it means for rent, savings, and spending.
             </p>
             <p className="text-xs text-violet-500 mt-2 font-semibold">Check my lifestyle →</p>
           </a>
@@ -230,9 +265,9 @@ export default function HomePage() {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-16">
         <div className="bg-gray-900 rounded-2xl p-8 sm:p-12 text-center space-y-4">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-            Got an offer in front of you?
+            Don&apos;t accept without checking this first.
           </h2>
-          <p className="text-gray-400">30 seconds. Free. No email. No login.</p>
+          <p className="text-gray-400">30 seconds. Free. No email. No login. Offers expire — check now.</p>
           <ScrollToTopButton />
         </div>
       </section>

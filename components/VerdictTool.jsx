@@ -7,7 +7,7 @@ const LABELS = {
   en: {
     headline: 'Is this offer\nworth taking?',
     subhead: "Enter the package. We'll give you the verdict.",
-    trust: ['✓ 39 cities', '10 roles', 'Updated Q1 2025', 'Free · No sign-up'],
+    trust: ['✓ 44 cities', '24 roles', 'Updated Q1 2026', 'Free · No sign-up'],
     roleLabel: 'Role', rolePlaceholder: 'e.g. Software Engineer',
     cityLabel: 'City', cityPlaceholder: 'e.g. Barcelona',
     salaryLabel: 'Base Salary', salaryPlaceholder: '50,000',
@@ -86,7 +86,7 @@ const LABELS = {
   es: {
     headline: '¿Vale la pena\nesta oferta?',
     subhead: 'Introduce el paquete. Te damos el veredicto.',
-    trust: ['✓ 39 ciudades', '10 perfiles', 'Actualizado T1 2025', 'Gratis · Sin registro'],
+    trust: ['✓ 44 ciudades', '24 perfiles', 'Actualizado T1 2026', 'Gratis · Sin registro'],
     roleLabel: 'Puesto', rolePlaceholder: 'ej. Software Engineer',
     cityLabel: 'Ciudad', cityPlaceholder: 'ej. Barcelona',
     salaryLabel: 'Salario Base', salaryPlaceholder: '50.000',
@@ -165,7 +165,7 @@ const LABELS = {
   de: {
     headline: 'Ist dieses Angebot\ndie Annahme wert?',
     subhead: 'Gib das Paket ein. Wir geben dir das Urteil.',
-    trust: ['✓ 39 Städte', '10 Rollen', 'Aktualisiert Q1 2025', 'Kostenlos · Ohne Anmeldung'],
+    trust: ['✓ 44 Städte', '24 Rollen', 'Aktualisiert Q1 2026', 'Kostenlos · Ohne Anmeldung'],
     roleLabel: 'Stelle', rolePlaceholder: 'z.B. Software Engineer',
     cityLabel: 'Stadt', cityPlaceholder: 'z.B. Berlin',
     salaryLabel: 'Grundgehalt', salaryPlaceholder: '50.000',
