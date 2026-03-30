@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CompVerdict — Is this offer worth taking?</title>
+  <title>CompVerdict — ¿Vale la pena esta oferta?</title>
   <link rel="alternate" hreflang="en" href="https://comp-verdict.netlify.app/">
   <link rel="alternate" hreflang="es" href="https://comp-verdict.netlify.app/es/">
   <link rel="alternate" hreflang="de" href="https://comp-verdict.netlify.app/de/">
@@ -602,8 +602,8 @@
 
   <!-- Headline -->
   <div style="margin-bottom: 36px;">
-    <h1 style="font-size: 30px; font-weight: 780; letter-spacing: -0.035em; line-height: 1.12; margin: 0 0 11px; color: #f2f2f2;">Is this offer<br>worth taking?</h1>
-    <p style="font-size: 15px; color: #666; line-height: 1.55; margin: 0;">Enter the package. We'll give you the verdict.</p>
+    <h1 style="font-size: 30px; font-weight: 780; letter-spacing: -0.035em; line-height: 1.12; margin: 0 0 11px; color: #f2f2f2;">¿Vale la pena<br>esta oferta?</h1>
+    <p style="font-size: 15px; color: #666; line-height: 1.55; margin: 0;">Introduce el paquete. Te daremos el veredicto.</p>
   </div>
 
   <!-- ── Form ── -->
@@ -611,25 +611,25 @@
 
     <!-- Role -->
     <div>
-      <label class="field-label">Role</label>
+      <label class="field-label">Puesto</label>
       <div class="input-wrap">
-        <input id="f-role" type="text" class="input-field" placeholder="e.g. Software Engineer" autocomplete="off" spellcheck="false">
+        <input id="f-role" type="text" class="input-field" placeholder="p.ej. Software Engineer" autocomplete="off" spellcheck="false">
         <div id="d-role" class="ac-dropdown" style="display:none;"></div>
       </div>
     </div>
 
     <!-- City -->
     <div>
-      <label class="field-label">City</label>
+      <label class="field-label">Ciudad</label>
       <div class="input-wrap">
-        <input id="f-city" type="text" class="input-field" placeholder="e.g. Barcelona" autocomplete="off" spellcheck="false">
+        <input id="f-city" type="text" class="input-field" placeholder="p.ej. Barcelona" autocomplete="off" spellcheck="false">
         <div id="d-city" class="ac-dropdown" style="display:none;"></div>
       </div>
     </div>
 
     <!-- Salary -->
     <div>
-      <label class="field-label">Base Salary</label>
+      <label class="field-label">Salario base</label>
       <div class="input-wrap">
         <span id="sym-base" class="currency-prefix">€</span>
         <input id="f-salary" type="number" class="input-field input-with-prefix" placeholder="50,000" min="1">
@@ -638,13 +638,13 @@
 
     <!-- YoE -->
     <div>
-      <label class="field-label">Years of Experience</label>
+      <label class="field-label">Años de experiencia</label>
       <input id="f-yoe" type="number" class="input-field" placeholder="e.g. 5" min="0" max="40">
     </div>
 
     <!-- Optional toggles -->
     <div style="margin-top: 2px;">
-      <div style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 10px;">Optional</div>
+      <div style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 10px;">Opcional</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="toggle-pill" id="t-bonus" onclick="toggleField('bonus')">+ Bonus</button>
         <button class="toggle-pill" id="t-equity" onclick="toggleField('equity')">+ Equity</button>
@@ -653,7 +653,7 @@
 
     <!-- Bonus -->
     <div id="wrap-bonus" style="display:none;">
-      <label class="field-label">Annual Bonus</label>
+      <label class="field-label">Bonus anual</label>
       <div class="input-wrap">
         <span id="sym-bonus" class="currency-prefix">€</span>
         <input id="f-bonus" type="number" class="input-field input-with-prefix" placeholder="5,000" min="0">
@@ -662,7 +662,7 @@
 
     <!-- Equity -->
     <div id="wrap-equity" style="display:none;">
-      <label class="field-label">Equity — annual value</label>
+      <label class="field-label">Equity — valor anual</label>
       <div class="input-wrap">
         <span id="sym-equity" class="currency-prefix">€</span>
         <input id="f-equity" type="number" class="input-field input-with-prefix" placeholder="10,000" min="0">
@@ -676,10 +676,10 @@
 
   <!-- CTA -->
   <div style="margin-top: 28px;">
-    <button class="btn-primary" onclick="runVerdict()">Get Verdict →</button>
+    <button class="btn-primary" onclick="runVerdict()">Obtener veredicto →</button>
   </div>
 
-  <p style="text-align:center; font-size: 11px; color: #333; margin-top: 18px; line-height: 1.5;">Based on aggregated market benchmarks. Results are estimates.</p>
+  <p style="text-align:center; font-size: 11px; color: #333; margin-top: 18px; line-height: 1.5;">Basado en benchmarks de mercado agregados. Los resultados son estimaciones.</p>
 </div>
 
 
@@ -690,7 +690,7 @@
 
   <!-- Nav -->
   <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 28px; padding-top: 8px;">
-    <button onclick="goBack()" style="background:none; border:none; cursor:pointer; color:#555; font-size:14px; padding: 4px 0; display:flex; align-items:center; gap:6px; transition: color 0.15s;" onmouseover="this.style.color='#bbb'" onmouseout="this.style.color='#555'">← Back</button>
+    <button onclick="goBack()" style="background:none; border:none; cursor:pointer; color:#555; font-size:14px; padding: 4px 0; display:flex; align-items:center; gap:6px; transition: color 0.15s;" onmouseover="this.style.color='#bbb'" onmouseout="this.style.color='#555'">← Atrás</button>
     <span class="cv-brand" style="font-size:13px;"><span class="word">Comp</span><span class="accent">Verdict</span></span>
   </div>
 
@@ -705,12 +705,12 @@
   <!-- Share -->
   <button class="share-btn fade-in delay-2" onclick="shareResult()">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-    Share verdict
+    Compartir veredicto
   </button>
 
   <!-- Market Range -->
   <div class="stat-card fade-in delay-2">
-    <div class="stat-label">Market Range</div>
+    <div class="stat-label">Rango de mercado</div>
     <div id="r-range-headline" class="stat-value" style="margin-bottom: 3px;"></div>
     <div id="r-range-sub" style="font-size: 12px; color: var(--text-3); margin-bottom: 10px;"></div>
     <!-- Bar -->
@@ -722,29 +722,29 @@
     <!-- Trust row -->
     <div class="trust-row">
       <div id="r-confidence" class="confidence-badge confidence-high">
-        <span class="dot"></span><span>High confidence</span>
+        <span class="dot"></span><span>Alta confianza</span>
       </div>
-      <span class="trust-source">Based on market salary data</span>
-      <button class="methodology-link" onclick="openModal()">Methodology ↗</button>
+      <span class="trust-source">Basado en datos salariales de mercado</span>
+      <button class="methodology-link" onclick="openModal()">Metodología ↗</button>
     </div>
   </div>
 
   <!-- Position -->
   <div class="stat-card fade-in delay-3">
-    <div class="stat-label">Your Position</div>
+    <div class="stat-label">Tu posición</div>
     <div id="r-position" class="stat-value"></div>
     <p id="r-peer" class="peer-line" style="display:none;"></p>
   </div>
 
   <!-- Negotiation -->
   <div id="r-neg-card" class="stat-card fade-in delay-4" style="display:none;">
-    <div class="stat-label">Negotiation Signal</div>
+    <div class="stat-label">Señal de negociación</div>
     <div id="r-negotiation" class="stat-value"></div>
   </div>
 
   <!-- Negotiation script / Next steps -->
   <div id="r-script-card" class="stat-card fade-in delay-5" style="display:none;">
-    <div id="r-script-label" class="stat-label">Negotiation Script</div>
+    <div id="r-script-label" class="stat-label">Script de negociación</div>
     <div id="r-script-body"></div>
   </div>
 
@@ -756,12 +756,12 @@
   <div class="divider"></div>
 
   <div>
-    <button class="btn-ghost" onclick="goBack()">Compare another offer</button>
+    <button class="btn-ghost" onclick="goBack()">Comparar otra oferta</button>
   </div>
 
   <!-- Verdict Network -->
   <div class="network-bar fade-in delay-6">
-    <span class="network-label">Verdict network</span>
+    <span class="network-label">Red Verdict</span>
     <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" class="network-link">
       <span style="color:var(--text-dim);">Salary</span><span style="color:var(--sv-accent);">Verdict</span>
     </a>
@@ -774,14 +774,14 @@
       <span style="color:var(--text-1);">Comp</span><span style="color:var(--cv-accent);">Verdict</span>
     </span>
   </div>
-  <p style="font-size: 11px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">Data is indicative. Results are based on aggregated market benchmarks, not guaranteed offers.</p>
+  <p style="font-size: 11px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">Los datos son orientativos. Los resultados se basan en benchmarks de mercado agregados, no son ofertas garantizadas.</p>
 </div>
 
 
 <!-- Copy toast -->
 <div id="copy-toast" class="copy-toast">
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-  Copied to clipboard
+  Copiado al portapapeles
 </div>
 
 <!-- ════════════════════════════════════════
@@ -790,62 +790,62 @@
 <div id="modal" class="modal-overlay" style="display:none;" onclick="handleModalClick(event)">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <span class="modal-title">How CompVerdict works</span>
+      <span class="modal-title">Cómo funciona CompVerdict</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
 
     <div class="modal-section">
-      <div class="modal-section-title">Data sources</div>
+      <div class="modal-section-title">Fuentes de datos</div>
       <div class="modal-body">
-        Benchmarks are aggregated from public salary surveys: <strong>Stack Overflow Developer Survey</strong>, <strong>Glassdoor</strong>, <strong>LinkedIn Salary</strong>, <strong>Levels.fyi</strong>, and regional labour market reports. Data is reviewed quarterly.
+        Los benchmarks se agregan de encuestas salariales públicas: <strong>Stack Overflow Developer Survey</strong>, <strong>Glassdoor</strong>, <strong>LinkedIn Salary</strong>, <strong>Levels.fyi</strong>, e informes de mercados laborales regionales. Los datos se revisan trimestralmente.
       </div>
     </div>
 
     <div class="modal-divider"></div>
 
     <div class="modal-section">
-      <div class="modal-section-title">Experience bands</div>
+      <div class="modal-section-title">Bandas de experiencia</div>
       <div class="modal-body">
-        Your years of experience maps to one of four bands:
+        Tu experiencia en años se mapea a una de cuatro bandas:
         <br><br>
-        <strong>Junior</strong> (0–2 yrs) · <strong>Mid-level</strong> (3–5 yrs) · <strong>Senior</strong> (6–10 yrs) · <strong>Staff / Lead</strong> (11+ yrs)
+        <strong>Junior</strong> (0–2 años) · <strong>Mid-level</strong> (3–5 años) · <strong>Senior</strong> (6–10 años) · <strong>Staff / Lead</strong> (11+ años)
         <br><br>
-        Each band has its own p25/p50/p75 range. This avoids false precision from continuous YoE multipliers.
+        Cada banda tiene su propio rango p25/p50/p75. Esto evita la falsa precisión de multiplicadores continuos de años de experiencia.
       </div>
     </div>
 
     <div class="modal-divider"></div>
 
     <div class="modal-section">
-      <div class="modal-section-title">Role adjustments</div>
+      <div class="modal-section-title">Ajustes por puesto</div>
       <div class="modal-body">
-        All roles are benchmarked relative to <strong>Software Engineer</strong> as the baseline. Multipliers are applied per role — and in some cases, per market. For example, a Product Manager commands a larger premium in London (1.14×) than in Barcelona (1.03×), reflecting genuine market differences.
+        Todos los puestos están benchmarkeados respecto a <strong>Software Engineer</strong> como línea base. Se aplican multiplicadores por puesto y, en algunos casos, por mercado. Por ejemplo, un Product Manager tiene una prima mayor en Londres (1.14×) que en Barcelona (1.03×), reflejando diferencias reales del mercado.
       </div>
     </div>
 
     <div class="modal-divider"></div>
 
     <div class="modal-section">
-      <div class="modal-section-title">Confidence levels</div>
+      <div class="modal-section-title">Niveles de confianza</div>
       <div class="modal-body">
-        <strong style="color:#34d399;">High confidence</strong> — Spain, UK, Germany: explicitly benchmarked per role, city, and band from multiple sources.
+        <strong style="color:#34d399;">Alta confianza</strong> — España, Reino Unido, Alemania: benchmarkeado explícitamente por puesto, ciudad y banda a partir de múltiples fuentes.
         <br><br>
-        <strong style="color:#fbbf24;">Estimated range</strong> — all other markets: derived from mid-level survey data using consistent band scaling ratios. Treat as directional.
+        <strong style="color:#fbbf24;">Rango estimado</strong> — todos los demás mercados: derivado de datos de encuestas de nivel medio usando ratios de escala de banda consistentes. Tratar como orientativo.
       </div>
     </div>
 
     <div class="modal-divider"></div>
 
     <div class="modal-section">
-      <div class="modal-section-title">Limitations</div>
+      <div class="modal-section-title">Limitaciones</div>
       <div class="modal-body">
-        CompVerdict does not account for company size, industry vertical, funding stage, or individual negotiation outcomes. Salary data reflects gross annual compensation before tax. Results are estimates — use them as a starting point for negotiation, not a ceiling or floor.
+        CompVerdict no tiene en cuenta el tamaño de la empresa, el sector, la fase de financiación ni los resultados de negociación individuales. Los datos salariales reflejan la compensación anual bruta antes de impuestos. Los resultados son estimaciones — úsalos como punto de partida para la negociación, no como techo o suelo.
       </div>
     </div>
   </div>
 </div>
 
-<script src="data.js"></script>
+<script src="../data.js"></script>
 <script>
 // ════════════════════════════════════════════════════
 // LISTS  (CV_DATA loaded from data.js)
@@ -1039,13 +1039,13 @@ function runVerdict() {
 
   const errEl = document.getElementById('form-err');
 
-  if (!role) { errEl.textContent = 'Role not recognized. Pick one from the list.'; errEl.style.display='block'; return; }
-  if (!city) { errEl.textContent = 'City not recognized. Pick one from the list.'; errEl.style.display='block'; return; }
-  if (!salaryRaw || isNaN(salaryRaw) || salaryRaw <= 0) { errEl.textContent = 'Please enter a valid base salary.'; errEl.style.display='block'; return; }
+  if (!role) { errEl.textContent = 'Puesto no reconocido. Elige uno de la lista.'; errEl.style.display='block'; return; }
+  if (!city) { errEl.textContent = 'Ciudad no reconocida. Elige una de la lista.'; errEl.style.display='block'; return; }
+  if (!salaryRaw || isNaN(salaryRaw) || salaryRaw <= 0) { errEl.textContent = 'Por favor, introduce un salario base válido.'; errEl.style.display='block'; return; }
   errEl.style.display = 'none';
 
   const r = getRange(role, city, yoeRaw);
-  if (!r) { errEl.textContent = "We don't have benchmark data for this combination yet."; errEl.style.display='block'; return; }
+  if (!r) { errEl.textContent = "No tenemos datos de referencia para esta combinación todavía."; errEl.style.display='block'; return; }
 
   const totalComp = salaryRaw + bonusRaw + equityRaw;
   const p = scorePct(totalComp, r.p10, r.p25, r.p50, r.p75, r.p90);
@@ -1053,40 +1053,40 @@ function runVerdict() {
   const yoeNum   = parseInt(yoeRaw) || 0;
   const bandConf = CV_DATA.bands.find(b => b.id === r.band);
   const bandLabel = bandConf ? bandConf.label : '';
-  const yoeLabel  = yoeNum === 1 ? '1 yr exp' : `${yoeNum} yrs exp`;
+  const yoeLabel  = yoeNum === 1 ? '1 año exp' : `${yoeNum} años exp`;
 
   // ── Verdict
   let vType, vTitle, vColor;
-  if (p < 25)      { vType='weak';   vTitle='This is a weak offer';   vColor='#ef4444'; }
-  else if (p < 63) { vType='fair';   vTitle='This is a fair offer';   vColor='#f59e0b'; }
-  else             { vType='strong'; vTitle='This is a strong offer'; vColor='#10b981'; }
+  if (p < 25)      { vType='weak';   vTitle='Esta oferta es débil';   vColor='#ef4444'; }
+  else if (p < 63) { vType='fair';   vTitle='Esta oferta es justa';   vColor='#f59e0b'; }
+  else             { vType='strong'; vTitle='Esta es una oferta sólida'; vColor='#10b981'; }
 
   // ── Position
   const pp = Math.round(p);
   let posText;
-  if      (pp < 10) posText = `You're in the bottom 10% for this role and market`;
-  else if (pp < 25) posText = `You're in the bottom 25%`;
-  else if (pp < 40) posText = `You're slightly below the median`;
-  else if (pp < 60) posText = `You're near the market median`;
-  else if (pp < 75) posText = `You're in the top 40% — above median`;
-  else if (pp < 90) posText = `You're in the top 25%`;
-  else              posText = `You're in the top 10% — exceptional`;
+  if      (pp < 10) posText = `Estás en el 10% inferior para este puesto y mercado`;
+  else if (pp < 25) posText = `Estás en el 25% inferior`;
+  else if (pp < 40) posText = `Estás ligeramente por debajo de la mediana`;
+  else if (pp < 60) posText = `Estás cerca de la mediana del mercado`;
+  else if (pp < 75) posText = `Estás en el top 40% — por encima de la mediana`;
+  else if (pp < 90) posText = `Estás en el top 25%`;
+  else              posText = `Estás en el top 10% — excepcional`;
 
   // ── Negotiation
   let negText = null;
-  if      (p < 25) negText = `You could reasonably ask for ${fmt(r.p50,r.symbol)}–${fmt(r.p75,r.symbol)}`;
-  else if (p < 50) negText = `Push toward ${fmt(r.p75,r.symbol)} — that's mid-market for this profile`;
-  else if (p < 75) negText = `Consider targeting ${fmt(r.p90,r.symbol)} if you have leverage`;
+  if      (p < 25) negText = `Podrías pedir razonablemente ${fmt(r.p50,r.symbol)}–${fmt(r.p75,r.symbol)}`;
+  else if (p < 50) negText = `Apunta hacia ${fmt(r.p75,r.symbol)} — eso es el mercado medio para este perfil`;
+  else if (p < 75) negText = `Considera apuntar a ${fmt(r.p90,r.symbol)} si tienes palanca negociadora`;
 
   // ── Emotional
   let emoText;
-  if      (p < 15) emoText = "Most candidates in your position receive significantly better offers. This one needs work before you sign.";
-  else if (p < 25) emoText = "This offer is below what your profile commands. You have real room to negotiate.";
-  else if (p < 40) emoText = "In range, but not outstanding. A conversation about the top of the band is worth having.";
-  else if (p < 63) emoText = "Competitive, but there's still a gap between here and exceptional.";
-  else if (p < 80) emoText = "This is a solid offer. Your profile is valued at the right level.";
-  else if (p < 92) emoText = "This company is serious about getting you. The package reflects that.";
-  else             emoText = "Rare. You're being offered top-of-market compensation. Pay attention to this signal.";
+  if      (p < 15) emoText = "La mayoría de candidatos en tu posición reciben ofertas significativamente mejores. Esta necesita trabajo antes de firmar.";
+  else if (p < 25) emoText = "Esta oferta está por debajo de lo que tu perfil merece. Tienes margen real para negociar.";
+  else if (p < 40) emoText = "En rango, pero no destacable. Vale la pena hablar sobre la parte alta de la banda.";
+  else if (p < 63) emoText = "Competitiva, pero aún hay una distancia entre aquí y lo excepcional.";
+  else if (p < 80) emoText = "Es una oferta sólida. Tu perfil está valorado al nivel correcto.";
+  else if (p < 92) emoText = "Esta empresa está seria respecto a contratarte. El paquete lo refleja.";
+  else             emoText = "Excepcional. Te están ofreciendo una compensación de top de mercado. Presta atención a esta señal.";
 
   // ════════════════════════════════════════════
   // RENDER
@@ -1102,7 +1102,7 @@ function runVerdict() {
   // Fallback notice
   const fbEl = document.getElementById('r-fallback');
   if (r.fallbackCity) {
-    fbEl.textContent = `No direct data for ${city}. Showing ${r.fallbackCity} as the nearest reference.`;
+    fbEl.textContent = `No hay datos directos para ${city}. Mostrando ${r.fallbackCity} como referencia más cercana.`;
     fbEl.style.display = 'block';
   } else {
     fbEl.style.display = 'none';
@@ -1114,7 +1114,7 @@ function runVerdict() {
   vc.innerHTML = `
     <div class="verdict-tag" style="color:${vColor};">
       <span class="verdict-tag-dot" style="background:${vColor};"></span>
-      Verdict
+      Veredicto
     </div>
     <div class="verdict-headline" style="color:${vColor};">${vTitle}</div>
     <div class="verdict-comp">
@@ -1124,7 +1124,7 @@ function runVerdict() {
 
   // Range
   document.getElementById('r-range-headline').textContent = `${fmt(r.p25,r.symbol)} – ${fmt(r.p75,r.symbol)}`;
-  document.getElementById('r-range-sub').textContent = `Typical range for ${bandLabel} ${role} in ${r.fallbackCity || city}`;
+  document.getElementById('r-range-sub').textContent = `Rango típico para ${bandLabel} ${role} en ${r.fallbackCity || city}`;
 
   // Bar
   renderBar(r, totalComp, p, vColor);
@@ -1158,23 +1158,23 @@ function runVerdict() {
   scriptCard.style.display = 'block';
 
   if (vType === 'strong') {
-    scriptLabel.textContent = 'Next Steps';
+    scriptLabel.textContent = 'Próximos pasos';
     scriptBody.innerHTML = `
-      <p style="font-size:14px;color:var(--text-2);line-height:1.6;margin:0 0 10px;">Your base is already strong. If you negotiate, focus on:</p>
+      <p style="font-size:14px;color:var(--text-2);line-height:1.6;margin:0 0 10px;">Tu base ya es sólida. Si negocias, enfócate en:</p>
       <ul class="tips-list">
-        <li>Equity / RSUs — often more flexible than base salary</li>
-        <li>Signing bonus — one-time, lower ongoing risk for the company</li>
-        <li>Extra PTO or flexible remote arrangements</li>
-        <li>Accelerated first review (e.g. 6-month instead of 12-month)</li>
+        <li>Equity / RSUs — a menudo más flexible que el salario base</li>
+        <li>Bonus de incorporación — único, menor riesgo continuo para la empresa</li>
+        <li>Más vacaciones o acuerdos de trabajo remoto flexible</li>
+        <li>Primera revisión acelerada (ej. a los 6 meses en vez de 12)</li>
       </ul>`;
   } else {
-    scriptLabel.textContent = 'Negotiation Script';
+    scriptLabel.textContent = 'Script de negociación';
     const script = buildNegScript(role, city, bandLabel, yoeNum, r);
     scriptBody.innerHTML = `
       <div class="script-pre">${script.replace(/\n/g,'<br>')}</div>
       <button class="copy-script-btn" onclick="copyScript()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Copy script
+        Copiar script
       </button>`;
   }
 
@@ -1241,35 +1241,35 @@ function renderBar(r, userVal, percentile, vColor) {
 let _shareData = null; // set on each runVerdict()
 
 function buildShareText(role, city, bandLabel, pp, vType) {
-  const url = 'https://comp-verdict.netlify.app';
+  const url = 'https://comp-verdict.netlify.app/es/';
   const above = 100 - pp;
   if (vType === 'weak') {
-    return `Just checked my ${role} offer in ${city} with CompVerdict.\n\nVerdict: weak offer — bottom ${pp}% for a ${bandLabel}. Time to negotiate.\n\nCheck yours → ${url}`;
+    return `Acabo de revisar mi oferta de ${role} en ${city} con CompVerdict.\n\nVeredicto: oferta débil — bottom ${pp}% para un ${bandLabel}. Toca negociar.\n\nRevisa la tuya → ${url}`;
   } else if (vType === 'fair') {
-    return `Ran my ${role} offer in ${city} through CompVerdict.\n\nFair offer — ${pp}th percentile for a ${bandLabel}. Could be better.\n\nIs yours better? → ${url}`;
+    return `He pasado mi oferta de ${role} en ${city} por CompVerdict.\n\nOferta justa — percentil ${pp} para un ${bandLabel}. Podría ser mejor.\n\n¿La tuya es mejor? → ${url}`;
   } else {
-    return `CompVerdict: my ${role} offer in ${city} is in the top ${above}% for a ${bandLabel}. Strong offer. 💪\n\nCheck yours → ${url}`;
+    return `CompVerdict: mi oferta de ${role} en ${city} está en el top ${above}% para un ${bandLabel}. Oferta sólida. 💪\n\nRevisa la tuya → ${url}`;
   }
 }
 
 function buildNegScript(role, city, bandLabel, yoe, r) {
   const target = fmt(r.p75, r.symbol);
   const range  = `${fmt(r.p50, r.symbol)}–${fmt(r.p75, r.symbol)}`;
-  return `Hi [Name],\n\nThank you for the offer — I'm genuinely excited about this role.\n\nI've looked at current market data for ${role}s in ${city} at ${bandLabel} level. The typical range runs ${range}, and I'd like to discuss getting closer to ${target}.\n\nIs there flexibility on the base?\n\nBest,\n[Your name]`;
+  return `Hola [Nombre],\n\nMuchas gracias por la oferta — estoy genuinamente entusiasmado/a con este puesto.\n\nHe revisado los datos actuales del mercado para ${role}s en ${city} a nivel ${bandLabel}. El rango típico oscila entre ${range}, y me gustaría acercarme a ${target}.\n\n¿Hay flexibilidad en el salario base?\n\nSaludos,\n[Tu nombre]`;
 }
 
 function getPeerComparison(pp, role, city) {
   const above = 100 - pp;
-  if (pp < 25)  return `Roughly <strong>${above}%</strong> of ${role}s in ${city} earn more than this.`;
-  if (pp < 50)  return `About <strong>${above}%</strong> of ${role}s in ${city} earn more than this.`;
-  if (pp < 75)  return `You earn more than roughly <strong>${pp}%</strong> of ${role}s in ${city}.`;
-  return `Fewer than <strong>${above}%</strong> of ${role}s in ${city} earn more.`;
+  if (pp < 25)  return `Aproximadamente un <strong>${above}%</strong> de los ${role}s en ${city} ganan más que esto.`;
+  if (pp < 50)  return `Alrededor de un <strong>${above}%</strong> de los ${role}s en ${city} ganan más que esto.`;
+  if (pp < 75)  return `Ganas más que aproximadamente el <strong>${pp}%</strong> de los ${role}s en ${city}.`;
+  return `Menos del <strong>${above}%</strong> de los ${role}s en ${city} ganan más.`;
 }
 
 async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);
-    showToast('Copied to clipboard');
+    showToast('Copiado al portapapeles');
   } catch {
     // Fallback for older browsers
     const ta = document.createElement('textarea');
@@ -1279,7 +1279,7 @@ async function copyText(text) {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    showToast('Copied to clipboard');
+    showToast('Copiado al portapapeles');
   }
 }
 
@@ -1324,10 +1324,10 @@ function renderConfidence(city) {
   const el = document.getElementById('r-confidence');
   if (level === 'high') {
     el.className = 'confidence-badge confidence-high';
-    el.innerHTML = '<span class="dot"></span><span>High confidence</span>';
+    el.innerHTML = '<span class="dot"></span><span>Alta confianza</span>';
   } else {
     el.className = 'confidence-badge confidence-med';
-    el.innerHTML = '<span class="dot"></span><span>Estimated range</span>';
+    el.innerHTML = '<span class="dot"></span><span>Rango estimado</span>';
   }
 }
 

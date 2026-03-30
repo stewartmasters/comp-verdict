@@ -12,7 +12,15 @@ vm.createContext(sandbox);
 vm.runInContext(dataSource, sandbox);
 const CV_DATA = sandbox.window.CV_DATA;
 
-// ── Config ───────────────────────────────────────────────────────────────────
+// ── Locale modules ────────────────────────────────────────────────────────────
+const LOCALES = [
+  require('./i18n/en'),
+  require('./i18n/es'),
+  require('./i18n/de'),
+];
+const EN = LOCALES[0];
+
+// ── Config ────────────────────────────────────────────────────────────────────
 const SITE_URL = 'https://comp-verdict.netlify.app';
 
 const SALARY_ROLES = [
@@ -28,25 +36,7 @@ const SALARY_ROLES = [
   'UX Designer',
 ];
 
-const SALARY_CITIES = [
-  'Barcelona', 'Madrid', 'London', 'Amsterdam', 'Berlin', 'Munich', 'Paris',
-  'Dublin', 'Lisbon', 'Frankfurt', 'San Francisco', 'New York', 'Austin',
-  'Toronto', 'Singapore', 'Remote (Spain)', 'Remote (UK)', 'Remote (Germany)', 'Remote (US)',
-];
-
-const NEGOTIATE_CITIES = [
-  'Barcelona', 'Madrid', 'London', 'Amsterdam', 'Berlin', 'Munich',
-  'San Francisco', 'New York',
-];
-
-const BAND_LABELS = {
-  junior: 'Junior (0–2 yrs)',
-  mid:    'Mid-level (3–5 yrs)',
-  senior: 'Senior (6–10 yrs)',
-  staff:  'Staff / Lead (11+ yrs)',
-};
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function slug(str) {
   return str.toLowerCase()
     .replace(/[()]/g, '')
@@ -92,94 +82,62 @@ function getRange(role, city) {
   return { bands, symbol };
 }
 
-// ── Content: city context ─────────────────────────────────────────────────────
-const CITY_DESC = {
-  'Barcelona':        "Barcelona's tech scene is anchored by large consumer internet companies, mobile gaming studios, and a growing fintech sector. The city benefits from EU talent mobility but competes with higher-paying northern European hubs.",
-  'Madrid':           "Madrid is Spain's financial capital with a stronger concentration of enterprise software and consulting firms. Salaries typically run 5–10% ahead of Barcelona across most tech roles.",
-  'London':           "London remains Europe's highest-paying major tech hub, with deep demand from financial services, e-commerce, and enterprise software. Initial offers almost always have negotiation headroom.",
-  'Amsterdam':        "Amsterdam punches above its size, with a concentration of international tech company EMEA headquarters and a fully English-speaking professional environment. Dutch employers are generally transparent about pay bands.",
-  'Berlin':           "Berlin is Germany's startup capital, attracting international talent through relatively low living costs and strong visa support. Salaries lag Munich by 10–15% but the startup equity ecosystem is strong.",
-  'Munich':           "Munich is Germany's highest-paying tech market, driven by automotive tech, enterprise software, and a cluster of large multinationals. Annual bonus structures create room to negotiate beyond base salary.",
-  'Paris':            "Paris is France's dominant tech hub, with a growing startup ecosystem backed by significant government investment. Salaries are strong but French employment norms create structured compensation frameworks.",
-  'Dublin':           "Dublin hosts European headquarters for most major US tech companies, creating strong demand and some of the highest tech salaries in Europe outside Switzerland.",
-  'Lisbon':           "Lisbon has grown rapidly as a cost-effective EU tech hub. Salaries remain below western European averages but cost of living is significantly lower, and the market is increasingly competitive for experienced hires.",
-  'Frankfurt':        "Frankfurt is Germany's financial center with strong demand for technology roles from banking and fintech. Salaries are competitive with Munich for finance-adjacent positions.",
-  'San Francisco':    "San Francisco and the Bay Area remain the global benchmark for software compensation. Total compensation including equity frequently exceeds base salary — always negotiate the full package.",
-  'New York':         "New York is the US's second-largest tech hub, with particular strength in finance, media, and e-commerce. Finance sector competition pushes tech salaries upward across the board.",
-  'Austin':           "Austin has grown into a major US tech hub following coastal company relocations. Salaries are competitive, state income tax is zero, and employer density creates real negotiating leverage.",
-  'Toronto':          "Toronto is Canada's largest tech market with a strong financial services sector and immigration-friendly policies. Salaries are strong but trail US peers due to exchange rates.",
-  'Singapore':        "Singapore is Southeast Asia's dominant tech hub with favorable tax treatment and strong regional HQ presence. Packages are internationally competitive and fully negotiable.",
-  'Remote (Spain)':   "Remote roles in Spain typically benchmark against Madrid or Barcelona rates. Many employers issue Spanish employment contracts regardless of employee location within the country.",
-  'Remote (UK)':      "UK remote roles vary — many employers pay regional rather than London rates. London pay is achievable for hard-to-fill positions or when you hold a London-based competing offer.",
-  'Remote (Germany)': "German remote positions typically use national employment contracts referencing Munich or Berlin benchmarks. Cost-of-living adjustments by employee location are less common than in the US.",
-  'Remote (US)':      "US remote salaries vary widely — some companies pay to the local market, others pay San Francisco or New York rates. These figures represent national median remote benchmarks.",
-};
+// ── URL helpers ───────────────────────────────────────────────────────────────
+function localePrefix(locale) {
+  return locale.code === 'en' ? '' : `/${locale.code}`;
+}
 
-// ── Content: role descriptions ────────────────────────────────────────────────
-const ROLE_DESC = {
-  'Software Engineer':         "Software Engineers design, build, and maintain software systems. Compensation reflects the consistent demand from virtually every tech-hiring company and the breadth of technical depth the role requires.",
-  'Product Manager':           "Product Managers own product strategy and roadmap execution, working across engineering, design, and business stakeholders. Strong PM demand at growth-stage companies pushes compensation above the median tech role.",
-  'Data Scientist':            "Data Scientists build models and statistical analyses to drive business decisions. Demand is highest in consumer internet, finance, and large enterprise, where data-driven decisions translate directly to revenue.",
-  'Engineering Manager':       "Engineering Managers lead teams of engineers, combining technical oversight with people management. The management premium — typically 20–40% above senior IC rates — reflects the genuine scarcity of effective technical leaders.",
-  'Frontend Engineer':         "Frontend Engineers build the user-facing layer of web applications, working primarily in JavaScript and TypeScript frameworks. Compensation typically runs slightly below backend due to a higher supply of candidates in most markets.",
-  'Backend Engineer':          "Backend Engineers build and maintain server-side systems, APIs, and data pipelines. Consistent demand across virtually all tech companies makes this one of the most reliably hired roles.",
-  'Full Stack Engineer':       "Full Stack Engineers work across both frontend and backend, a generalist profile in high demand at startups and smaller companies. Compensation tracks slightly below specialized roles at larger firms.",
-  'DevOps Engineer':           "DevOps Engineers own infrastructure, CI/CD pipelines, and deployment automation. As cloud infrastructure becomes mission-critical, DevOps compensation has risen sharply over the past five years.",
-  'Machine Learning Engineer': "Machine Learning Engineers build and deploy ML systems at scale, sitting at the intersection of software engineering and data science. Demand from AI-native companies and enterprises drives a consistent compensation premium.",
-  'UX Designer':               "UX Designers own the end-to-end user experience design process, from research through interface design. Compensation runs below engineering roles, but senior UX talent at product-led companies commands strong packages.",
-};
+function getSalaryPath(locale, role, city) {
+  const pre = localePrefix(locale);
+  return `${pre}/${locale.salarySection}/${slug(role)}-${locale.salarySlugWord}-${slug(city)}/`;
+}
 
-// ── Content: negotiation leverage ────────────────────────────────────────────
-const CITY_LEVERAGE = {
-  'Barcelona': [
-    "Senior tech talent is in short supply — companies actively compete for experienced hires",
-    "Spain's tech market is maturing rapidly, pushing compensation upward year-on-year",
-    "Moderate cost of living means employers can't use city premium as a lever against you",
-    "Relocation and international candidates consistently command premiums in this market",
-  ],
-  'Madrid': [
-    "Madrid companies compete with Barcelona and international remote roles for the same talent pool",
-    "Enterprise and consulting firms pay above average for senior tech — reference both sectors",
-    "Multiple competing offers are increasingly common at senior and staff levels",
-    "Financial services presence creates strong cross-sector competition for technical talent",
-  ],
-  'London': [
-    "London employers expect negotiation — initial offers routinely leave 10–20% on the table",
-    "Financial services firms pay 30–50% premiums for specific technical skills: use that as leverage",
-    "A competing offer is the single strongest negotiating lever in the London market",
-    "Cost of living is a two-way argument — use it, but be prepared for employers who are experienced with this approach",
-  ],
-  'Amsterdam': [
-    "Dutch employers are generally transparent about pay bands — ask directly before starting any negotiation",
-    "The 30% ruling for expat candidates is a real and negotiable component of total compensation",
-    "International talent pool means employers routinely benchmark against London and German rates",
-    "Strong startup and scaleup ecosystem creates real competing-offer tension for senior hires",
-  ],
-  'Berlin': [
-    "Startup culture makes equity a genuine and negotiable lever beyond base salary",
-    "Remote work prevalence means Berlin employers compete with Munich and London for the same candidates",
-    "Visa sponsorship costs are real — use this as leverage if you're an international candidate",
-    "Reference Munich benchmarks in negotiation — Berlin lags by 10–15% and employers know it",
-  ],
-  'Munich': [
-    "Munich is Germany's highest-paying market — employers here expect and respect negotiation",
-    "Automotive and enterprise tech firms have structured pay bands with genuine flex at the edges",
-    "Annual bonus structures mean base salary isn't the only lever — negotiate the full package",
-    "Relocation packages are negotiable for candidates moving into Munich from other cities",
-  ],
-  'San Francisco': [
-    "Always negotiate total compensation as a single number: base, RSUs, signing bonus, and vesting cliff",
-    "A competing offer is the strongest lever in SF tech — companies will routinely match or beat",
-    "RSU vesting schedules and cliff periods are negotiable at many mid-size companies",
-    "Sign-on bonuses are routinely used to bridge gaps in unvested equity from a prior role",
-  ],
-  'New York': [
-    "Finance sector creates strong cross-industry salary pressure — reference finance benchmarks explicitly",
-    "Competing offers from both finance and tech significantly strengthen your position",
-    "Annual bonuses in finance-adjacent tech roles are a meaningful and negotiable component",
-    "New York cost of living is well understood by employers — use it without apology",
-  ],
-};
+function getNegPath(locale, role, city) {
+  const pre = localePrefix(locale);
+  return `${pre}/${locale.negotiateSection}/${slug(role)}-${locale.negSlugWord}-${slug(city)}/`;
+}
+
+function getHubPath(locale, type) {
+  const pre = localePrefix(locale);
+  const section = type === 'salary' ? locale.salarySection : locale.negotiateSection;
+  return `${pre}/${section}/`;
+}
+
+function getHomePath(locale) {
+  return locale.code === 'en' ? '/' : `/${locale.code}/`;
+}
+
+// ── Build hreflang links for a page ──────────────────────────────────────────
+function buildSalaryHreflangs(role, city) {
+  const links = [];
+  for (const loc of LOCALES) {
+    if (!loc.SALARY_CITIES.includes(city)) continue;
+    links.push({ hreflang: loc.htmlLang, href: SITE_URL + getSalaryPath(loc, role, city) });
+  }
+  if (EN.SALARY_CITIES.includes(city)) {
+    links.push({ hreflang: 'x-default', href: SITE_URL + getSalaryPath(EN, role, city) });
+  }
+  return links;
+}
+
+function buildNegHreflangs(role, city) {
+  const links = [];
+  for (const loc of LOCALES) {
+    if (!loc.NEGOTIATE_CITIES.includes(city)) continue;
+    links.push({ hreflang: loc.htmlLang, href: SITE_URL + getNegPath(loc, role, city) });
+  }
+  if (EN.NEGOTIATE_CITIES.includes(city)) {
+    links.push({ hreflang: 'x-default', href: SITE_URL + getNegPath(EN, role, city) });
+  }
+  return links;
+}
+
+function buildHubHreflangs(type) {
+  return [
+    ...LOCALES.map(loc => ({ hreflang: loc.htmlLang, href: SITE_URL + getHubPath(loc, type) })),
+    { hreflang: 'x-default', href: SITE_URL + getHubPath(EN, type) },
+  ];
+}
 
 // ── Shared CSS ────────────────────────────────────────────────────────────────
 const CSS = `
@@ -239,15 +197,24 @@ footer { border-top: 1px solid #e5e7eb; padding: 32px 0; margin-top: 64px; }
 `.trim();
 
 // ── Page shell ────────────────────────────────────────────────────────────────
-function shell(title, description, canonicalPath, jsonLd, bodyHtml) {
+function shell(locale, title, description, canonicalPath, jsonLd, bodyHtml, hreflangs) {
+  const homePath       = getHomePath(locale);
+  const salaryHubPath  = getHubPath(locale, 'salary');
+  const negHubPath     = getHubPath(locale, 'negotiate');
+
+  const hreflangTags = (hreflangs || [])
+    .map(h => `<link rel="alternate" hreflang="${h.hreflang}" href="${h.href}">`)
+    .join('\n');
+
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${locale.htmlLang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${title}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${SITE_URL}${canonicalPath}">
+${hreflangTags}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -259,17 +226,17 @@ ${JSON.stringify(jsonLd, null, 2)}
 <body>
 <header>
   <div class="wrap">
-    <div class="brand"><a href="/" style="color:inherit;text-decoration:none">Comp<span>Verdict</span></a></div>
+    <div class="brand"><a href="${homePath}" style="color:inherit;text-decoration:none">Comp<span>Verdict</span></a></div>
   </div>
 </header>
 ${bodyHtml}
 <footer>
   <div class="wrap">
-    <p class="footer-note">Data based on 2025-Q1 aggregated salary surveys. All figures are annual gross (pre-tax) in local currency.</p>
+    <p class="footer-note">${locale.footerNote}</p>
     <div class="footer-links">
-      <a href="/">CompVerdict Tool</a>
-      <a href="/salary/">Salary Benchmarks</a>
-      <a href="/negotiate/">Negotiation Guides</a>
+      <a href="${homePath}">${locale.footerLinkTool}</a>
+      <a href="${salaryHubPath}">${locale.footerLinkSalary}</a>
+      <a href="${negHubPath}">${locale.footerLinkNeg}</a>
     </div>
   </div>
 </footer>
@@ -278,7 +245,7 @@ ${bodyHtml}
 }
 
 // ── Salary benchmark page ─────────────────────────────────────────────────────
-function salaryPage(role, city) {
+function salaryPage(locale, role, city) {
   const data = getRange(role, city);
   if (!data) return null;
 
@@ -287,35 +254,37 @@ function salaryPage(role, city) {
   const senior = bands.senior;
   if (!mid) return null;
 
-  const roleSlug = slug(role);
-  const citySlug = slug(city);
-  const canonPath = `/salary/${roleSlug}-salary-${citySlug}/`;
+  const canonPath = getSalaryPath(locale, role, city);
 
-  const title       = `${role} Salary in ${city} (2025) — Benchmarks by Experience`;
-  const description = `${role} salary in ${city}: p25 ${fmt(mid.p25, symbol)}, median ${fmt(mid.p50, symbol)}, p75 ${fmt(mid.p75, symbol)} for mid-level (3–5 yrs). Full breakdown across all experience bands.`;
+  const title       = locale.salaryTitleTpl(role, city);
+  const description = locale.salaryDescTpl(role, city, mid.p25, mid.p50, mid.p75, symbol);
 
   const seniorJump = senior
     ? Math.round(((senior.p50 - mid.p50) / mid.p50) * 100)
     : null;
+  const juniorJump = bands.junior
+    ? Math.round(((mid.p50 - bands.junior.p50) / bands.junior.p50) * 100)
+    : null;
+
+  const cityDescFull = locale.CITY_DESC[city] || '';
+  const cityDescFirst = cityDescFull ? cityDescFull.split('.')[0] + '.' : `${city} has an active tech hiring market.`;
 
   const faqs = [
     {
-      q: `What is the average ${role} salary in ${city}?`,
-      a: `The median ${role} salary in ${city} is ${fmt(mid.p50, symbol)} per year for mid-level experience (3–5 years). Junior salaries start from around ${fmt(bands.junior?.p25 || 0, symbol)}, while senior engineers typically earn ${fmt(bands.senior?.p50 || 0, symbol)} or more.`,
+      q: locale.faqQ1(role, city),
+      a: locale.faqA1(role, city, bands.junior?.p25 || 0, mid.p50, senior?.p50 || 0, symbol),
     },
     {
-      q: `What is a good ${role} salary in ${city}?`,
-      a: `A salary above the 75th percentile is considered strong. For a mid-level ${role} in ${city}, that means earning more than ${fmt(mid.p75, symbol)} per year. Senior-level candidates targeting ${fmt(bands.senior?.p50 || 0, symbol)}+ are in the top half of the market.`,
+      q: locale.faqQ2(role, city),
+      a: locale.faqA2(role, city, mid.p50, mid.p75, senior?.p50 || 0, symbol),
     },
     {
-      q: `How much does ${role} salary increase with experience in ${city}?`,
-      a: seniorJump
-        ? `Moving from mid-level to senior as a ${role} in ${city} corresponds to a ${seniorJump}% increase at the median. The jump from junior to mid-level is typically ${Math.round(((mid.p50 - (bands.junior?.p50 || mid.p50)) / (bands.junior?.p50 || mid.p50)) * 100)}%.`
-        : `Experience level is the strongest driver of ${role} compensation in ${city}. Each band shift typically represents a 30–50% increase at the median.`,
+      q: locale.faqQ3(role, city),
+      a: locale.faqA3(role, city, seniorJump, juniorJump),
     },
     {
-      q: `Is ${city} a good market for ${role} jobs?`,
-      a: `${CITY_DESC[city] ? CITY_DESC[city].split('.')[0] + '.' : `${city} has an active tech hiring market.`} For ${role}s, the median compensation of ${fmt(mid.p50, symbol)} is ${mid.p50 > 60000 ? 'competitive relative to cost of living' : 'reflective of the local market level'}.`,
+      q: locale.faqQ4(role, city),
+      a: locale.faqA4(role, city, mid.p50, symbol, cityDescFirst),
     },
   ];
 
@@ -329,13 +298,15 @@ function salaryPage(role, city) {
     })),
   };
 
+  const hreflangs   = buildSalaryHreflangs(role, city);
+  const salaryHubPath = getHubPath(locale, 'salary');
   const relatedRoles  = SALARY_ROLES.filter(r => r !== role).slice(0, 6);
-  const relatedCities = SALARY_CITIES.filter(c => c !== city).slice(0, 8);
-  const negPath       = NEGOTIATE_CITIES.includes(city)
-    ? `/negotiate/${roleSlug}-negotiation-${citySlug}/`
+  const relatedCities = locale.SALARY_CITIES.filter(c => c !== city).slice(0, 8);
+  const negPath       = locale.NEGOTIATE_CITIES.includes(city)
+    ? getNegPath(locale, role, city)
     : null;
 
-  const tableRows = Object.entries(BAND_LABELS).map(([band, label]) => {
+  const tableRows = Object.entries(locale.BAND_LABELS).map(([band, label]) => {
     const b = bands[band];
     if (!b) return '';
     return `        <tr>
@@ -346,39 +317,41 @@ function salaryPage(role, city) {
         </tr>`;
   }).filter(Boolean).join('\n');
 
+  const [th0, th1, th2, th3] = locale.salaryTableHeaders;
+
   const bodyHtml = `
 <main>
   <div class="wrap">
-    <p class="breadcrumb"><a href="/salary/">Salary Benchmarks</a> &rsaquo; ${city} &rsaquo; ${role}</p>
-    <h1>${role} Salary in ${city} (2025)</h1>
-    <p class="lead">${ROLE_DESC[role] || `Current ${role} compensation data for ${city}.`} The figures below are based on Q1 2025 survey data and cover all experience levels.</p>
+    <p class="breadcrumb"><a href="${salaryHubPath}">${locale.salaryBreadcrumb1}</a> &rsaquo; ${city} &rsaquo; ${role}</p>
+    <h1>${locale.salaryH1Tpl(role, city)}</h1>
+    <p class="lead">${locale.ROLE_DESC[role] || `${role} — ${city}.`} ${locale.salaryLeadTpl ? (locale.salaryLeadTpl(role, city) || '') : ''}</p>
 
     <div class="stats-grid">
       <div class="stat-box">
         <div class="stat-label">25th Percentile</div>
         <div class="stat-val">${fmt(mid.p25, symbol)}</div>
-        <div class="stat-sub">Mid-level</div>
+        <div class="stat-sub">${locale.negStatFloorSub || 'Mid-level p25'}</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Median</div>
+        <div class="stat-label">${locale.negStatMedian || 'Median'}</div>
         <div class="stat-val">${fmt(mid.p50, symbol)}</div>
-        <div class="stat-sub">Mid-level</div>
+        <div class="stat-sub">${locale.negStatMedianSub || 'Mid-level p50'}</div>
       </div>
       <div class="stat-box">
         <div class="stat-label">75th Percentile</div>
         <div class="stat-val">${fmt(mid.p75, symbol)}</div>
-        <div class="stat-sub">Mid-level</div>
+        <div class="stat-sub">${locale.negStatStrongSub || 'Mid-level p75'}</div>
       </div>
     </div>
 
-    <h2>Salary by Experience Band — ${city}</h2>
+    <h2>${locale.salaryTableTitle(role, city)}</h2>
     <table>
       <thead>
         <tr>
-          <th>Experience</th>
-          <th>25th Pct</th>
-          <th>Median</th>
-          <th>75th Pct</th>
+          <th>${th0}</th>
+          <th>${th1}</th>
+          <th>${th2}</th>
+          <th>${th3}</th>
         </tr>
       </thead>
       <tbody>
@@ -386,45 +359,45 @@ ${tableRows}
       </tbody>
     </table>
 
-    <h2>Market Context: ${city}</h2>
+    <h2>${locale.salaryContextTitle(city)}</h2>
     <div class="context-box">
-      <p>${CITY_DESC[city] || `${city} has an active tech hiring market for ${role}s.`}</p>
+      <p>${cityDescFull || `${city} — ${role}.`}</p>
     </div>
 
     <div class="cta-box">
-      <h2>Is your ${role} offer competitive?</h2>
-      <p>Paste your offer into CompVerdict and get an instant verdict — fair, strong, or below market — based on your exact role, city, and years of experience.</p>
-      <a href="/" class="cta-btn">Check your offer &rarr;</a>
+      <h2>${locale.salaryCTATitle(role)}</h2>
+      <p>${locale.salaryCTABody(role)}</p>
+      <a href="${getHomePath(locale)}" class="cta-btn">${locale.salaryCTABtn}</a>
     </div>
 
     ${negPath ? `
-    <h2>Negotiating Your ${role} Offer in ${city}</h2>
-    <p>Before you accept, make sure you're negotiating from a position of knowledge. Our guide covers the market-specific leverage points you should use.</p>
-    <p><a href="${negPath}">How to negotiate ${role} salary in ${city} &rarr;</a></p>
+    <h2>${locale.salaryNegTitle(role, city)}</h2>
+    <p>${locale.salaryNegBody(role, city)}</p>
+    <p><a href="${negPath}">${locale.salaryNegLink(role, city)}</a></p>
     ` : ''}
 
-    <h2>Frequently Asked Questions</h2>
+    <h2>${locale.salaryFaqTitle}</h2>
     ${faqs.map(f => `
     <h3>${f.q}</h3>
     <p style="color:#374151;font-size:15px">${f.a}</p>`).join('')}
 
-    <h2>${role} Salaries in Other Cities</h2>
+    <h2>${locale.salaryRelCitiesTitle(role)}</h2>
     <ul class="tag-list">
-      ${relatedCities.map(c => `<li><a href="/salary/${roleSlug}-salary-${slug(c)}/">${role} — ${c}</a></li>`).join('\n      ')}
+      ${relatedCities.map(c => `<li><a href="${getSalaryPath(locale, role, c)}">${locale.salaryLinkLabel(role, c)}</a></li>`).join('\n      ')}
     </ul>
 
-    <h2>Other Tech Salaries in ${city}</h2>
+    <h2>${locale.salaryRelRolesTitle(city)}</h2>
     <ul class="tag-list">
-      ${relatedRoles.map(r => `<li><a href="/salary/${slug(r)}-salary-${citySlug}/">${r} — ${city}</a></li>`).join('\n      ')}
+      ${relatedRoles.map(r => `<li><a href="${getSalaryPath(locale, r, city)}">${locale.salaryLinkLabel(r, city)}</a></li>`).join('\n      ')}
     </ul>
   </div>
 </main>`;
 
-  return { html: shell(title, description, canonPath, jsonLd, bodyHtml), path: canonPath };
+  return { html: shell(locale, title, description, canonPath, jsonLd, bodyHtml, hreflangs), path: canonPath };
 }
 
 // ── Negotiation guide page ────────────────────────────────────────────────────
-function negotiatePage(role, city) {
+function negotiatePage(locale, role, city) {
   const data = getRange(role, city);
   if (!data) return null;
 
@@ -433,42 +406,19 @@ function negotiatePage(role, city) {
   const senior = bands.senior;
   if (!mid) return null;
 
-  const roleSlug = slug(role);
-  const citySlug = slug(city);
-  const canonPath = `/negotiate/${roleSlug}-negotiation-${citySlug}/`;
+  const canonPath = getNegPath(locale, role, city);
 
-  const title       = `How to Negotiate ${role} Salary in ${city} (2025)`;
-  const description = `Step-by-step ${role} salary negotiation guide for ${city}. Market range: ${fmt(mid.p25, symbol)}–${fmt(mid.p75, symbol)} mid-level. Know your number, then negotiate.`;
+  const title       = locale.negTitleTpl(role, city);
+  const description = locale.negDescTpl(role, city, mid.p25, mid.p50, mid.p75, symbol);
 
-  const leverage = CITY_LEVERAGE[city] || [
-    "Research the full market range before any negotiation conversation",
-    "Use market data or competing offers as anchors — not personal financial needs",
-    "Negotiate the full package: base, bonus, equity, and benefits as separate levers",
-    "Always follow up verbal agreements in writing before making a decision",
+  const leverage = locale.CITY_LEVERAGE[city] || [
+    locale.negFallbackLeverage1 || "Research the full market range before any negotiation conversation",
+    locale.negFallbackLeverage2 || "Use market data or competing offers as anchors — not personal financial needs",
+    locale.negFallbackLeverage3 || "Negotiate the full package: base, bonus, equity, and benefits as separate levers",
+    locale.negFallbackLeverage4 || "Always follow up verbal agreements in writing before making a decision",
   ];
 
-  const steps = [
-    {
-      title: 'Know your market range',
-      body:  `The median ${role} in ${city} earns ${fmt(mid.p50, symbol)} at mid-level and ${fmt(senior?.p50 || 0, symbol)} at senior level. Establish which experience band applies to you before any salary conversation begins.`,
-    },
-    {
-      title: 'Anchor above your real target',
-      body:  `Open 10–15% above your actual target. This creates room to concede and still land where you want. Use the 75th percentile of your band — ${fmt(mid.p75, symbol)} for mid-level — as your anchor point.`,
-    },
-    {
-      title: 'Lead with market data, not personal need',
-      body:  `Say: "Based on market benchmarks for ${role}s in ${city} with my experience, the range is ${fmt(mid.p25, symbol)}–${fmt(mid.p75, symbol)}. I'm targeting the upper half." Never justify your ask with rent or living costs.`,
-    },
-    {
-      title: 'Negotiate the full compensation package',
-      body:  `Base salary is one component. Ask about annual bonus structure, equity grants, signing bonus, remote flexibility, and learning budget. Each is a separate negotiation with its own room to move.`,
-    },
-    {
-      title: 'Get it in writing before you accept',
-      body:  `Verbal offers are worthless. Request the written offer letter before giving your decision. Review start date, equity vesting schedule, notice requirements, and any non-compete clauses before signing.`,
-    },
-  ];
+  const steps = locale.negSteps(role, city, mid.p50, mid.p25, mid.p75, senior?.p50 || 0, symbol);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -482,11 +432,13 @@ function negotiatePage(role, city) {
     })),
   };
 
-  const salaryPath    = `/salary/${roleSlug}-salary-${citySlug}/`;
-  const relatedRoles  = SALARY_ROLES.filter(r => r !== role).slice(0, 5);
-  const relatedCities = NEGOTIATE_CITIES.filter(c => c !== city);
+  const hreflangs    = buildNegHreflangs(role, city);
+  const negHubPath   = getHubPath(locale, 'negotiate');
+  const salaryPath   = locale.SALARY_CITIES.includes(city) ? getSalaryPath(locale, role, city) : null;
+  const relatedRoles = SALARY_ROLES.filter(r => r !== role).slice(0, 5);
+  const relatedCities = locale.NEGOTIATE_CITIES.filter(c => c !== city);
 
-  const tableRows = Object.entries(BAND_LABELS).map(([band, label]) => {
+  const tableRows = Object.entries(locale.BAND_LABELS).map(([band, label]) => {
     const b = bands[band];
     if (!b) return '';
     return `        <tr>
@@ -497,44 +449,47 @@ function negotiatePage(role, city) {
         </tr>`;
   }).filter(Boolean).join('\n');
 
+  const [nth0, nth1, nth2, nth3] = locale.negTableHeaders;
+  const cityDescFull = locale.CITY_DESC[city] || '';
+
   const bodyHtml = `
 <main>
   <div class="wrap">
-    <p class="breadcrumb"><a href="/negotiate/">Negotiation Guides</a> &rsaquo; ${city} &rsaquo; ${role}</p>
-    <h1>How to Negotiate ${role} Salary in ${city}</h1>
-    <p class="lead">Most candidates in ${city} leave money on the table — not because employers won't pay more, but because they don't know the market or don't ask. This guide gives you both the data and the script.</p>
+    <p class="breadcrumb"><a href="${negHubPath}">${locale.negBreadcrumb1}</a> &rsaquo; ${city} &rsaquo; ${role}</p>
+    <h1>${locale.negH1Tpl(role, city)}</h1>
+    <p class="lead">${locale.negLead(city)}</p>
 
     <div class="stats-grid">
       <div class="stat-box">
-        <div class="stat-label">Market Floor</div>
+        <div class="stat-label">${locale.negStatFloor}</div>
         <div class="stat-val">${fmt(mid.p25, symbol)}</div>
-        <div class="stat-sub">Mid-level p25</div>
+        <div class="stat-sub">${locale.negStatFloorSub}</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Market Median</div>
+        <div class="stat-label">${locale.negStatMedian}</div>
         <div class="stat-val">${fmt(mid.p50, symbol)}</div>
-        <div class="stat-sub">Mid-level p50</div>
+        <div class="stat-sub">${locale.negStatMedianSub}</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Strong Offer</div>
+        <div class="stat-label">${locale.negStatStrong}</div>
         <div class="stat-val">${fmt(mid.p75, symbol)}</div>
-        <div class="stat-sub">Mid-level p75</div>
+        <div class="stat-sub">${locale.negStatStrongSub}</div>
       </div>
     </div>
 
-    <h2>Your Leverage Points in ${city}</h2>
+    <h2>${locale.negLeverageTitle(city)}</h2>
     <ul class="leverage-list">
       ${leverage.map(l => `<li><span class="check">&#10003;</span>${l}</li>`).join('\n      ')}
     </ul>
 
-    <h2>${role} Salary Ranges — ${city}</h2>
+    <h2>${locale.negTableTitle(role, city)}</h2>
     <table>
       <thead>
         <tr>
-          <th>Experience</th>
-          <th>Floor (p25)</th>
-          <th>Median (p50)</th>
-          <th>Strong (p75)</th>
+          <th>${nth0}</th>
+          <th>${nth1}</th>
+          <th>${nth2}</th>
+          <th>${nth3}</th>
         </tr>
       </thead>
       <tbody>
@@ -542,7 +497,7 @@ ${tableRows}
       </tbody>
     </table>
 
-    <h2>The Negotiation Playbook</h2>
+    <h2>${locale.negPlaybookTitle}</h2>
     <ol class="steps">
       ${steps.map(s => `
       <li>
@@ -553,39 +508,40 @@ ${tableRows}
       </li>`).join('')}
     </ol>
 
-    <h2>Market Context: ${city}</h2>
+    <h2>${locale.negContextTitle(city)}</h2>
     <div class="context-box">
-      <p>${CITY_DESC[city] || `${city} has an active market for ${role} roles.`}</p>
+      <p>${cityDescFull || `${city} — ${role}.`}</p>
     </div>
 
     <div class="cta-box">
-      <h2>Check the offer before you negotiate</h2>
-      <p>Enter the offer details into CompVerdict to see exactly where it sits in the market — then decide whether to push back.</p>
-      <a href="/" class="cta-btn">Verdict my offer &rarr;</a>
+      <h2>${locale.negCTATitle}</h2>
+      <p>${locale.negCTABody}</p>
+      <a href="${getHomePath(locale)}" class="cta-btn">${locale.negCTABtn}</a>
     </div>
 
-    <p><a href="${salaryPath}">See full ${role} salary benchmarks for ${city} &rarr;</a></p>
+    ${salaryPath ? `<p><a href="${salaryPath}">${locale.negSalaryLink(role, city)}</a></p>` : ''}
 
-    <h2>More Negotiation Guides — ${city}</h2>
+    <h2>${locale.negRelRolesTitle(city)}</h2>
     <ul class="tag-list">
-      ${relatedRoles.map(r => `<li><a href="/negotiate/${slug(r)}-negotiation-${citySlug}/">Negotiate ${r} in ${city}</a></li>`).join('\n      ')}
+      ${relatedRoles.map(r => `<li><a href="${getNegPath(locale, r, city)}">${locale.negRelRoleLink(r, city)}</a></li>`).join('\n      ')}
     </ul>
 
-    <h2>Negotiate ${role} in Other Cities</h2>
+    <h2>${locale.negRelCitiesTitle(role)}</h2>
     <ul class="tag-list">
-      ${relatedCities.map(c => `<li><a href="/negotiate/${roleSlug}-negotiation-${slug(c)}/">Negotiate in ${c}</a></li>`).join('\n      ')}
+      ${relatedCities.map(c => `<li><a href="${getNegPath(locale, role, c)}">${locale.negRelCityLink(role, c)}</a></li>`).join('\n      ')}
     </ul>
   </div>
 </main>`;
 
-  return { html: shell(title, description, canonPath, jsonLd, bodyHtml), path: canonPath };
+  return { html: shell(locale, title, description, canonPath, jsonLd, bodyHtml, hreflangs), path: canonPath };
 }
 
-// ── Hub: /salary/ ─────────────────────────────────────────────────────────────
-function salaryHubPage() {
-  const title       = 'Tech Salary Benchmarks by Role and City (2025)';
-  const description = 'Current tech salary benchmarks for Software Engineers, Product Managers, Data Scientists, and more. Covers 19 cities across Europe, North America, and APAC.';
-  const canonPath   = '/salary/';
+// ── Hub: salary hub ───────────────────────────────────────────────────────────
+function salaryHubPage(locale) {
+  const title       = locale.salaryHubTitle;
+  const description = locale.salaryHubDesc;
+  const canonPath   = getHubPath(locale, 'salary');
+  const hreflangs   = buildHubHreflangs('salary');
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -596,9 +552,8 @@ function salaryHubPage() {
   };
 
   const sections = SALARY_ROLES.map(role => {
-    const rSlug = slug(role);
-    const links = SALARY_CITIES
-      .map(c => `<li><a href="/salary/${rSlug}-salary-${slug(c)}/">${role} salary — ${c}</a></li>`)
+    const links = locale.SALARY_CITIES
+      .map(c => `<li><a href="${getSalaryPath(locale, role, c)}">${locale.salaryLinkLabel(role, c)}</a></li>`)
       .join('\n        ');
     return `
     <h2>${role}</h2>
@@ -610,25 +565,26 @@ function salaryHubPage() {
   const bodyHtml = `
 <main>
   <div class="wrap">
-    <h1>Tech Salary Benchmarks (2025)</h1>
-    <p class="lead">Current compensation data for tech roles across Europe, North America, and APAC. All figures are annual gross salary in local currency, based on Q1 2025 survey data.</p>
+    <h1>${title}</h1>
+    <p class="lead">${locale.salaryHubLead}</p>
     ${sections}
     <div class="cta-box" style="margin-top:48px">
-      <h2>Got an offer? Check it now.</h2>
-      <p>CompVerdict gives you an instant verdict on any salary offer based on your role, city, and years of experience.</p>
-      <a href="/" class="cta-btn">Check your offer &rarr;</a>
+      <h2>${locale.salaryCTATitle('Software Engineer')}</h2>
+      <p>${locale.salaryCTABody('Software Engineer')}</p>
+      <a href="${getHomePath(locale)}" class="cta-btn">${locale.salaryCTABtn}</a>
     </div>
   </div>
 </main>`;
 
-  return { html: shell(title, description, canonPath, jsonLd, bodyHtml), path: canonPath };
+  return { html: shell(locale, title, description, canonPath, jsonLd, bodyHtml, hreflangs), path: canonPath };
 }
 
-// ── Hub: /negotiate/ ──────────────────────────────────────────────────────────
-function negotiateHubPage() {
-  const title       = 'Tech Salary Negotiation Guides by Role and City (2025)';
-  const description = 'Salary negotiation guides for Software Engineers, Product Managers, and more in Barcelona, London, Berlin, San Francisco, and beyond. Know your market, then negotiate.';
-  const canonPath   = '/negotiate/';
+// ── Hub: negotiate hub ────────────────────────────────────────────────────────
+function negotiateHubPage(locale) {
+  const title       = locale.negHubTitle;
+  const description = locale.negHubDesc;
+  const canonPath   = getHubPath(locale, 'negotiate');
+  const hreflangs   = buildHubHreflangs('negotiate');
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -638,10 +594,9 @@ function negotiateHubPage() {
     url: `${SITE_URL}${canonPath}`,
   };
 
-  const sections = NEGOTIATE_CITIES.map(city => {
-    const cSlug = slug(city);
+  const sections = locale.NEGOTIATE_CITIES.map(city => {
     const links = SALARY_ROLES
-      .map(r => `<li><a href="/negotiate/${slug(r)}-negotiation-${cSlug}/">Negotiate ${r} in ${city}</a></li>`)
+      .map(r => `<li><a href="${getNegPath(locale, r, city)}">${locale.negLinkLabel(r, city)}</a></li>`)
       .join('\n        ');
     return `
     <h2>${city}</h2>
@@ -653,18 +608,18 @@ function negotiateHubPage() {
   const bodyHtml = `
 <main>
   <div class="wrap">
-    <h1>Tech Salary Negotiation Guides (2025)</h1>
-    <p class="lead">Market-specific negotiation guides for tech roles. Knowing the market range is the foundation of any successful negotiation — these guides give you the data and the playbook.</p>
+    <h1>${title}</h1>
+    <p class="lead">${locale.negHubLead}</p>
     ${sections}
     <div class="cta-box" style="margin-top:48px">
-      <h2>Check the offer first, negotiate second.</h2>
-      <p>Use CompVerdict to see exactly where your offer sits before you decide whether to push back.</p>
-      <a href="/" class="cta-btn">Check your offer &rarr;</a>
+      <h2>${locale.negCTATitle}</h2>
+      <p>${locale.negCTABody}</p>
+      <a href="${getHomePath(locale)}" class="cta-btn">${locale.negCTABtn}</a>
     </div>
   </div>
 </main>`;
 
-  return { html: shell(title, description, canonPath, jsonLd, bodyHtml), path: canonPath };
+  return { html: shell(locale, title, description, canonPath, jsonLd, bodyHtml, hreflangs), path: canonPath };
 }
 
 // ── Write helper ──────────────────────────────────────────────────────────────
@@ -680,44 +635,47 @@ function main() {
   let count = 0;
   const skipped = [];
 
-  console.log('Generating salary benchmark pages...');
-  for (const role of SALARY_ROLES) {
-    for (const city of SALARY_CITIES) {
-      const page = salaryPage(role, city);
-      if (!page) { skipped.push(`salary: ${role} / ${city}`); continue; }
-      writeFile(path.join(outDir, ...page.path.split('/').filter(Boolean), 'index.html'), page.html);
-      count++;
+  for (const locale of LOCALES) {
+    console.log(`\n[${locale.code.toUpperCase()}] Generating salary pages...`);
+    for (const role of SALARY_ROLES) {
+      for (const city of locale.SALARY_CITIES) {
+        const page = salaryPage(locale, role, city);
+        if (!page) { skipped.push(`[${locale.code}] salary: ${role} / ${city}`); continue; }
+        writeFile(path.join(outDir, ...page.path.split('/').filter(Boolean), 'index.html'), page.html);
+        count++;
+      }
     }
+
+    console.log(`[${locale.code.toUpperCase()}] Generating negotiation pages...`);
+    for (const role of SALARY_ROLES) {
+      for (const city of locale.NEGOTIATE_CITIES) {
+        const page = negotiatePage(locale, role, city);
+        if (!page) { skipped.push(`[${locale.code}] negotiate: ${role} / ${city}`); continue; }
+        writeFile(path.join(outDir, ...page.path.split('/').filter(Boolean), 'index.html'), page.html);
+        count++;
+      }
+    }
+
+    console.log(`[${locale.code.toUpperCase()}] Generating hub pages...`);
+    const salaryHub = salaryHubPage(locale);
+    writeFile(path.join(outDir, ...salaryHub.path.split('/').filter(Boolean), 'index.html'), salaryHub.html);
+    count++;
+
+    const negHub = negotiateHubPage(locale);
+    writeFile(path.join(outDir, ...negHub.path.split('/').filter(Boolean), 'index.html'), negHub.html);
+    count++;
   }
 
-  console.log('Generating negotiation guide pages...');
-  for (const role of SALARY_ROLES) {
-    for (const city of NEGOTIATE_CITIES) {
-      const page = negotiatePage(role, city);
-      if (!page) { skipped.push(`negotiate: ${role} / ${city}`); continue; }
-      writeFile(path.join(outDir, ...page.path.split('/').filter(Boolean), 'index.html'), page.html);
-      count++;
-    }
-  }
-
-  console.log('Generating hub pages...');
-  const salaryHub = salaryHubPage();
-  writeFile(path.join(outDir, 'salary', 'index.html'), salaryHub.html);
-  count++;
-
-  const negHub = negotiateHubPage();
-  writeFile(path.join(outDir, 'negotiate', 'index.html'), negHub.html);
-  count++;
-
-  console.log(`\nDone — ${count} pages generated`);
+  console.log(`\nDone — ${count} pages generated across ${LOCALES.length} locales`);
   if (skipped.length) console.log(`Skipped (no data): ${skipped.join(', ')}`);
 
   console.log('\nSample paths:');
   console.log('  /salary/software-engineer-salary-barcelona/');
-  console.log('  /salary/product-manager-salary-london/');
+  console.log('  /es/salarios/software-engineer-salario-barcelona/');
+  console.log('  /de/gehalt/software-engineer-gehalt-berlin/');
   console.log('  /negotiate/software-engineer-negotiation-san-francisco/');
-  console.log('  /salary/');
-  console.log('  /negotiate/');
+  console.log('  /es/negociacion/software-engineer-negociacion-barcelona/');
+  console.log('  /de/verhandlung/software-engineer-verhandlung-berlin/');
 }
 
 main();
