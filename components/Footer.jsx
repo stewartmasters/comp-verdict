@@ -123,11 +123,11 @@ export default function Footer({ locale = 'en' }) {
             © {year} CompVerdict — Salary estimates are modelled from public benchmarks and do not represent guaranteed earnings.
           </p>
           <div className="flex items-center gap-4 text-xs text-gray-400">
-            <Link href="/methodology/" className="hover:text-blue-600 transition-colors">How we calculate</Link>
+            <Link href="/methodology/" className="text-gray-400 hover:text-gray-600 transition-colors">How we calculate</Link>
             <span>·</span>
-            <Link href="/privacy/" className="hover:text-blue-600 transition-colors">Privacy</Link>
+            <Link href="/privacy/" className="text-gray-400 hover:text-gray-600 transition-colors">Privacy</Link>
             <span>·</span>
-            <Link href="/sitemap.xml" className="hover:text-blue-600 transition-colors">Sitemap</Link>
+            <Link href="/sitemap.xml" className="text-gray-400 hover:text-gray-600 transition-colors">Sitemap</Link>
           </div>
         </div>
       </div>

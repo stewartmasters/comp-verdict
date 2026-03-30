@@ -15,7 +15,7 @@ export default function Navigation() {
 
         <div className="flex items-center gap-1 sm:gap-2 text-sm">
           <Link
-            href="/salary/software-engineer-salary-london/"
+            href="/salary/"
             className={`transition-colors hidden sm:block px-3 py-1.5 rounded-lg ${
               pathname?.startsWith('/salary') ? 'text-gray-900 font-medium' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
             }`}

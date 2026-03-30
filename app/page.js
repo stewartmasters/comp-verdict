@@ -112,21 +112,6 @@ export default function HomePage() {
               <p className="text-xs text-gray-400">Coverage varies by role and location.</p>
             </div>
 
-            {/* Credibility signal */}
-            <div className="flex items-center gap-2 text-xs text-gray-400 pt-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-300 flex-shrink-0" />
-              From the team behind{' '}
-              <a
-                href="https://www.salaryverdict.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-orange-500 font-semibold hover:underline"
-              >
-                SalaryVerdict
-              </a>
-              &nbsp;&mdash; trusted by professionals across Europe and North America
-            </div>
-
             <div className="space-y-2 pt-2">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Popular checks</p>
               <div className="flex flex-wrap gap-2">
@@ -154,7 +139,7 @@ export default function HomePage() {
       </section>
 
       {/* Signs your offer is weak */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-gray-100 mt-8">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-t border-gray-100 mt-2">
         <div className="grid lg:grid-cols-[1fr_2fr] gap-10 items-start">
           <div className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900 leading-tight">
