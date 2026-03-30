@@ -48,9 +48,9 @@ html, body {
   box-shadow: 0 1px 8px rgba(15,23,42,0.06);
 }
 .site-header-inner {
-  max-width: 460px;
+  max-width: 80rem;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
   height: 56px;
   display: flex;
   align-items: center;
@@ -130,9 +130,9 @@ html, body {
   margin-top: 0; /* override bare footer { margin-top: 64px } element selector */
 }
 .site-footer-inner {
-  max-width: 460px;
+  max-width: 80rem;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 .footer-top { margin-bottom: 24px; }
 .footer-brand-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; margin: 6px 0 4px; }
@@ -453,9 +453,9 @@ input[type=number] { -moz-appearance: textfield; }
 .delay-5 { animation-delay: 0.32s; }
 .delay-6 { animation-delay: 0.40s; }
 
-/* ─── SEO header wide variant (740px content pages) ─── */
+/* ─── SEO header wide variant — now unified at 80rem ─── */
 .site-header-inner.wide {
-  max-width: 780px;
+  max-width: 80rem;
 }
 
 /* ─── SEO page lang links (link-based, SEO-safe alternative to select) ─── */
@@ -1046,6 +1046,58 @@ a:hover { text-decoration: underline; }
 .seo-footer-net-link { font-size: 13px; font-weight: 700; text-decoration: none; color: #111827; letter-spacing: -0.01em; }
 .seo-footer-net-link:hover { text-decoration: none; }
 .seo-footer-copy { font-size: 12px; color: #9ca3af; margin: 0; padding-top: 16px; border-top: 1px solid #f3f4f6; }
+
+/* ─── Homepage SEO link section ─── */
+.home-seo-section {
+  border-top: 1px solid var(--border);
+  padding: 40px 20px 48px;
+  background: #fafafa;
+}
+.home-seo-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.home-seo-head {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-bottom: 12px;
+}
+.home-seo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 0;
+}
+.home-seo-list li a {
+  font-size: 13px;
+  color: var(--text-3);
+  text-decoration: none;
+  line-height: 1.6;
+  display: block;
+}
+.home-seo-list li a::after { content: '·'; margin: 0 8px; color: var(--border); }
+.home-seo-list li:last-child a::after { display: none; }
+.home-seo-list li a:hover { color: var(--cv-primary); text-decoration: none; }
+@media (max-width: 600px) {
+  .home-seo-inner { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ─── Hub cross-link ─── */
+.hub-cross-link {
+  font-size: 14px;
+  color: var(--text-3);
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
 
 /* Privacy page */
 .privacy-wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }

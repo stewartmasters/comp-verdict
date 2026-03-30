@@ -75,6 +75,9 @@ const es = {
   faqQ4: (role, city) => `¿Es ${city} un buen mercado para trabajar como ${role}?`,
   faqA4: (role, city, midP50, sym, firstSentence) =>
     `${firstSentence} Para los perfiles de ${role}, la compensación mediana de ${sym}${Math.round(midP50/1000)}k es ${midP50 > 50000 ? 'competitiva en relación con el coste de vida' : 'representativa del nivel local del mercado'}.`,
+  faqQ5: (role, city) => `¿Cómo sé si mi oferta de ${role} en ${city} es buena?`,
+  faqA5: (role, city, midP75, sym) =>
+    `La forma más fiable es compararla con los datos del mercado. Una oferta de ${role} en ${city} es fuerte si alcanza el percentil 75 para tu nivel de experiencia — eso significa ${sym}${Math.round(midP75/1000)}k o más en nivel intermedio (3–5 años). Usa CompVerdict para introducir tu oferta exacta y obtener una puntuación percentil instantánea basada en tu puesto, ciudad y experiencia.`,
 
   negSteps: (role, city, midP50, midP25, midP75, senP50, sym) => [
     {

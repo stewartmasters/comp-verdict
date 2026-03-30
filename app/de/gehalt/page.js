@@ -20,7 +20,7 @@ export default function DeGehaltHubPage() {
   return (
     <>
       <SeoHeader homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} hreflangs={hreflangs} />
-      <HubPageContent type="salary" locale={locale} getSalaryPathFn={getSalaryPath} getNegPathFn={getNegPath} homePath={homePath} />
+      <HubPageContent type="salary" locale={locale} getSalaryPathFn={getSalaryPath} getNegPathFn={getNegPath} homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} />
       <SeoFooter homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} />
     </>
   )

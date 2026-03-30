@@ -4,7 +4,7 @@ const SALARY_ROLES = [
   'Machine Learning Engineer', 'UX Designer',
 ]
 
-export default function HubPageContent({ type, locale, getSalaryPathFn, getNegPathFn, homePath }) {
+export default function HubPageContent({ type, locale, getSalaryPathFn, getNegPathFn, homePath, salaryHubPath, negHubPath }) {
   const isSalary = type === 'salary'
 
   let sections
@@ -52,6 +52,18 @@ export default function HubPageContent({ type, locale, getSalaryPathFn, getNegPa
           <p>{ctaBody}</p>
           <a href={homePath} className="cta-btn">{ctaBtn}</a>
         </div>
+        {isSalary && negHubPath && (
+          <p className="hub-cross-link">
+            Looking to negotiate?{' '}
+            <a href={negHubPath}>{locale.negHubTitle}</a>
+          </p>
+        )}
+        {!isSalary && salaryHubPath && (
+          <p className="hub-cross-link">
+            Want salary data first?{' '}
+            <a href={salaryHubPath}>{locale.salaryHubTitle}</a>
+          </p>
+        )}
       </div>
     </main>
   )

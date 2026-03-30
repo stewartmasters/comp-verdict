@@ -20,7 +20,7 @@ export default function EsNegociacionHubPage() {
   return (
     <>
       <SeoHeader homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} hreflangs={hreflangs} />
-      <HubPageContent type="negotiate" locale={locale} getSalaryPathFn={getSalaryPath} getNegPathFn={getNegPath} homePath={homePath} />
+      <HubPageContent type="negotiate" locale={locale} getSalaryPathFn={getSalaryPath} getNegPathFn={getNegPath} homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} />
       <SeoFooter homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} />
     </>
   )

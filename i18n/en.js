@@ -82,6 +82,9 @@ const en = {
   faqQ4: (role, city) => `Is ${city} a good market for ${role} jobs?`,
   faqA4: (role, city, midP50, sym, cityDescFirstSentence) =>
     `${cityDescFirstSentence} For ${role}s, the median compensation of ${sym}${Math.round(midP50/1000)}k is ${midP50 > 60000 ? 'competitive relative to cost of living' : 'reflective of the local market level'}.`,
+  faqQ5: (role, city) => `How do I know if my ${role} offer in ${city} is good?`,
+  faqA5: (role, city, midP75, sym) =>
+    `The most reliable way is to benchmark it against market data. A ${role} offer in ${city} is strong if it reaches the 75th percentile for your experience band — that means ${sym}${Math.round(midP75/1000)}k or more for mid-level (3–5 years). Use CompVerdict to enter your exact offer and get an instant percentile score based on your role, city, and experience.`,
 
   // Negotiation steps
   negSteps: (role, city, midP50, midP25, midP75, senP50, sym) => [

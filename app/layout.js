@@ -1,20 +1,81 @@
+import { Inter } from 'next/font/google'
 import './globals.css'
 
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.compverdict.com'
+
 export const metadata = {
-  metadataBase: new URL('https://comp-verdict.netlify.app'),
-  title: 'CompVerdict — Is this offer worth taking?',
-  description: 'Enter your salary offer and get an instant data-backed verdict. Know if you\'re being underpaid before you sign.',
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: 'CompVerdict — Is This Job Offer Actually Good?',
+    template: '%s — CompVerdict',
+  },
+  description:
+    'Find out if your job offer is fair, weak, or strong. Compare to market data and see exactly what to negotiate. Free, no signup.',
+  keywords: [
+    'is this offer good',
+    'job offer calculator',
+    'salary offer comparison',
+    'should i negotiate',
+    'offer benchmark',
+    'comp verdict',
+    'salary negotiation',
+    'offer evaluation',
+  ],
+  alternates: {
+    canonical: BASE_URL,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'CompVerdict',
+    title: 'CompVerdict — Is This Job Offer Actually Good?',
+    description:
+      'Find out if your job offer is fair, weak, or strong. Compare to market data and see exactly what to negotiate.',
+    url: BASE_URL,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CompVerdict — Is This Job Offer Actually Good?',
+    description: 'Check your offer against market data in 30 seconds. Free, no signup.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
 }
 
 export default function RootLayout({ children }) {
+  const siteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'CompVerdict',
+    url: BASE_URL,
+    description: 'Free job offer evaluator. Find out instantly if your offer is fair, weak, or strong.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${BASE_URL}/salary/{search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  }
+
   return (
-    <html>
+    <html lang="en" className={inter.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
+        />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
-      <body>{children}</body>
+      <body className="bg-[#F8FAFC] text-gray-900 min-h-screen font-sans">
+        {children}
+      </body>
     </html>
   )
 }

@@ -34,6 +34,8 @@ export default function SalaryHubPage() {
         getSalaryPathFn={getSalaryPath}
         getNegPathFn={getNegPath}
         homePath={homePath}
+        salaryHubPath={salaryHubPath}
+        negHubPath={negHubPath}
       />
       <SeoFooter homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} />
     </>

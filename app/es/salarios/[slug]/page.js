@@ -23,10 +23,12 @@ export async function generateMetadata({ params }) {
   if (!match) return {}
   const props = buildSalaryPageProps(locale, match.role, match.city)
   if (!props) return {}
+  const languages = {}
+  for (const h of props.hreflangs) languages[h.hreflang] = h.href
   return {
     title: props.title,
     description: props.description,
-    alternates: { canonical: SITE_URL + props.canonPath },
+    alternates: { canonical: SITE_URL + props.canonPath, languages },
   }
 }
 
