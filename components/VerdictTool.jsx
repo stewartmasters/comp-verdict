@@ -315,15 +315,26 @@ function getConfidence(cvData, city) {
   return ['ES','UK','DE'].includes(meta.market) ? 'high' : 'med'
 }
 
+function getOfferIdentity(pp) {
+  if (pp < 20)  return { label: 'Leaving Money Behind',  sub: 'Bottom 20% for this role and market' }
+  if (pp < 35)  return { label: 'Worth More Than This',  sub: 'Below median — there\'s real room here' }
+  if (pp < 50)  return { label: 'Priced to Accept',      sub: 'At median — designed to feel fair' }
+  if (pp < 65)  return { label: 'Quietly Competitive',   sub: 'Above median — a solid position' }
+  if (pp < 80)  return { label: 'Quietly Ahead',         sub: 'Top 35% — stronger than most' }
+  if (pp < 92)  return { label: 'Strong Offer',          sub: 'Top 20% — they want you' }
+  return        { label: 'Top of Market',                sub: 'Top 10% — rare and genuine' }
+}
+
 function buildShareText(role, city, bandLabel, pp, vType) {
-  const url = 'https://comp-verdict.netlify.app'
+  const url = 'https://www.compverdict.com'
+  const identity = getOfferIdentity(pp)
   const above = 100 - pp
   if (vType === 'weak') {
-    return `Just checked my ${role} offer in ${city} with CompVerdict.\n\nVerdict: weak offer — bottom ${pp}% for a ${bandLabel}. Time to negotiate.\n\nCheck yours → ${url}`
+    return `Verdict: "${identity.label}"\n\nMy ${role} offer in ${city} sits in the bottom ${pp}% for a ${bandLabel}. Checked it with CompVerdict before signing.\n\nWorth doing if you have an offer → ${url}`
   } else if (vType === 'fair') {
-    return `Ran my ${role} offer in ${city} through CompVerdict.\n\nFair offer — ${pp}th percentile for a ${bandLabel}. Could be better.\n\nIs yours better? → ${url}`
+    return `Verdict: "${identity.label}"\n\nMy ${role} offer in ${city} is ${pp}th percentile for a ${bandLabel}. Interesting benchmark tool if you have an offer in front of you.\n\n→ ${url}`
   } else {
-    return `CompVerdict: my ${role} offer in ${city} is in the top ${above}% for a ${bandLabel}. Strong offer. 💪\n\nCheck yours → ${url}`
+    return `Verdict: "${identity.label}"\n\nMy ${role} offer in ${city} is top ${above}% for a ${bandLabel}. Free tool — worth checking before you accept any offer.\n\n→ ${url}`
   }
 }
 
@@ -470,6 +481,37 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     'Sydney','Singapore','Dubai',
   ]
 
+  const ROLE_GROUPS = [
+    { label: 'Engineering', roles: ['Software Engineer','Backend Engineer','Frontend Engineer','Full Stack Engineer','Mobile Engineer','iOS Engineer','Android Engineer','DevOps Engineer','Site Reliability Engineer','Platform Engineer','Security Engineer','QA Engineer'] },
+    { label: 'Data & ML', roles: ['Data Scientist','Data Engineer','Machine Learning Engineer'] },
+    { label: 'Product & Management', roles: ['Product Manager','Engineering Manager'] },
+    { label: 'Design', roles: ['UX Designer','UI Designer','Product Designer'] },
+    { label: 'Business', roles: ['Marketing Manager','Growth Manager','Finance Analyst','Operations Manager'] },
+  ]
+
+  const CITY_GROUPS = [
+    { label: 'United Kingdom', cities: ['London','Manchester','Edinburgh','Bristol','Remote (UK)'] },
+    { label: 'Spain', cities: ['Barcelona','Madrid','Valencia','Seville','Bilbao','Remote (Spain)'] },
+    { label: 'Germany', cities: ['Berlin','Munich','Hamburg','Frankfurt','Cologne','Stuttgart','Remote (Germany)'] },
+    { label: 'Netherlands', cities: ['Amsterdam'] },
+    { label: 'France', cities: ['Paris'] },
+    { label: 'Ireland', cities: ['Dublin'] },
+    { label: 'Portugal', cities: ['Lisbon'] },
+    { label: 'Italy', cities: ['Milan'] },
+    { label: 'Sweden', cities: ['Stockholm'] },
+    { label: 'Denmark', cities: ['Copenhagen'] },
+    { label: 'Switzerland', cities: ['Zurich','Geneva'] },
+    { label: 'Poland', cities: ['Warsaw'] },
+    { label: 'Czech Republic', cities: ['Prague'] },
+    { label: 'Romania', cities: ['Bucharest'] },
+    { label: 'Europe (Remote)', cities: ['Remote (Europe)'] },
+    { label: 'United States', cities: ['San Francisco','New York','Seattle','Austin','Boston','Chicago','Los Angeles','Miami','Remote (US)'] },
+    { label: 'Canada', cities: ['Toronto'] },
+    { label: 'Australia', cities: ['Sydney'] },
+    { label: 'Singapore', cities: ['Singapore'] },
+    { label: 'UAE', cities: ['Dubai'] },
+  ]
+
   // Screen state
   const [screen, setScreen]       = useState('input')
   // Input state
@@ -572,8 +614,8 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   }
 
   function runVerdict() {
-    const resolvedRole = closestMatch(role, ROLES)
-    const resolvedCity = closestMatch(city, CITIES)
+    const resolvedRole = ROLES.includes(role) ? role : null
+    const resolvedCity = CITIES.includes(city) ? city : null
     const salaryRaw    = parseFloat(salary)
     const bonusRaw     = parseFloat(bonus) || 0
     const equityRaw    = parseFloat(equity) || 0
@@ -643,6 +685,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
       salaryRaw, bonusRaw, equityRaw, totalComp,
       r, p, pp, vType, vTitle, vColor,
       posText, emoText, peerStmt, negDelta, showRisk, confidence,
+      identity: getOfferIdentity(pp),
     })
     trackEvent('verdict_run', { role: resolvedRole, city: resolvedCity, verdict: vType, percentile: pp })
     setScreen('results')
@@ -720,28 +763,46 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             <div>
               <label className="field-label" htmlFor="f-role">{lbl.roleLabel}</label>
-              <Autocomplete
+              <select
                 id="f-role"
+                className="input-field"
                 value={role}
-                onChange={setRole}
-                onPick={setRole}
-                list={ROLES}
-                placeholder={lbl.rolePlaceholder}
-                label={lbl.roleLabel}
-              />
+                onChange={e => setRole(e.target.value)}
+                aria-label={lbl.roleLabel}
+              >
+                <option value="">{lbl.rolePlaceholder}</option>
+                {ROLE_GROUPS.map(({ label, roles: groupRoles }) => {
+                  const available = groupRoles.filter(r => ROLES.includes(r))
+                  if (!available.length) return null
+                  return (
+                    <optgroup key={label} label={label}>
+                      {available.map(r => <option key={r} value={r}>{r}</option>)}
+                    </optgroup>
+                  )
+                })}
+              </select>
             </div>
 
             <div>
               <label className="field-label" htmlFor="f-city">{lbl.cityLabel}</label>
-              <Autocomplete
+              <select
                 id="f-city"
+                className="input-field"
                 value={city}
-                onChange={setCity}
-                onPick={handleCityPick}
-                list={CITIES}
-                placeholder={lbl.cityPlaceholder}
-                label={lbl.cityLabel}
-              />
+                onChange={e => { setCity(e.target.value); const meta = cvData.cities[e.target.value]; if (meta) setCurrSymbol(meta.symbol) }}
+                aria-label={lbl.cityLabel}
+              >
+                <option value="">{lbl.cityPlaceholder}</option>
+                {CITY_GROUPS.map(({ label, cities: groupCities }) => {
+                  const available = groupCities.filter(c => CITIES.includes(c))
+                  if (!available.length) return null
+                  return (
+                    <optgroup key={label} label={label}>
+                      {available.map(c => <option key={c} value={c}>{c}</option>)}
+                    </optgroup>
+                  )
+                })}
+              </select>
             </div>
 
             <div>
@@ -913,8 +974,13 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             </div>
           </div>
 
-          {/* 5. SHARE — prominent */}
+          {/* 5. SHARE — identity card */}
           <div className="share-block fade-in delay-3">
+            <div style={{ background: 'var(--surface-2,#f8fafc)', border: '1px solid var(--border,#e2e8f0)', borderRadius: '12px', padding: '16px', marginBottom: '12px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-3,#94a3b8)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Your offer identity</div>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: results.vColor, lineHeight: 1.2, marginBottom: '4px' }}>{results.identity.label}</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-2,#64748b)' }}>{results.identity.sub}</div>
+            </div>
             <p className="share-block-title">{lbl.shareTitle}</p>
             <button className="share-btn-main" onClick={shareResult}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
