@@ -1,133 +1,119 @@
-import Link from 'next/link'
+const SALARY_PATH  = { en: '/salary/', es: '/es/salarios/', de: '/de/gehalt/' }
+const NEG_PATH     = { en: '/negotiate/', es: '/es/negociacion/', de: '/de/verhandlung/' }
+const HOME_PATH    = { en: '/', es: '/es/', de: '/de/' }
 
-const OFFER_GUIDE_LINKS = [
-  { href: '/salary/software-engineer-salary-london/', label: 'Software Engineer · London' },
-  { href: '/salary/software-engineer-salary-berlin/', label: 'Software Engineer · Berlin' },
-  { href: '/salary/product-manager-salary-london/', label: 'Product Manager · London' },
-  { href: '/salary/data-scientist-salary-amsterdam/', label: 'Data Scientist · Amsterdam' },
-  { href: '/salary/engineering-manager-salary-london/', label: 'Engineering Manager · London' },
-  { href: '/salary/frontend-engineer-salary-berlin/', label: 'Frontend Engineer · Berlin' },
-  { href: '/salary/devops-engineer-salary-london/', label: 'DevOps Engineer · London' },
-  { href: '/salary/ux-designer-salary-amsterdam/', label: 'UX Designer · Amsterdam' },
-]
-
-const LOCATION_LINKS = [
-  { href: '/salary/software-engineer-salary-london/', label: 'London' },
-  { href: '/salary/software-engineer-salary-berlin/', label: 'Berlin' },
-  { href: '/salary/software-engineer-salary-barcelona/', label: 'Barcelona' },
-  { href: '/salary/product-manager-salary-amsterdam/', label: 'Amsterdam' },
-  { href: '/salary/software-engineer-salary-paris/', label: 'Paris' },
-  { href: '/salary/software-engineer-salary-dublin/', label: 'Dublin' },
-]
+const FOOTER_LABELS = {
+  en: {
+    desc: 'Is this offer worth taking? Enter your package and get a data-backed verdict in seconds. Free, no sign-up required.',
+    dataNote: 'Sources: BLS OEWS · ONS ASHE · INE EES · Stack Overflow Survey · ECB rates · Updated Q1 2025',
+    toolsHead: 'Tools',
+    guidesHead: 'Popular guides',
+    offerEval: 'Offer evaluator',
+    salaryBench: 'Salary benchmarks',
+    negGuides: 'Negotiation guides',
+    privacy: 'Privacy Policy',
+    networkLabel: 'The Verdict network:',
+    copyright: '© 2025 CompVerdict — Salary data is indicative, not guaranteed.',
+    sitemap: 'Sitemap',
+  },
+  es: {
+    desc: '¿Vale la pena esta oferta? Introduce tu paquete y obtén un veredicto basado en datos en segundos. Gratis, sin registro.',
+    dataNote: 'Fuentes: BLS OEWS · ONS ASHE · INE EES · Stack Overflow Survey · Tipos ECB · Actualizado T1 2025',
+    toolsHead: 'Herramientas',
+    guidesHead: 'Guías populares',
+    offerEval: 'Evaluador de oferta',
+    salaryBench: 'Benchmarks salariales',
+    negGuides: 'Guías de negociación',
+    privacy: 'Política de privacidad',
+    networkLabel: 'La red Verdict:',
+    copyright: '© 2025 CompVerdict — Los datos salariales son orientativos.',
+    sitemap: 'Sitemap',
+  },
+  de: {
+    desc: 'Ist dieses Angebot die Annahme wert? Gib dein Paket ein und erhalte in Sekunden ein datenbasiertes Urteil. Kostenlos, ohne Anmeldung.',
+    dataNote: 'Quellen: BLS OEWS · ONS ASHE · INE EES · Stack Overflow Survey · EZB-Kurse · Aktualisiert Q1 2025',
+    toolsHead: 'Tools',
+    guidesHead: 'Beliebte Ratgeber',
+    offerEval: 'Angebots-Prüfer',
+    salaryBench: 'Gehalts-Benchmarks',
+    negGuides: 'Verhandlungsratgeber',
+    privacy: 'Datenschutz',
+    networkLabel: 'Das Verdict-Netzwerk:',
+    copyright: '© 2025 CompVerdict — Gehaltsdaten sind indikativ.',
+    sitemap: 'Sitemap',
+  },
+}
 
 export default function Footer({ locale = 'en' }) {
-  // locale prop kept for backwards compat with es/de pages that pass it
-  const year = new Date().getFullYear()
+  const l = FOOTER_LABELS[locale]
+  const homePath    = HOME_PATH[locale]
+  const salaryPath  = SALARY_PATH[locale]
+  const negPath     = NEG_PATH[locale]
 
   return (
-    <footer className="border-t border-gray-100 bg-gray-50 mt-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+    <footer className="site-footer">
+      <div className="site-footer-inner">
+        <div className="footer-top">
+          <a href={homePath} className="cv-brand" style={{ textDecoration: 'none', display: 'inline-block', marginBottom: '6px' }}>
+            <span className="word">Comp</span><span className="accent">Verdict</span>
+          </a>
+          <p className="footer-brand-desc">{l.desc}</p>
+          <p className="footer-data-note">{l.dataNote}</p>
+        </div>
 
-          {/* Brand */}
-          <div className="space-y-3">
-            <div className="font-extrabold text-gray-900 text-base tracking-tight">
-              Comp<span className="text-blue-600">Verdict</span>
-            </div>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              Free offer evaluation for professionals. Find out if your job offer is fair, weak, or strong — in 30 seconds.
-            </p>
-            <p className="text-xs text-gray-400">
-              Based on public benchmarks: BLS OEWS · ONS ASHE · INE EES · Stack Overflow Survey.
-            </p>
-            <div className="pt-1 space-y-1">
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">The Verdict network</p>
-              <div className="flex items-center gap-3 text-sm flex-wrap">
-                <a
-                  href="https://www.salaryverdict.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-gray-700 hover:text-gray-900 transition-colors"
-                >
-                  Salary<span className="text-orange-500">Verdict</span>
-                </a>
-                <span className="text-gray-300">·</span>
-                <a
-                  href="https://www.spendverdict.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-gray-700 hover:text-gray-900 transition-colors"
-                >
-                  Spend<span className="text-violet-500">Verdict</span>
-                </a>
-              </div>
-            </div>
+        <div className="footer-cols">
+          <div className="footer-col">
+            <p className="footer-col-head">{l.toolsHead}</p>
+            <a href={homePath}>{l.offerEval}</a>
+            <a href={salaryPath}>{l.salaryBench}</a>
+            <a href={negPath}>{l.negGuides}</a>
           </div>
-
-          {/* Popular offer guides */}
-          <div className="space-y-3">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Popular offer guides</p>
-            <ul className="space-y-1.5">
-              {OFFER_GUIDE_LINKS.map(({ href, label }) => (
-                <li key={href}>
-                  <Link href={href} className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* By location */}
-          <div className="space-y-3">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">By location</p>
-            <ul className="space-y-1.5">
-              {LOCATION_LINKS.map(({ href, label }) => (
-                <li key={href}>
-                  <Link href={href} className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
-                    {label} offers
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Site */}
-          <div className="space-y-3">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Site</p>
-            <ul className="space-y-1.5">
-              {[
-                { href: '/', label: 'Offer checker' },
-                { href: '/salary/software-engineer-salary-london/', label: 'All offer guides' },
-                { href: '/negotiate/', label: 'Negotiation guides' },
-                { href: '/methodology/', label: 'Methodology' },
-                { href: '/privacy/', label: 'Privacy policy' },
-              ].map(({ href, label }) => (
-                <li key={href}>
-                  <Link href={href} className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="pt-2 space-y-1">
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Data sources</p>
-              <p className="text-xs text-gray-400">BLS OEWS · ONS ASHE</p>
-              <p className="text-xs text-gray-400">INE EES · Stack Overflow</p>
-            </div>
+          <div className="footer-col">
+            <p className="footer-col-head">{l.guidesHead}</p>
+            <a href="/salary/software-engineer-salary-london/">SE salary · London</a>
+            <a href="/salary/software-engineer-salary-barcelona/">SE salary · Barcelona</a>
+            <a href="/salary/software-engineer-salary-berlin/">SE salary · Berlin</a>
+            <a href="/salary/software-engineer-salary-san-francisco/">SE salary · San Francisco</a>
+            <a href="/negotiate/software-engineer-negotiation-london/">Negotiate · London</a>
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-400">
-            © {year} CompVerdict — Salary estimates are modelled from public benchmarks and do not represent guaranteed earnings.
-          </p>
-          <div className="flex items-center gap-4 text-xs text-gray-400">
-            <Link href="/methodology/" className="text-gray-400 hover:text-gray-600 transition-colors">How we calculate</Link>
-            <span>·</span>
-            <Link href="/privacy/" className="text-gray-400 hover:text-gray-600 transition-colors">Privacy</Link>
-            <span>·</span>
-            <Link href="/sitemap.xml" className="text-gray-400 hover:text-gray-600 transition-colors">Sitemap</Link>
+        <div className="footer-network-row">
+          <span className="footer-net-label">{l.networkLabel}</span>
+          <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style={{ fontSize: '13px', fontWeight: 700, textDecoration: 'none', color: '#111827' }}>
+            Salary<span style={{ color: '#f97316' }}>Verdict</span>
+          </a>
+          <span className="footer-net-sep">·</span>
+          <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style={{ fontSize: '13px', fontWeight: 700, textDecoration: 'none', color: '#111827' }}>
+            Spend<span style={{ color: '#a78bfa' }}>Verdict</span>
+          </a>
+          <span className="footer-net-sep">·</span>
+          <span style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>
+            Comp<span style={{ color: '#2563EB' }}>Verdict</span>
+          </span>
+        </div>
+
+        <div className="footer-trust-row">
+          <p className="footer-trust-note">Built using official government salary data and verified market benchmarks</p>
+          <div className="footer-trust-logos">
+            {[
+              { name: 'ONS', title: 'UK Office for National Statistics' },
+              { name: 'INE', title: 'Spain Instituto Nacional de Estadística' },
+              { name: 'Destatis', title: 'Germany Federal Statistical Office' },
+              { name: 'BLS', title: 'US Bureau of Labor Statistics' },
+              { name: 'Stack Overflow', title: 'Stack Overflow Developer Survey' },
+            ].map(src => (
+              <span key={src.name} className="footer-trust-badge" title={src.title}>{src.name}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <p className="footer-copy">{l.copyright}</p>
+          <div className="footer-bottom-links">
+            <a href="/privacy/">{l.privacy}</a>
+            <span className="footer-bottom-sep">·</span>
+            <a href="/sitemap.xml">{l.sitemap}</a>
           </div>
         </div>
       </div>

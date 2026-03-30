@@ -534,6 +534,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   const [toastVisible, setToastVisible] = useState(false)
   // Cookie
   const [showCookie, setShowCookie] = useState(false)
+  const [simSalary, setSimSalary]   = useState(null)
 
   // GA
   useEffect(() => {
@@ -680,11 +681,30 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
 
     const confidence = getConfidence(cvData, resolvedCity)
 
+    // Decision engine values
+    const gap              = r.p50 - totalComp           // positive = below median
+    const twoYearGap       = Math.abs(gap) * 2
+    const negotiationLow   = Math.round(r.p50)
+    const negotiationHigh  = Math.round(r.p75)
+
+    let verdictAction
+    if (p < 25)      verdictAction = `Do not accept yet — counter at ${fmt(r.p50, r.symbol)}–${fmt(r.p75, r.symbol)}`
+    else if (p < 63) verdictAction = `Negotiate before signing — push toward ${fmt(r.p75, r.symbol)}`
+    else             verdictAction = `Strong offer — focus negotiation on equity, signing bonus, and PTO`
+
+    let firstOfferCtx
+    if (pp < 25)      firstOfferCtx = "This appears to be a low opening offer. Companies routinely agree to 10–20% above the initial number. Do not accept without countering."
+    else if (pp < 50) firstOfferCtx = "Standard first offer. Most candidates at this level successfully negotiate 5–12% above the opening number. A counter is expected and appropriate."
+    else if (pp < 75) firstOfferCtx = "This offer is above median, which suggests the company is motivated. Limited room on base — but equity, signing bonus, and flexible arrangements are often still negotiable."
+    else              firstOfferCtx = "Companies rarely open this high. This is likely their best offer, not a first offer. Prioritise non-cash elements over pushing on base salary."
+
     setResults({
       role: resolvedRole, city: resolvedCity, yoeLabel, bandLabel, yoeNum,
       salaryRaw, bonusRaw, equityRaw, totalComp,
       r, p, pp, vType, vTitle, vColor,
       posText, emoText, peerStmt, negDelta, showRisk, confidence,
+      gap, twoYearGap, negotiationLow, negotiationHigh,
+      verdictAction, firstOfferCtx,
       identity: getOfferIdentity(pp),
     })
     trackEvent('verdict_run', { role: resolvedRole, city: resolvedCity, verdict: vType, percentile: pp })
@@ -693,6 +713,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   }
 
   function goBack() {
+    setSimSalary(null)
     setScreen('input')
     if (typeof window !== 'undefined') window.scrollTo(0, 0)
   }
@@ -704,6 +725,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     setShowBonus(false)
     setShowEquity(false)
     setResults(null)
+    setSimSalary(null)
     setScreen('input')
     if (typeof window !== 'undefined') window.scrollTo(0, 0)
   }
@@ -736,6 +758,21 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     localStorage.setItem('cv_consent', '0')
     setShowCookie(false)
   }
+
+  // Scenario simulator derived values
+  const _simVal   = simSalary != null ? simSalary : (results?.totalComp ?? 0)
+  const _simScore = results ? (() => {
+    const { p10, p25, p50, p75, p90 } = results.r
+    if (_simVal <= p10) return Math.max(0, (_simVal/p10)*10)
+    if (_simVal <= p25) return 10 + ((_simVal-p10)/(p25-p10))*15
+    if (_simVal <= p50) return 25 + ((_simVal-p25)/(p50-p25))*25
+    if (_simVal <= p75) return 50 + ((_simVal-p50)/(p75-p50))*25
+    if (_simVal <= p90) return 75 + ((_simVal-p75)/(p90-p75))*15
+    return Math.min(100, 90 + ((_simVal-p90)/p90)*10)
+  })() : 0
+  const simVType  = _simScore < 25 ? 'weak' : _simScore < 63 ? 'fair' : 'strong'
+  const simVColor = simVType === 'weak' ? '#ef4444' : simVType === 'fair' ? '#f59e0b' : '#10b981'
+  const simVLabel = simVType === 'weak' ? 'Weak offer' : simVType === 'fair' ? 'Fair offer' : 'Strong offer'
 
   return (
     <>
@@ -918,81 +955,76 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             </p>
           )}
 
-          {/* 1. VERDICT CARD */}
+          {/* 1. VERDICT */}
           <div className={`verdict-card fade-in delay-1 verdict-${results.vType}`}>
             <div className="verdict-tag" style={{ color: results.vColor }}>
               <span className="verdict-tag-dot" style={{ background: results.vColor }} />
               {lbl.verdictLabel}
             </div>
-            <div className="verdict-headline" style={{ color: results.vColor }}>{results.vTitle}</div>
+            <div className="verdict-headline" style={{ color: results.vColor }}>
+              {results.vType === 'weak' ? 'Weak Offer' : results.vType === 'fair' ? 'Fair — Can Do Better' : 'Strong Offer'}
+            </div>
+            <div className="verdict-action">{results.verdictAction}</div>
             <div className="verdict-comp">
               Base: <strong style={{ color: 'var(--text-1)' }}>{fmt(results.salaryRaw, results.r.symbol)}</strong>
               {(results.bonusRaw > 0 || results.equityRaw > 0) && (
                 <> &nbsp;·&nbsp; Total: <strong style={{ color: 'var(--text-1)' }}>{fmt(results.totalComp, results.r.symbol)}</strong></>
               )}
             </div>
-            <p className="verdict-meta">{results.emoText}</p>
-            {results.showRisk && (
-              <p className="verdict-risk">{lbl.riskLine}</p>
-            )}
+            <RangeBar r={results.r} userVal={results.totalComp} percentile={results.pp} vColor={results.vColor} />
+            <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '18px' }}>
+              {lbl.percentileStmt(results.pp)}
+            </div>
           </div>
 
-          {/* 2. PEER POSITION */}
-          <div className="peer-block fade-in delay-2">
-            <p className="peer-stmt">{results.peerStmt}</p>
-            <span className="peer-pct-badge">{lbl.percentileStmt(results.pp)}</span>
+          {/* 2. IF YOU ACCEPT THIS OFFER */}
+          <div className="decision-block decision-accept fade-in delay-2">
+            <div className="decision-heading">
+              <span className="decision-arrow" style={{ color: results.vType === 'strong' ? '#10b981' : '#94A3B8' }}>→</span>
+              If you accept this offer
+            </div>
+            <ul className="decision-list">
+              {results.gap > 0 ? (
+                <>
+                  <li><strong>{fmt(results.gap, results.r.symbol)}</strong> below market median</li>
+                  <li>Over 2 years: <strong>{fmt(results.twoYearGap, results.r.symbol)}</strong> in potential earnings gap</li>
+                  <li>Future raises will anchor from a below-market base</li>
+                </>
+              ) : (
+                <>
+                  <li>Above market median — well positioned</li>
+                  <li>Strong anchor for future salary negotiations</li>
+                  <li>Minimal risk of leaving money on the table</li>
+                </>
+              )}
+            </ul>
           </div>
 
-          {/* 3. NEGOTIATION DELTA */}
-          {results.negDelta && (
-            <div className="neg-delta-block fade-in delay-2">
-              <div className="neg-delta-label">{lbl.negDeltaTitle}</div>
-              <div className="neg-delta-amount">
-                {results.negDelta.low > 1000
-                  ? `+${fmt(results.negDelta.low, results.negDelta.sym)} – +${fmt(results.negDelta.high, results.negDelta.sym)}`
-                  : `up to +${fmt(results.negDelta.high, results.negDelta.sym)}`
-                }
+          {/* 3. IF YOU NEGOTIATE */}
+          {results.vType !== 'strong' && (
+            <div className="decision-block decision-negotiate fade-in delay-2">
+              <div className="decision-heading">
+                <span className="decision-arrow" style={{ color: '#10b981' }}>↗</span>
+                If you negotiate to {fmt(results.negotiationLow, results.r.symbol)}–{fmt(results.negotiationHigh, results.r.symbol)}
               </div>
-              <div className="neg-delta-sub">{lbl.negDeltaSub}</div>
+              <ul className="decision-list">
+                <li>You reach market {results.pp < 50 ? 'median' : 'strong territory'}</li>
+                {results.gap > 0 && <li>Over 2 years: <strong>+{fmt(results.twoYearGap, results.r.symbol)}</strong> recovered</li>}
+                <li>Stronger anchor for future raises and external offers</li>
+              </ul>
             </div>
           )}
 
-          {/* 4. MARKET RANGE */}
+          {/* 4. RECOMMENDED ACTION */}
+          {results.vType !== 'strong' && (
+            <div className="recommended-action fade-in delay-3">
+              <div className="rec-eyebrow">Recommended Action</div>
+              <div className="rec-counter">Counter at {fmt(results.negotiationLow, results.r.symbol)}–{fmt(results.negotiationHigh, results.r.symbol)}</div>
+            </div>
+          )}
+
+          {/* 5. NEGOTIATION SCRIPT / STRONG TIPS */}
           <div className="stat-card fade-in delay-3">
-            <div className="stat-label">{lbl.marketRange}</div>
-            <div className="stat-value" style={{ marginBottom: '3px' }}>{fmt(results.r.p25, results.r.symbol)} – {fmt(results.r.p75, results.r.symbol)}</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-3)', marginBottom: '10px' }}>
-              {lbl.rangeSub(results.bandLabel, results.role, results.r.fallbackCity || results.city)}
-            </div>
-            <RangeBar r={results.r} userVal={results.totalComp} percentile={results.pp} vColor={results.vColor} />
-            <div className="trust-row">
-              <div className={`confidence-badge confidence-${results.confidence}`}>
-                <span className="dot" /><span>{results.confidence === 'high' ? lbl.confidenceHigh : lbl.confidenceMed}</span>
-              </div>
-              <span className="trust-source">{lbl.basedOn}</span>
-              <button className="methodology-link" onClick={() => setIsModalOpen(true)}>{lbl.methodology}</button>
-            </div>
-          </div>
-
-          {/* 5. SHARE — identity card */}
-          <div className="share-block fade-in delay-3">
-            <div style={{ background: 'var(--surface-2,#f8fafc)', border: '1px solid var(--border,#e2e8f0)', borderRadius: '12px', padding: '16px', marginBottom: '12px' }}>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-3,#94a3b8)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Your offer identity</div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: results.vColor, lineHeight: 1.2, marginBottom: '4px' }}>{results.identity.label}</div>
-              <div style={{ fontSize: '12px', color: 'var(--text-2,#64748b)' }}>{results.identity.sub}</div>
-            </div>
-            <p className="share-block-title">{lbl.shareTitle}</p>
-            <button className="share-btn-main" onClick={shareResult}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-              </svg>
-              {lbl.shareBtn}
-            </button>
-          </div>
-
-          {/* 6. SCRIPT / NEXT STEPS */}
-          <div className="stat-card fade-in delay-4">
             {results.vType === 'strong' ? (
               <>
                 <div className="stat-label">{lbl.nextSteps}</div>
@@ -1015,7 +1047,97 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             )}
           </div>
 
-          {/* 7. SECOND ACTIONS */}
+          {/* 6. OFFER SCORE */}
+          <div className="stat-card fade-in delay-3">
+            <div className="stat-label">Offer Score</div>
+            <div className="offer-score-wrap">
+              <span className="offer-score-number" style={{ color: results.vColor }}>{results.pp}</span>
+              <span className="offer-score-denom"> / 100</span>
+            </div>
+            <div className="offer-score-track">
+              <div className="offer-score-fill" style={{ width: `${results.pp}%`, background: results.vColor }} />
+            </div>
+            <div className="offer-score-sub">
+              {results.pp < 25 ? 'Below market — significant room to negotiate' :
+               results.pp < 50 ? 'Below median — negotiation recommended' :
+               results.pp < 63 ? 'Near median — some room to push' :
+               results.pp < 80 ? 'Above median — strong offer' :
+               'Top-tier — exceptional package'}
+              &nbsp;·&nbsp;{results.confidence === 'high' ? lbl.confidenceHigh : lbl.confidenceMed}
+            </div>
+          </div>
+
+          {/* 7. FIRST OFFER CONTEXT */}
+          <div className="stat-card fade-in delay-4">
+            <div className="stat-label">First Offer Context</div>
+            <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.65, margin: 0 }}>
+              {results.firstOfferCtx}
+            </p>
+          </div>
+
+          {/* 8. SCENARIO SIMULATOR */}
+          <div className="stat-card fade-in delay-4">
+            <div className="stat-label">Scenario Simulator</div>
+            <p style={{ fontSize: '13px', color: 'var(--text-3)', margin: '0 0 16px', lineHeight: 1.5 }}>
+              Drag to see how the verdict changes at different salary levels.
+            </p>
+            <input
+              type="range"
+              className="sim-slider"
+              min={results.r.p10}
+              max={results.r.p90}
+              step={Math.max(1, Math.round((results.r.p90 - results.r.p10) / 100))}
+              value={simSalary != null ? simSalary : results.totalComp}
+              onChange={e => setSimSalary(Number(e.target.value))}
+            />
+            <div className="sim-output">
+              <span className="sim-salary">{fmt(simSalary != null ? simSalary : results.totalComp, results.r.symbol)}</span>
+              <span style={{ color: 'var(--text-3)', margin: '0 4px' }}>→</span>
+              <strong style={{ color: simVColor }}>{simVLabel}</strong>
+              {simSalary != null && simSalary !== results.totalComp && (
+                <span className="sim-delta">
+                  &nbsp;({simSalary > results.totalComp ? '+' : ''}{fmt(simSalary - results.totalComp, results.r.symbol)} vs your offer)
+                </span>
+              )}
+            </div>
+            <div className="sim-thresholds">
+              <span style={{ color: '#ef4444' }}>Weak</span>
+              <span style={{ color: 'var(--text-3)' }}> · Fair from </span>
+              <strong>{fmt(results.r.p25, results.r.symbol)}</strong>
+              <span style={{ color: 'var(--text-3)' }}> · Strong from </span>
+              <strong>{fmt(Math.round(results.r.p50 + 0.52 * (results.r.p75 - results.r.p50)), results.r.symbol)}</strong>
+            </div>
+          </div>
+
+          {/* 9. MARKET RANGE + CONFIDENCE */}
+          <div className="stat-card fade-in delay-4">
+            <div className="stat-label">{lbl.marketRange}</div>
+            <div className="stat-value" style={{ marginBottom: '3px' }}>{fmt(results.r.p25, results.r.symbol)} – {fmt(results.r.p75, results.r.symbol)}</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-3)', marginBottom: '10px' }}>
+              {lbl.rangeSub(results.bandLabel, results.role, results.r.fallbackCity || results.city)}
+            </div>
+            <div className="trust-row">
+              <div className={`confidence-badge confidence-${results.confidence}`}>
+                <span className="dot" /><span>{results.confidence === 'high' ? lbl.confidenceHigh : lbl.confidenceMed}</span>
+              </div>
+              <span className="trust-source">{lbl.basedOn}</span>
+              <button className="methodology-link" onClick={() => setIsModalOpen(true)}>{lbl.methodology}</button>
+            </div>
+          </div>
+
+          {/* 10. SHARE */}
+          <div className="share-block fade-in delay-5">
+            <p className="share-block-title">{lbl.shareTitle}</p>
+            <button className="share-btn-main" onClick={shareResult}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              {lbl.shareBtn}
+            </button>
+          </div>
+
+          {/* 11. ACTIONS */}
           <div className="actions-grid fade-in delay-5">
             <button className="action-card" onClick={goBack}>
               <svg className="action-icon-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
