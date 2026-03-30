@@ -1,7 +1,7 @@
 'use client'
 
 const NAV_LABELS = {
-  en: { salary: 'Salaries', negotiate: 'Negotiate', cta: 'Get Verdict →' },
+  en: { salary: 'Salaries', negotiate: 'Negotiate', cta: 'Check my offer →' },
   es: { salary: 'Salarios', negotiate: 'Negociar', cta: 'Analizar mi oferta →' },
   de: { salary: 'Gehälter', negotiate: 'Verhandeln', cta: 'Angebot prüfen →' },
 }
@@ -27,23 +27,11 @@ export default function Header({ locale = 'en', currentPath = '' }) {
         <nav className="site-nav">
           <a href={SALARY_PATH[locale]} className="nav-text">{labels.salary}</a>
           <a href={NEG_PATH[locale]} className="nav-text">{labels.negotiate}</a>
-          <div className="header-lang">
+          <div className="lang-select-wrap">
             <select
               defaultValue={locale}
               onChange={handleLangChange}
               aria-label="Language"
-              style={{
-                fontSize: '11px',
-                color: 'var(--text-3)',
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                cursor: 'pointer',
-                padding: '2px 4px',
-                borderRadius: '4px',
-                appearance: 'none',
-                WebkitAppearance: 'none',
-              }}
             >
               <option value="en">EN</option>
               <option value="es">ES</option>

@@ -15,7 +15,7 @@ const LABELS = {
     optional: 'Optional',
     bonusToggle: '+ Bonus', bonusLabel: 'Annual Bonus', bonusPlaceholder: '5,000',
     equityToggle: '+ Equity', equityLabel: 'Equity — annual value', equityPlaceholder: '10,000',
-    cta: 'Get Verdict →',
+    cta: 'Check my offer →',
     disclaimer: 'Based on aggregated market benchmarks. Results are estimates.',
     backBtn: '← Back',
     shareBtn: 'Share verdict',

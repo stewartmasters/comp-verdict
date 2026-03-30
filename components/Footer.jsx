@@ -67,7 +67,6 @@ export default function Footer({ locale = 'en' }) {
             <a href={homePath}>{l.offerEval}</a>
             <a href={salaryPath}>{l.salaryBench}</a>
             <a href={negPath}>{l.negGuides}</a>
-            <a href="/privacy/">{l.privacy}</a>
           </div>
           <div className="footer-col">
             <p className="footer-col-head">{l.guidesHead}</p>
@@ -100,10 +99,6 @@ export default function Footer({ locale = 'en' }) {
             <a href="/privacy/">{l.privacy}</a>
             <span className="footer-bottom-sep">·</span>
             <a href="/sitemap.xml">{l.sitemap}</a>
-            <span className="footer-bottom-sep">·</span>
-            <a href="/es/">ES</a>
-            <span className="footer-bottom-sep">·</span>
-            <a href="/de/">DE</a>
           </div>
         </div>
       </div>
