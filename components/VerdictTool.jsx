@@ -58,6 +58,30 @@ const LABELS = {
     privacyLink: 'Privacy Policy',
     networkLabel: 'Verdict network',
     copied: 'Copied to clipboard',
+    peerStmtWeak: 'Most similar candidates earn more than this',
+    peerStmtFair: 'About half of similar candidates earn more',
+    peerStmtStrong: "You're ahead of most similar candidates",
+    peerStmtTop: "You're in the top tier for your role and market",
+    riskLine: 'Accepting this offer may lock you below market for the next 2–3 years',
+    negDeltaTitle: 'Negotiation range',
+    negDeltaSub: 'you could reasonably ask for',
+    actionCompare: 'Compare another offer',
+    actionCompareSub: 'Different role, city, or package',
+    actionHigher: 'Test a higher number',
+    actionHigherSub: 'See how an increase changes the verdict',
+    actionLifestyle: 'Impact on lifestyle',
+    actionLifestyleSub: 'Does this salary work for your city?',
+    actionMarket: 'Market pay for this role',
+    actionMarketSub: 'Browse salary data by city',
+    shareTitle: 'Share this verdict',
+    percentileStmt: (pp) => {
+      if (pp < 10) return `Bottom 10% for this role and market`
+      if (pp < 25) return `${pp}th percentile`
+      if (pp < 50) return `${pp}th percentile — below median`
+      if (pp < 75) return `${pp}th percentile — above median`
+      if (pp < 90) return `Top ${100-pp}% — strong`
+      return `Top 10% — exceptional`
+    },
   },
   es: {
     headline: '¿Vale la pena\nesta oferta?',
@@ -113,6 +137,30 @@ const LABELS = {
     privacyLink: 'Política de privacidad',
     networkLabel: 'Red Verdict',
     copied: 'Copiado al portapapeles',
+    peerStmtWeak: 'La mayoría de candidatos similares ganan más que esto',
+    peerStmtFair: 'Alrededor de la mitad de candidatos similares ganan más',
+    peerStmtStrong: 'Estás por delante de la mayoría de candidatos similares',
+    peerStmtTop: 'Estás en el nivel más alto para tu perfil y mercado',
+    riskLine: 'Aceptar esta oferta puede dejarte por debajo del mercado durante los próximos 2–3 años',
+    negDeltaTitle: 'Margen de negociación',
+    negDeltaSub: 'podrías razonablemente pedir',
+    actionCompare: 'Comparar otra oferta',
+    actionCompareSub: 'Distinto perfil, ciudad o paquete',
+    actionHigher: 'Probar con un número más alto',
+    actionHigherSub: 'Cómo cambiaría el veredicto',
+    actionLifestyle: 'Impacto en estilo de vida',
+    actionLifestyleSub: '¿Este salario funciona para tu ciudad?',
+    actionMarket: 'Salarios de mercado para este perfil',
+    actionMarketSub: 'Consulta datos salariales por ciudad',
+    shareTitle: 'Comparte este veredicto',
+    percentileStmt: (pp) => {
+      if (pp < 10) return `Inferior al 10% del mercado`
+      if (pp < 25) return `Percentil ${pp}`
+      if (pp < 50) return `Percentil ${pp} — por debajo de la mediana`
+      if (pp < 75) return `Percentil ${pp} — por encima de la mediana`
+      if (pp < 90) return `Top ${100-pp}% — fuerte`
+      return `Top 10% — excepcional`
+    },
   },
   de: {
     headline: 'Ist dieses Angebot\ndie Annahme wert?',
@@ -168,6 +216,30 @@ const LABELS = {
     privacyLink: 'Datenschutz',
     networkLabel: 'Verdict-Netzwerk',
     copied: 'In die Zwischenablage kopiert',
+    peerStmtWeak: 'Die meisten vergleichbaren Kandidaten verdienen mehr',
+    peerStmtFair: 'Etwa die Hälfte der vergleichbaren Kandidaten verdient mehr',
+    peerStmtStrong: 'Du liegst vor den meisten vergleichbaren Kandidaten',
+    peerStmtTop: 'Du gehörst zur Spitzengruppe für deine Rolle und deinen Markt',
+    riskLine: 'Dieses Angebot anzunehmen riskiert, die nächsten 2–3 Jahre unter Marktniveau zu bleiben',
+    negDeltaTitle: 'Verhandlungsspanne',
+    negDeltaSub: 'könntest du realistisch fordern',
+    actionCompare: 'Anderes Angebot vergleichen',
+    actionCompareSub: 'Andere Stelle, Stadt oder Paket',
+    actionHigher: 'Höhere Zahl testen',
+    actionHigherSub: 'Wie ändert sich das Urteil?',
+    actionLifestyle: 'Auswirkung auf Lebensstil',
+    actionLifestyleSub: 'Funktioniert dieses Gehalt in deiner Stadt?',
+    actionMarket: 'Marktgehälter für diese Stelle',
+    actionMarketSub: 'Gehaltsdaten nach Stadt durchsuchen',
+    shareTitle: 'Ergebnis teilen',
+    percentileStmt: (pp) => {
+      if (pp < 10) return `Untere 10% für diese Stelle`
+      if (pp < 25) return `${pp}. Perzentil`
+      if (pp < 50) return `${pp}. Perzentil — unter dem Median`
+      if (pp < 75) return `${pp}. Perzentil — über dem Median`
+      if (pp < 90) return `Top ${100-pp}% — stark`
+      return `Top 10% — außergewöhnlich`
+    },
   },
 }
 
@@ -537,11 +609,6 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     else if (pp < 90) posText = `You're in the top 25%`
     else              posText = `You're in the top 10% — exceptional`
 
-    let negText = null
-    if      (p < 25) negText = `You could reasonably ask for ${fmt(r.p50,r.symbol)}–${fmt(r.p75,r.symbol)}`
-    else if (p < 50) negText = `Push toward ${fmt(r.p75,r.symbol)} — that's mid-market for this profile`
-    else if (p < 75) negText = `Consider targeting ${fmt(r.p90,r.symbol)} if you have leverage`
-
     let emoText
     if      (p < 15) emoText = "Most candidates in your position receive significantly better offers. This one needs work before you sign."
     else if (p < 25) emoText = "This offer is below what your profile commands. You have real room to negotiate."
@@ -551,13 +618,31 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     else if (p < 92) emoText = "This company is serious about getting you. The package reflects that."
     else             emoText = "Rare. You're being offered top-of-market compensation. Pay attention to this signal."
 
+    // Peer statement
+    let peerStmt
+    if (pp < 25)      peerStmt = lbl.peerStmtWeak
+    else if (pp < 50) peerStmt = lbl.peerStmtFair
+    else if (pp < 80) peerStmt = lbl.peerStmtStrong
+    else              peerStmt = lbl.peerStmtTop
+
+    // Negotiation delta — numeric "+X to +Y" block
+    let negDelta = null
+    if (p < 75) {
+      const low  = Math.max(0, Math.round(r.p50 - totalComp))
+      const high = Math.max(0, Math.round(r.p75 - totalComp))
+      if (high > 0) negDelta = { low, high, sym: r.symbol }
+    }
+
+    // Risk line — only for genuinely weak offers
+    const showRisk = p < 25
+
     const confidence = getConfidence(cvData, resolvedCity)
 
     setResults({
       role: resolvedRole, city: resolvedCity, yoeLabel, bandLabel, yoeNum,
       salaryRaw, bonusRaw, equityRaw, totalComp,
       r, p, pp, vType, vTitle, vColor,
-      posText, negText, emoText, confidence,
+      posText, emoText, peerStmt, negDelta, showRisk, confidence,
     })
     trackEvent('verdict_run', { role: resolvedRole, city: resolvedCity, verdict: vType, percentile: pp })
     setScreen('results')
@@ -565,6 +650,17 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   }
 
   function goBack() {
+    setScreen('input')
+    if (typeof window !== 'undefined') window.scrollTo(0, 0)
+  }
+
+  function testHigher() {
+    setSalary('')
+    setBonus('')
+    setEquity('')
+    setShowBonus(false)
+    setShowEquity(false)
+    setResults(null)
     setScreen('input')
     if (typeof window !== 'undefined') window.scrollTo(0, 0)
   }
@@ -740,7 +836,9 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
       {/* ── RESULTS SCREEN ── */}
       {screen === 'results' && results && (
         <div className="screen">
-          <div style={{ marginBottom: '20px', paddingTop: '8px' }}>
+
+          {/* Back + context */}
+          <div style={{ marginBottom: '14px', paddingTop: '8px' }}>
             <button
               onClick={goBack}
               style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-3)', fontSize: '14px', padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px', transition: 'color 0.15s' }}
@@ -749,17 +847,17 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             >{lbl.backBtn}</button>
           </div>
 
-          <p style={{ fontSize: '13px', color: 'var(--text-2)', margin: '0 0 6px', lineHeight: 1.5 }}
+          <p style={{ fontSize: '13px', color: 'var(--text-2)', margin: '0 0 14px', lineHeight: 1.5 }}
             dangerouslySetInnerHTML={{ __html: lbl.contextTpl(results.role, results.city, results.yoeLabel, results.bandLabel) }}
           />
 
           {results.r.fallbackCity && (
-            <p style={{ display: 'block', fontSize: '11px', color: '#92400E', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '6px', padding: '7px 10px', margin: '0 0 14px', lineHeight: 1.5 }}>
+            <p style={{ display: 'block', fontSize: '11px', color: '#92400E', background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '6px', padding: '7px 10px', margin: '0 0 12px', lineHeight: 1.5 }}>
               {lbl.fallbackTpl(results.city, results.r.fallbackCity)}
             </p>
           )}
 
-          {/* Verdict card */}
+          {/* 1. VERDICT CARD */}
           <div className={`verdict-card fade-in delay-1 verdict-${results.vType}`}>
             <div className="verdict-tag" style={{ color: results.vColor }}>
               <span className="verdict-tag-dot" style={{ background: results.vColor }} />
@@ -769,22 +867,37 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             <div className="verdict-comp">
               Base: <strong style={{ color: 'var(--text-1)' }}>{fmt(results.salaryRaw, results.r.symbol)}</strong>
               {(results.bonusRaw > 0 || results.equityRaw > 0) && (
-                <> &nbsp;·&nbsp; Total comp: <strong style={{ color: 'var(--text-1)' }}>{fmt(results.totalComp, results.r.symbol)}</strong></>
+                <> &nbsp;·&nbsp; Total: <strong style={{ color: 'var(--text-1)' }}>{fmt(results.totalComp, results.r.symbol)}</strong></>
               )}
             </div>
+            <p className="verdict-meta">{results.emoText}</p>
+            {results.showRisk && (
+              <p className="verdict-risk">{lbl.riskLine}</p>
+            )}
           </div>
 
-          {/* Share */}
-          <button className="share-btn fade-in delay-2" onClick={shareResult}>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-            </svg>
-            {lbl.shareBtn}
-          </button>
+          {/* 2. PEER POSITION */}
+          <div className="peer-block fade-in delay-2">
+            <p className="peer-stmt">{results.peerStmt}</p>
+            <span className="peer-pct-badge">{lbl.percentileStmt(results.pp)}</span>
+          </div>
 
-          {/* Market Range */}
-          <div className="stat-card fade-in delay-2">
+          {/* 3. NEGOTIATION DELTA */}
+          {results.negDelta && (
+            <div className="neg-delta-block fade-in delay-2">
+              <div className="neg-delta-label">{lbl.negDeltaTitle}</div>
+              <div className="neg-delta-amount">
+                {results.negDelta.low > 1000
+                  ? `+${fmt(results.negDelta.low, results.negDelta.sym)} – +${fmt(results.negDelta.high, results.negDelta.sym)}`
+                  : `up to +${fmt(results.negDelta.high, results.negDelta.sym)}`
+                }
+              </div>
+              <div className="neg-delta-sub">{lbl.negDeltaSub}</div>
+            </div>
+          )}
+
+          {/* 4. MARKET RANGE */}
+          <div className="stat-card fade-in delay-3">
             <div className="stat-label">{lbl.marketRange}</div>
             <div className="stat-value" style={{ marginBottom: '3px' }}>{fmt(results.r.p25, results.r.symbol)} – {fmt(results.r.p75, results.r.symbol)}</div>
             <div style={{ fontSize: '12px', color: 'var(--text-3)', marginBottom: '10px' }}>
@@ -800,23 +913,20 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             </div>
           </div>
 
-          {/* Position */}
-          <div className="stat-card fade-in delay-3">
-            <div className="stat-label">{lbl.yourPosition}</div>
-            <div className="stat-value">{results.posText}</div>
-            <p className="peer-line" dangerouslySetInnerHTML={{ __html: getPeerComparison(results.pp, results.role, results.city) }} />
+          {/* 5. SHARE — prominent */}
+          <div className="share-block fade-in delay-3">
+            <p className="share-block-title">{lbl.shareTitle}</p>
+            <button className="share-btn-main" onClick={shareResult}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              {lbl.shareBtn}
+            </button>
           </div>
 
-          {/* Negotiation signal */}
-          {results.negText && (
-            <div className="stat-card fade-in delay-4">
-              <div className="stat-label">{lbl.negSignal}</div>
-              <div className="stat-value">{results.negText}</div>
-            </div>
-          )}
-
-          {/* Script / Next steps */}
-          <div className="stat-card fade-in delay-5">
+          {/* 6. SCRIPT / NEXT STEPS */}
+          <div className="stat-card fade-in delay-4">
             {results.vType === 'strong' ? (
               <>
                 <div className="stat-label">{lbl.nextSteps}</div>
@@ -839,27 +949,39 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             )}
           </div>
 
-          {/* Emotional */}
-          <div className="fade-in delay-6" style={{ padding: '14px 2px 6px' }}>
-            <p style={{ fontSize: '15px', color: 'var(--text-2)', fontStyle: 'italic', lineHeight: 1.65, margin: 0 }}>{results.emoText}</p>
+          {/* 7. SECOND ACTIONS */}
+          <div className="actions-grid fade-in delay-5">
+            <button className="action-card" onClick={goBack}>
+              <svg className="action-icon-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 10H17M3 10l4-4M3 10l4 4"/>
+              </svg>
+              <span className="action-title">{lbl.actionCompare}</span>
+              <span className="action-sub">{lbl.actionCompareSub}</span>
+            </button>
+            <button className="action-card" onClick={testHigher}>
+              <svg className="action-icon-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 16V4M4 10l6-6 6 6"/>
+              </svg>
+              <span className="action-title">{lbl.actionHigher}</span>
+              <span className="action-sub">{lbl.actionHigherSub}</span>
+            </button>
+            <a href="https://www.spendverdict.com" target="_blank" rel="noopener" className="action-card">
+              <svg className="action-icon-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 10a7 7 0 1 0 14 0A7 7 0 0 0 3 10z"/><path d="M10 7v3l2 2"/>
+              </svg>
+              <span className="action-title">{lbl.actionLifestyle}</span>
+              <span className="action-sub">{lbl.actionLifestyleSub}</span>
+            </a>
+            <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" className="action-card">
+              <svg className="action-icon-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="12" width="3" height="5" rx="1"/><rect x="8.5" y="8" width="3" height="9" rx="1"/><rect x="14" y="4" width="3" height="13" rx="1"/>
+              </svg>
+              <span className="action-title">{lbl.actionMarket}</span>
+              <span className="action-sub">{lbl.actionMarketSub}</span>
+            </a>
           </div>
 
-          <div className="divider" />
-
-          <div>
-            <button className="btn-ghost" onClick={goBack}>{lbl.compareBtn}</button>
-          </div>
-
-          {/* Network */}
-          <div className="network-bar fade-in delay-6">
-            <span className="network-label">{lbl.networkLabel}</span>
-            <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style={{ fontSize: '12px', fontWeight: 600, textDecoration: 'none', color: '#f97316', letterSpacing: '-0.01em' }}>SalaryVerdict</a>
-            <span className="network-sep">·</span>
-            <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style={{ fontSize: '12px', fontWeight: 600, textDecoration: 'none', color: '#a78bfa', letterSpacing: '-0.01em' }}>SpendVerdict</a>
-            <span className="network-sep">·</span>
-            <span style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--cv-primary)' }}>CompVerdict</span>
-          </div>
-          <p style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '14px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '8px', lineHeight: 1.6 }}>
             {lbl.privacyNote} <a href="/privacy/" style={{ color: 'var(--text-3)' }}>{lbl.privacyLink}</a>
           </p>
         </div>
