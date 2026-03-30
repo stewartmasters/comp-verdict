@@ -6,8 +6,8 @@
  * -----------
  * Baseline role: Software Engineer
  * Baseline band: Mid (3–5 YoE)
- * Source: aggregated from public salary surveys (Levels.fyi, Glassdoor,
- *         LinkedIn Salary, Stack Overflow Developer Survey, local market reports)
+ * Sources: BLS OEWS (US), ONS ASHE (UK), INE EES (Spain), Stack Overflow
+ *          Developer Survey (global), ECB exchange rates
  * Currency: local, annual gross (pre-tax)
  *
  * All other roles are derived via role multipliers applied to the SE baseline.

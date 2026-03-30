@@ -5,7 +5,7 @@ const HOME_PATH    = { en: '/', es: '/es/', de: '/de/' }
 const FOOTER_LABELS = {
   en: {
     desc: 'Is this offer worth taking? Enter your package and get a data-backed verdict in seconds. Free, no sign-up required.',
-    dataNote: 'BLS OEWS · ONS ASHE · INE EES · Stack Overflow Developer Survey · Updated Q1 2025',
+    dataNote: 'Sources: BLS OEWS · ONS ASHE · INE EES · Stack Overflow Survey · ECB rates · Updated Q1 2025',
     toolsHead: 'Tools',
     guidesHead: 'Popular guides',
     offerEval: 'Offer evaluator',
@@ -18,7 +18,7 @@ const FOOTER_LABELS = {
   },
   es: {
     desc: '¿Vale la pena esta oferta? Introduce tu paquete y obtén un veredicto basado en datos en segundos. Gratis, sin registro.',
-    dataNote: 'BLS OEWS · ONS ASHE · INE EES · Stack Overflow Developer Survey · Actualizado T1 2025',
+    dataNote: 'Fuentes: BLS OEWS · ONS ASHE · INE EES · Stack Overflow Survey · Tipos ECB · Actualizado T1 2025',
     toolsHead: 'Herramientas',
     guidesHead: 'Guías populares',
     offerEval: 'Evaluador de oferta',
@@ -31,7 +31,7 @@ const FOOTER_LABELS = {
   },
   de: {
     desc: 'Ist dieses Angebot die Annahme wert? Gib dein Paket ein und erhalte in Sekunden ein datenbasiertes Urteil. Kostenlos, ohne Anmeldung.',
-    dataNote: 'BLS OEWS · ONS ASHE · INE EES · Stack Overflow Developer Survey · Aktualisiert Q1 2025',
+    dataNote: 'Quellen: BLS OEWS · ONS ASHE · INE EES · Stack Overflow Survey · EZB-Kurse · Aktualisiert Q1 2025',
     toolsHead: 'Tools',
     guidesHead: 'Beliebte Ratgeber',
     offerEval: 'Angebots-Prüfer',

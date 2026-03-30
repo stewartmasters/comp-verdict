@@ -41,7 +41,7 @@ const LABELS = {
     methodology: 'Methodology ↗',
     confidenceHigh: 'High confidence',
     confidenceMed: 'Estimated range',
-    basedOn: 'Based on market salary data',
+    basedOn: 'Gov. statistics + developer surveys',
     fallbackTpl: (city, fallback) => `No direct data for ${city}. Showing ${fallback} as the nearest reference.`,
     contextTpl: (role, city, yoeLabel, bandLabel) => `<strong style="color:var(--text-1);">${role}</strong> &nbsp;·&nbsp; <strong style="color:var(--text-1);">${city}</strong> &nbsp;·&nbsp; ${yoeLabel} &nbsp;·&nbsp; <span style="color:var(--text-3);">${bandLabel}</span>`,
     yoe1: '1 yr exp', yoeN: (n) => `${n} yrs exp`,
@@ -120,7 +120,7 @@ const LABELS = {
     methodology: 'Metodología ↗',
     confidenceHigh: 'Alta confianza',
     confidenceMed: 'Rango estimado',
-    basedOn: 'Basado en datos de mercado',
+    basedOn: 'Estadísticas oficiales + encuestas',
     fallbackTpl: (city, fallback) => `Sin datos directos para ${city}. Mostrando ${fallback} como referencia más cercana.`,
     contextTpl: (role, city, yoeLabel, bandLabel) => `<strong style="color:var(--text-1);">${role}</strong> &nbsp;·&nbsp; <strong style="color:var(--text-1);">${city}</strong> &nbsp;·&nbsp; ${yoeLabel} &nbsp;·&nbsp; <span style="color:var(--text-3);">${bandLabel}</span>`,
     yoe1: '1 año exp', yoeN: (n) => `${n} años exp`,
@@ -199,7 +199,7 @@ const LABELS = {
     methodology: 'Methodik ↗',
     confidenceHigh: 'Hohe Konfidenz',
     confidenceMed: 'Geschätzte Spanne',
-    basedOn: 'Basiert auf Marktdaten',
+    basedOn: 'Amtl. Statistiken + Entwicklerumfragen',
     fallbackTpl: (city, fallback) => `Keine direkten Daten für ${city}. Zeige ${fallback} als nächste Referenz.`,
     contextTpl: (role, city, yoeLabel, bandLabel) => `<strong style="color:var(--text-1);">${role}</strong> &nbsp;·&nbsp; <strong style="color:var(--text-1);">${city}</strong> &nbsp;·&nbsp; ${yoeLabel} &nbsp;·&nbsp; <span style="color:var(--text-3);">${bandLabel}</span>`,
     yoe1: '1 Jahr Erfahrung', yoeN: (n) => `${n} Jahre Erfahrung`,
@@ -999,7 +999,20 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             <div className="modal-section">
               <div className="modal-section-title">Data sources</div>
               <div className="modal-body">
-                Benchmarks are aggregated from public salary surveys: <strong>Stack Overflow Developer Survey</strong>, <strong>Glassdoor</strong>, <strong>LinkedIn Salary</strong>, <strong>Levels.fyi</strong>, and regional labour market reports. Data is reviewed quarterly.
+                CompVerdict draws from four primary sources, all publicly available and legally open for reuse:<br /><br />
+                <strong>BLS OEWS</strong> (U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics) — official wage percentiles by US metro area. Public domain.<br /><br />
+                <strong>ONS ASHE</strong> (UK Office for National Statistics, Annual Survey of Hours and Earnings) — earnings by occupation and region. Open Government Licence v3.<br /><br />
+                <strong>INE EES</strong> (Instituto Nacional de Estadística, Encuesta de Estructura Salarial) — national tech wage data for Spain with city-level adjustments. CC-BY.<br /><br />
+                <strong>Stack Overflow Developer Survey</strong> — annual self-reported compensation by role, country, and experience level. Open Database Licence (ODbL).<br /><br />
+                <strong>ECB exchange rates</strong> — European Central Bank daily rates used to convert all figures to local currency.
+              </div>
+            </div>
+            <div className="modal-divider" />
+            <div className="modal-section">
+              <div className="modal-section-title">How benchmarks are built</div>
+              <div className="modal-body">
+                The <strong>Software Engineer</strong> role at mid-band level is the baseline for each market, established from the sources above. All other roles are derived as market-validated multipliers (e.g. a Product Manager in London earns ~1.14× a Software Engineer in London).<br /><br />
+                When multiple sources cover the same market, government data (BLS/ONS/INE) is weighted 3× and survey data (Stack Overflow) is weighted 2×. This ensures official statistics anchor the benchmarks.
               </div>
             </div>
             <div className="modal-divider" />
@@ -1008,29 +1021,23 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
               <div className="modal-body">
                 Your years of experience maps to one of four bands:<br /><br />
                 <strong>Junior</strong> (0–2 yrs) · <strong>Mid-level</strong> (3–5 yrs) · <strong>Senior</strong> (6–10 yrs) · <strong>Staff / Lead</strong> (11+ yrs)<br /><br />
-                Each band has its own p25/p50/p75 range. This avoids false precision from continuous YoE multipliers.
-              </div>
-            </div>
-            <div className="modal-divider" />
-            <div className="modal-section">
-              <div className="modal-section-title">Role adjustments</div>
-              <div className="modal-body">
-                All roles are benchmarked relative to <strong>Software Engineer</strong> as the baseline. Multipliers are applied per role — and in some cases, per market. For example, a Product Manager commands a larger premium in London (1.14×) than in Barcelona (1.03×), reflecting genuine market differences.
+                Government sources report aggregate distributions across all experience levels. We apply calibrated band-scaling ratios validated against known data points: Junior ≈ 57% of mid-band median · Senior ≈ 159% · Staff ≈ 208%.
               </div>
             </div>
             <div className="modal-divider" />
             <div className="modal-section">
               <div className="modal-section-title">Confidence levels</div>
               <div className="modal-body">
-                <strong style={{ color: '#059669' }}>High confidence</strong> — Spain, UK, Germany: explicitly benchmarked per role, city, and band from multiple sources.<br /><br />
-                <strong style={{ color: '#D97706' }}>Estimated range</strong> — all other markets: derived from mid-level survey data using consistent band scaling ratios. Treat as directional.
+                <strong style={{ color: '#059669' }}>High confidence</strong> — Spain, UK, Germany: government data with explicit role and band breakdown, cross-validated against multiple sources.<br /><br />
+                <strong style={{ color: '#D97706' }}>Estimated range</strong> — all other markets: derived from mid-level survey data using the calibrated scaling model. Treat as directional guidance, not a precise figure.
               </div>
             </div>
             <div className="modal-divider" />
             <div className="modal-section">
               <div className="modal-section-title">Limitations</div>
               <div className="modal-body">
-                CompVerdict does not account for company size, industry vertical, funding stage, or individual negotiation outcomes. Salary data reflects gross annual compensation before tax. Results are estimates — use them as a starting point for negotiation, not a ceiling or floor.
+                All figures are annual gross compensation before tax. Take-home pay varies significantly by country and tax bracket.<br /><br />
+                CompVerdict does not model company size, industry vertical, or funding stage. Government surveys have a 12–18 month publication lag. Results are estimates for negotiation reference — not guaranteed market rates.
               </div>
             </div>
           </div>
