@@ -1,8 +1,4 @@
-const SALARY_ROLES = [
-  'Software Engineer', 'Product Manager', 'Data Scientist', 'Engineering Manager',
-  'Frontend Engineer', 'Backend Engineer', 'Full Stack Engineer', 'DevOps Engineer',
-  'Machine Learning Engineer', 'UX Designer',
-]
+import { SALARY_ROLES } from '../lib/helpers.js'
 
 export default function HubPageContent({ type, locale, getSalaryPathFn, getNegPathFn, homePath, salaryHubPath, negHubPath }) {
   const isSalary = type === 'salary'
