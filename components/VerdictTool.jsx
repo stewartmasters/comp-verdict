@@ -82,6 +82,34 @@ const LABELS = {
       if (pp < 90) return `Top ${100-pp}% — strong`
       return `Top 10% — exceptional`
     },
+    verdictActionWeak:   (p50, p75) => `Do not accept yet — counter at ${p50}–${p75}`,
+    verdictActionFair:   (p75) => `Negotiate before signing — push toward ${p75}`,
+    verdictActionStrong: `Strong offer — focus on equity, signing bonus, and PTO`,
+    acceptHeading:    'If you accept this offer',
+    negotiateHeading: (low, high) => `If you negotiate to ${low}–${high}`,
+    acceptBullet1:    (gap) => `${gap} below market median`,
+    acceptBullet2:    (gap) => `Over 2 years: ${gap} in potential earnings gap`,
+    acceptBullet3:    'Future raises will anchor from a below-market base',
+    acceptAbove1:     'Above market median — well positioned',
+    acceptAbove2:     'Strong anchor for future salary negotiations',
+    acceptAbove3:     'Minimal risk of leaving money on the table',
+    negBullet1Median: 'You reach market median',
+    negBullet1Strong: 'You reach strong market territory',
+    negBullet2:       (gain) => `Over 2 years: +${gain} recovered`,
+    negBullet3:       'Stronger anchor for future raises and external offers',
+    recLabel:         'Recommended Action',
+    recCounter:       (low, high) => `Counter at ${low}–${high}`,
+    offerScoreLabel:  'Offer Score',
+    scoreDesc:        (pp) => pp < 25 ? 'Below market — significant room to negotiate' : pp < 50 ? 'Below median — negotiation recommended' : pp < 63 ? 'Near median — some room to push' : pp < 80 ? 'Above median — strong offer' : 'Top-tier — exceptional package',
+    firstOfferLabel:  'First Offer Context',
+    firstOfferCtx:    (pp) => pp < 25 ? 'This appears to be a low opening offer. Companies routinely agree to 10–20% above the initial number. Do not accept without countering.' : pp < 50 ? 'Standard first offer. Most candidates at this level successfully negotiate 5–12% above the opening number. A counter is expected and appropriate.' : pp < 75 ? 'This offer is above median, which suggests the company is motivated. Limited room on base — but equity, signing bonus, and flexible arrangements are often still negotiable.' : 'Companies rarely open this high. This is likely their best offer, not a first offer. Prioritise non-cash elements over pushing on base salary.',
+    simLabel:         'Scenario Simulator',
+    simInstruction:   'Drag to see how the verdict changes at different salary levels.',
+    simWeak:          'Weak offer',
+    simFair:          'Fair offer',
+    simStrong:        'Strong offer',
+    simDelta:         (sign, amt) => `(${sign}${amt} vs your offer)`,
+    simThresholds:    (fairFrom, strongFrom) => `Weak · Fair from ${fairFrom} · Strong from ${strongFrom}`,
   },
   es: {
     headline: '¿Vale la pena\nesta oferta?',
@@ -161,6 +189,34 @@ const LABELS = {
       if (pp < 90) return `Top ${100-pp}% — fuerte`
       return `Top 10% — excepcional`
     },
+    verdictActionWeak:   (p50, p75) => `No aceptes todavía — contraoferta en ${p50}–${p75}`,
+    verdictActionFair:   (p75) => `Negocia antes de firmar — apunta a ${p75}`,
+    verdictActionStrong: `Oferta sólida — céntrate en equity, bonus de firma y vacaciones`,
+    acceptHeading:    'Si aceptas esta oferta',
+    negotiateHeading: (low, high) => `Si negocias hasta ${low}–${high}`,
+    acceptBullet1:    (gap) => `${gap} por debajo de la mediana del mercado`,
+    acceptBullet2:    (gap) => `En 2 años: ${gap} de brecha salarial acumulada`,
+    acceptBullet3:    'Tus futuras subidas partirán de una base por debajo del mercado',
+    acceptAbove1:     'Por encima de la mediana del mercado — bien posicionado/a',
+    acceptAbove2:     'Base sólida para futuras negociaciones salariales',
+    acceptAbove3:     'Riesgo mínimo de dejar dinero sobre la mesa',
+    negBullet1Median: 'Alcanzas la mediana del mercado',
+    negBullet1Strong: 'Alcanzas el tramo alto del mercado',
+    negBullet2:       (gain) => `En 2 años: +${gain} recuperados`,
+    negBullet3:       'Base más sólida para futuras subidas y cambios de empresa',
+    recLabel:         'Acción Recomendada',
+    recCounter:       (low, high) => `Contraoferta en ${low}–${high}`,
+    offerScoreLabel:  'Puntuación de la Oferta',
+    scoreDesc:        (pp) => pp < 25 ? 'Por debajo del mercado — margen significativo para negociar' : pp < 50 ? 'Por debajo de la mediana — se recomienda negociar' : pp < 63 ? 'Cerca de la mediana — algo de margen' : pp < 80 ? 'Por encima de la mediana — oferta sólida' : 'Nivel premium — paquete excepcional',
+    firstOfferLabel:  'Contexto de Primera Oferta',
+    firstOfferCtx:    (pp) => pp < 25 ? 'Parece una oferta inicial baja. Las empresas suelen aceptar un 10–20% más cuando el candidato negocia. No aceptes sin contraoferta.' : pp < 50 ? 'Primera oferta estándar. La mayoría de candidatos de este nivel negocian con éxito un 5–12% más. Una contraoferta es esperada y apropiada.' : pp < 75 ? 'Esta oferta está por encima de la mediana, lo que sugiere que la empresa está motivada. El margen en salario base es limitado, pero equity, bonus de firma y condiciones flexibles suelen ser negociables.' : 'Las empresas raramente abren tan alto. Probablemente es su mejor oferta, no una primera. Prioriza elementos no monetarios antes que insistir en el salario base.',
+    simLabel:         'Simulador de Escenarios',
+    simInstruction:   'Desliza para ver cómo cambia el veredicto según el salario.',
+    simWeak:          'Oferta débil',
+    simFair:          'Oferta justa',
+    simStrong:        'Oferta sólida',
+    simDelta:         (sign, amt) => `(${sign}${amt} respecto a tu oferta)`,
+    simThresholds:    (fairFrom, strongFrom) => `Débil · Justa desde ${fairFrom} · Sólida desde ${strongFrom}`,
   },
   de: {
     headline: 'Ist dieses Angebot\ndie Annahme wert?',
@@ -240,6 +296,34 @@ const LABELS = {
       if (pp < 90) return `Top ${100-pp}% — stark`
       return `Top 10% — außergewöhnlich`
     },
+    verdictActionWeak:   (p50, p75) => `Noch nicht annehmen — Gegenangebot bei ${p50}–${p75}`,
+    verdictActionFair:   (p75) => `Vor Vertragsunterzeichnung verhandeln — Ziel: ${p75}`,
+    verdictActionStrong: `Starkes Angebot — auf Equity, Signing Bonus und Urlaub fokussieren`,
+    acceptHeading:    'Wenn du dieses Angebot annimmst',
+    negotiateHeading: (low, high) => `Wenn du auf ${low}–${high} verhandelst`,
+    acceptBullet1:    (gap) => `${gap} unter dem Marktmedian`,
+    acceptBullet2:    (gap) => `Über 2 Jahre: ${gap} Einkommenslücke`,
+    acceptBullet3:    'Künftige Gehaltserhöhungen basieren auf einem unterdurchschnittlichen Grundgehalt',
+    acceptAbove1:     'Über dem Marktmedian — gut positioniert',
+    acceptAbove2:     'Starke Ausgangsbasis für künftige Gehaltsverhandlungen',
+    acceptAbove3:     'Kaum Risiko, Geld auf dem Tisch zu lassen',
+    negBullet1Median: 'Du erreichst den Marktmedian',
+    negBullet1Strong: 'Du erreichst das obere Marktsegment',
+    negBullet2:       (gain) => `Über 2 Jahre: +${gain} zurückgewonnen`,
+    negBullet3:       'Stärkere Basis für künftige Erhöhungen und Stellenwechsel',
+    recLabel:         'Empfohlene Maßnahme',
+    recCounter:       (low, high) => `Gegenangebot bei ${low}–${high}`,
+    offerScoreLabel:  'Angebotsbewertung',
+    scoreDesc:        (pp) => pp < 25 ? 'Unter Marktniveau — erheblicher Verhandlungsspielraum' : pp < 50 ? 'Unter dem Median — Verhandlung empfohlen' : pp < 63 ? 'Nahe am Median — etwas Spielraum' : pp < 80 ? 'Über dem Median — starkes Angebot' : 'Spitzenniveau — außergewöhnliches Paket',
+    firstOfferLabel:  'Kontext Erstangebot',
+    firstOfferCtx:    (pp) => pp < 25 ? 'Dies scheint ein niedrig angesetztes Erstangebot zu sein. Unternehmen akzeptieren bei Verhandlungen routinemäßig 10–20% mehr. Nicht ohne Gegenangebot annehmen.' : pp < 50 ? 'Typisches Erstangebot. Die meisten Kandidaten auf diesem Level verhandeln erfolgreich 5–12% mehr heraus. Ein Gegenangebot ist erwartet und angemessen.' : pp < 75 ? 'Dieses Angebot liegt über dem Median, was auf ein hohes Interesse des Unternehmens hindeutet. Wenig Spielraum beim Grundgehalt — aber Equity, Signing Bonus und flexible Regelungen sind oft noch verhandelbar.' : 'Unternehmen eröffnen selten so hoch. Dies ist wahrscheinlich ihr bestes Angebot. Fokussiere auf nicht-monetäre Elemente statt auf das Grundgehalt.',
+    simLabel:         'Szenario-Simulator',
+    simInstruction:   'Verschiebe den Regler, um zu sehen, wie sich das Urteil bei verschiedenen Gehältern ändert.',
+    simWeak:          'Schwaches Angebot',
+    simFair:          'Faires Angebot',
+    simStrong:        'Starkes Angebot',
+    simDelta:         (sign, amt) => `(${sign}${amt} gegenüber deinem Angebot)`,
+    simThresholds:    (fairFrom, strongFrom) => `Schwach · Fair ab ${fairFrom} · Stark ab ${strongFrom}`,
   },
 }
 
@@ -325,17 +409,24 @@ function getOfferIdentity(pp) {
   return        { label: 'Top of Market',                sub: 'Top 10% — rare and genuine' }
 }
 
-function buildShareText(role, city, bandLabel, pp, vType) {
-  const url = 'https://www.compverdict.com'
-  const identity = getOfferIdentity(pp)
+function buildShareText(role, city, bandLabel, pp, vType, simSal, simVT, r, totalComp) {
+  const url = 'https://comp-verdict.netlify.app'
   const above = 100 - pp
+  let base
   if (vType === 'weak') {
-    return `Verdict: "${identity.label}"\n\nMy ${role} offer in ${city} sits in the bottom ${pp}% for a ${bandLabel}. Checked it with CompVerdict before signing.\n\nWorth doing if you have an offer → ${url}`
+    base = `Just checked my ${role} offer in ${city} with CompVerdict.\n\nVerdict: weak offer — bottom ${pp}% for a ${bandLabel}. Time to negotiate.`
   } else if (vType === 'fair') {
-    return `Verdict: "${identity.label}"\n\nMy ${role} offer in ${city} is ${pp}th percentile for a ${bandLabel}. Interesting benchmark tool if you have an offer in front of you.\n\n→ ${url}`
+    base = `Ran my ${role} offer in ${city} through CompVerdict.\n\nFair offer — ${pp}th percentile for a ${bandLabel}. Could be better.`
   } else {
-    return `Verdict: "${identity.label}"\n\nMy ${role} offer in ${city} is top ${above}% for a ${bandLabel}. Free tool — worth checking before you accept any offer.\n\n→ ${url}`
+    base = `CompVerdict: my ${role} offer in ${city} is in the top ${above}% for a ${bandLabel}. Strong offer. 💪`
   }
+
+  if (simSal != null && simSal !== totalComp && simVT && simVT !== vType) {
+    const simVerb = simVT === 'strong' ? 'becomes strong' : simVT === 'fair' ? 'becomes fair' : 'stays weak'
+    base += `\n\nSimulator: at ${fmt(simSal, r.symbol)} it ${simVerb}.`
+  }
+
+  return base + `\n\nCheck yours → ${url}`
 }
 
 function buildNegScript(role, city, bandLabel, r) {
@@ -535,6 +626,14 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   // Cookie
   const [showCookie, setShowCookie] = useState(false)
   const [simSalary, setSimSalary]   = useState(null)
+  const [compactMode, setCompactMode] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      setCompactMode(params.get('compact') === '1')
+    }
+  }, [])
 
   // GA
   useEffect(() => {
@@ -688,15 +787,11 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     const negotiationHigh  = Math.round(r.p75)
 
     let verdictAction
-    if (p < 25)      verdictAction = `Do not accept yet — counter at ${fmt(r.p50, r.symbol)}–${fmt(r.p75, r.symbol)}`
-    else if (p < 63) verdictAction = `Negotiate before signing — push toward ${fmt(r.p75, r.symbol)}`
-    else             verdictAction = `Strong offer — focus negotiation on equity, signing bonus, and PTO`
+    if (p < 25)      verdictAction = lbl.verdictActionWeak(fmt(r.p50, r.symbol), fmt(r.p75, r.symbol))
+    else if (p < 63) verdictAction = lbl.verdictActionFair(fmt(r.p75, r.symbol))
+    else             verdictAction = lbl.verdictActionStrong
 
-    let firstOfferCtx
-    if (pp < 25)      firstOfferCtx = "This appears to be a low opening offer. Companies routinely agree to 10–20% above the initial number. Do not accept without countering."
-    else if (pp < 50) firstOfferCtx = "Standard first offer. Most candidates at this level successfully negotiate 5–12% above the opening number. A counter is expected and appropriate."
-    else if (pp < 75) firstOfferCtx = "This offer is above median, which suggests the company is motivated. Limited room on base — but equity, signing bonus, and flexible arrangements are often still negotiable."
-    else              firstOfferCtx = "Companies rarely open this high. This is likely their best offer, not a first offer. Prioritise non-cash elements over pushing on base salary."
+    let firstOfferCtx = lbl.firstOfferCtx(pp)
 
     setResults({
       role: resolvedRole, city: resolvedCity, yoeLabel, bandLabel, yoeNum,
@@ -732,8 +827,8 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
 
   function shareResult() {
     if (!results) return
-    const { role: r2, city: c2, bandLabel: bl, pp: pp2, vType: vt } = results
-    const text = buildShareText(r2, c2, bl, pp2, vt)
+    const { role: r2, city: c2, bandLabel: bl, pp: pp2, vType: vt, r: rData, totalComp: tc } = results
+    const text = buildShareText(r2, c2, bl, pp2, vt, simSalary, simVType, rData, tc)
     trackEvent('share_result', { role: r2, city: c2, verdict: vt })
     if (typeof navigator !== 'undefined' && navigator.share) {
       navigator.share({ text }).catch(() => copyText(text))
@@ -772,7 +867,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   })() : 0
   const simVType  = _simScore < 25 ? 'weak' : _simScore < 63 ? 'fair' : 'strong'
   const simVColor = simVType === 'weak' ? '#ef4444' : simVType === 'fair' ? '#f59e0b' : '#10b981'
-  const simVLabel = simVType === 'weak' ? 'Weak offer' : simVType === 'fair' ? 'Fair offer' : 'Strong offer'
+  const simVLabel = simVType === 'weak' ? lbl.simWeak : simVType === 'fair' ? lbl.simFair : lbl.simStrong
 
   return (
     <>
@@ -977,24 +1072,26 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             </div>
           </div>
 
+          {!compactMode && (
+          <>
           {/* 2. IF YOU ACCEPT THIS OFFER */}
           <div className="decision-block decision-accept fade-in delay-2">
             <div className="decision-heading">
               <span className="decision-arrow" style={{ color: results.vType === 'strong' ? '#10b981' : '#94A3B8' }}>→</span>
-              If you accept this offer
+              {lbl.acceptHeading}
             </div>
             <ul className="decision-list">
               {results.gap > 0 ? (
                 <>
-                  <li><strong>{fmt(results.gap, results.r.symbol)}</strong> below market median</li>
-                  <li>Over 2 years: <strong>{fmt(results.twoYearGap, results.r.symbol)}</strong> in potential earnings gap</li>
-                  <li>Future raises will anchor from a below-market base</li>
+                  <li>{lbl.acceptBullet1(fmt(results.gap, results.r.symbol))}</li>
+                  <li>{lbl.acceptBullet2(fmt(results.twoYearGap, results.r.symbol))}</li>
+                  <li>{lbl.acceptBullet3}</li>
                 </>
               ) : (
                 <>
-                  <li>Above market median — well positioned</li>
-                  <li>Strong anchor for future salary negotiations</li>
-                  <li>Minimal risk of leaving money on the table</li>
+                  <li>{lbl.acceptAbove1}</li>
+                  <li>{lbl.acceptAbove2}</li>
+                  <li>{lbl.acceptAbove3}</li>
                 </>
               )}
             </ul>
@@ -1005,12 +1102,12 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             <div className="decision-block decision-negotiate fade-in delay-2">
               <div className="decision-heading">
                 <span className="decision-arrow" style={{ color: '#10b981' }}>↗</span>
-                If you negotiate to {fmt(results.negotiationLow, results.r.symbol)}–{fmt(results.negotiationHigh, results.r.symbol)}
+                {lbl.negotiateHeading(fmt(results.negotiationLow, results.r.symbol), fmt(results.negotiationHigh, results.r.symbol))}
               </div>
               <ul className="decision-list">
-                <li>You reach market {results.pp < 50 ? 'median' : 'strong territory'}</li>
-                {results.gap > 0 && <li>Over 2 years: <strong>+{fmt(results.twoYearGap, results.r.symbol)}</strong> recovered</li>}
-                <li>Stronger anchor for future raises and external offers</li>
+                <li>{results.pp < 50 ? lbl.negBullet1Median : lbl.negBullet1Strong}</li>
+                {results.gap > 0 && <li>{lbl.negBullet2(fmt(results.twoYearGap, results.r.symbol))}</li>}
+                <li>{lbl.negBullet3}</li>
               </ul>
             </div>
           )}
@@ -1018,9 +1115,11 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
           {/* 4. RECOMMENDED ACTION */}
           {results.vType !== 'strong' && (
             <div className="recommended-action fade-in delay-3">
-              <div className="rec-eyebrow">Recommended Action</div>
-              <div className="rec-counter">Counter at {fmt(results.negotiationLow, results.r.symbol)}–{fmt(results.negotiationHigh, results.r.symbol)}</div>
+              <div className="rec-eyebrow">{lbl.recLabel}</div>
+              <div className="rec-counter">{lbl.recCounter(fmt(results.negotiationLow, results.r.symbol), fmt(results.negotiationHigh, results.r.symbol))}</div>
             </div>
+          )}
+          </>
           )}
 
           {/* 5. NEGOTIATION SCRIPT / STRONG TIPS */}
@@ -1047,9 +1146,11 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             )}
           </div>
 
+          {!compactMode && (
+          <>
           {/* 6. OFFER SCORE */}
           <div className="stat-card fade-in delay-3">
-            <div className="stat-label">Offer Score</div>
+            <div className="stat-label">{lbl.offerScoreLabel}</div>
             <div className="offer-score-wrap">
               <span className="offer-score-number" style={{ color: results.vColor }}>{results.pp}</span>
               <span className="offer-score-denom"> / 100</span>
@@ -1058,18 +1159,14 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
               <div className="offer-score-fill" style={{ width: `${results.pp}%`, background: results.vColor }} />
             </div>
             <div className="offer-score-sub">
-              {results.pp < 25 ? 'Below market — significant room to negotiate' :
-               results.pp < 50 ? 'Below median — negotiation recommended' :
-               results.pp < 63 ? 'Near median — some room to push' :
-               results.pp < 80 ? 'Above median — strong offer' :
-               'Top-tier — exceptional package'}
+              {lbl.scoreDesc(results.pp)}
               &nbsp;·&nbsp;{results.confidence === 'high' ? lbl.confidenceHigh : lbl.confidenceMed}
             </div>
           </div>
 
           {/* 7. FIRST OFFER CONTEXT */}
           <div className="stat-card fade-in delay-4">
-            <div className="stat-label">First Offer Context</div>
+            <div className="stat-label">{lbl.firstOfferLabel}</div>
             <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.65, margin: 0 }}>
               {results.firstOfferCtx}
             </p>
@@ -1077,9 +1174,9 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
 
           {/* 8. SCENARIO SIMULATOR */}
           <div className="stat-card fade-in delay-4">
-            <div className="stat-label">Scenario Simulator</div>
+            <div className="stat-label">{lbl.simLabel}</div>
             <p style={{ fontSize: '13px', color: 'var(--text-3)', margin: '0 0 16px', lineHeight: 1.5 }}>
-              Drag to see how the verdict changes at different salary levels.
+              {lbl.simInstruction}
             </p>
             <input
               type="range"
@@ -1096,18 +1193,17 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
               <strong style={{ color: simVColor }}>{simVLabel}</strong>
               {simSalary != null && simSalary !== results.totalComp && (
                 <span className="sim-delta">
-                  &nbsp;({simSalary > results.totalComp ? '+' : ''}{fmt(simSalary - results.totalComp, results.r.symbol)} vs your offer)
+                  &nbsp;{lbl.simDelta(simSalary > results.totalComp ? '+' : '', fmt(Math.abs(simSalary - results.totalComp), results.r.symbol))}
                 </span>
               )}
             </div>
             <div className="sim-thresholds">
-              <span style={{ color: '#ef4444' }}>Weak</span>
-              <span style={{ color: 'var(--text-3)' }}> · Fair from </span>
-              <strong>{fmt(results.r.p25, results.r.symbol)}</strong>
-              <span style={{ color: 'var(--text-3)' }}> · Strong from </span>
-              <strong>{fmt(Math.round(results.r.p50 + 0.52 * (results.r.p75 - results.r.p50)), results.r.symbol)}</strong>
+              {lbl.simThresholds(fmt(results.r.p25, results.r.symbol), fmt(Math.round(results.r.p50 + 0.52 * (results.r.p75 - results.r.p50)), results.r.symbol))}
             </div>
           </div>
+
+          </>
+          )}
 
           {/* 9. MARKET RANGE + CONFIDENCE */}
           <div className="stat-card fade-in delay-4">

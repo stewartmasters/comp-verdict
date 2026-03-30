@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- ONS -->
+  <symbol id="logo-ons" viewBox="0 0 60 24">
+    <rect width="60" height="24" rx="3" fill="#475569"/>
+    <text x="30" y="16" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="9" font-weight="700" letter-spacing="0.5">ONS</text>
+  </symbol>
+  <!-- INE -->
+  <symbol id="logo-ine" viewBox="0 0 60 24">
+    <rect width="60" height="24" rx="3" fill="#475569"/>
+    <text x="30" y="16" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="9" font-weight="700" letter-spacing="0.5">INE</text>
+  </symbol>
+  <!-- Destatis -->
+  <symbol id="logo-destatis" viewBox="0 0 76 24">
+    <rect width="76" height="24" rx="3" fill="#475569"/>
+    <text x="38" y="16" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="8" font-weight="700" letter-spacing="0.5">DESTATIS</text>
+  </symbol>
+  <!-- BLS -->
+  <symbol id="logo-bls" viewBox="0 0 60 24">
+    <rect width="60" height="24" rx="3" fill="#475569"/>
+    <text x="30" y="16" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="9" font-weight="700" letter-spacing="0.5">BLS</text>
+  </symbol>
+  <!-- Stack Overflow -->
+  <symbol id="logo-so" viewBox="0 0 84 24">
+    <rect width="84" height="24" rx="3" fill="#475569"/>
+    <text x="42" y="16" text-anchor="middle" fill="white" font-family="system-ui,sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.3">STACK OVERFLOW</text>
+  </symbol>
+</svg>

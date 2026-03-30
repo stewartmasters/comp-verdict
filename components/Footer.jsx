@@ -95,15 +95,26 @@ export default function Footer({ locale = 'en' }) {
 
         <div className="footer-trust-row">
           <p className="footer-trust-note">Built using official government salary data and verified market benchmarks</p>
-          <div className="footer-trust-logos">
+          <div className="footer-trust-logos" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             {[
-              { name: 'ONS', title: 'UK Office for National Statistics' },
-              { name: 'INE', title: 'Spain Instituto Nacional de Estadística' },
-              { name: 'Destatis', title: 'Germany Federal Statistical Office' },
-              { name: 'BLS', title: 'US Bureau of Labor Statistics' },
-              { name: 'Stack Overflow', title: 'Stack Overflow Developer Survey' },
+              { id: 'logo-ons',      w: 60, title: 'UK Office for National Statistics' },
+              { id: 'logo-ine',      w: 60, title: 'Spain Instituto Nacional de Estadística' },
+              { id: 'logo-destatis', w: 76, title: 'Germany Federal Statistical Office' },
+              { id: 'logo-bls',      w: 60, title: 'US Bureau of Labor Statistics' },
+              { id: 'logo-so',       w: 84, title: 'Stack Overflow Developer Survey' },
             ].map(src => (
-              <span key={src.name} className="footer-trust-badge" title={src.title}>{src.name}</span>
+              <svg
+                key={src.id}
+                width={src.w}
+                height={24}
+                title={src.title}
+                aria-label={src.title}
+                style={{ opacity: 0.65, filter: 'grayscale(1)', transition: 'opacity 0.15s' }}
+                onMouseOver={e => e.currentTarget.style.opacity = '1'}
+                onMouseOut={e => e.currentTarget.style.opacity = '0.65'}
+              >
+                <use href={`/logos/trust-logos.svg#${src.id}`} />
+              </svg>
             ))}
           </div>
         </div>
