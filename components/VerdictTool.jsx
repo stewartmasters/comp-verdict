@@ -496,7 +496,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   // GA
   useEffect(() => {
     if (typeof window === 'undefined') return
-    window.GA_ID = 'G-XXXXXXXXXX'
+    window.GA_ID = 'G-PCW5JTQ8HY'
     window.loadGA = function() {
       if (window._gaLoaded) return
       window._gaLoaded = true
