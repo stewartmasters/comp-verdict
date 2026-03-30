@@ -8,7 +8,16 @@
   <link rel="alternate" hreflang="es" href="https://comp-verdict.netlify.app/es/">
   <link rel="alternate" hreflang="de" href="https://comp-verdict.netlify.app/de/">
   <link rel="alternate" hreflang="x-default" href="https://comp-verdict.netlify.app/">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://comp-verdict.netlify.app/de/">
+  <meta property="og:title" content="CompVerdict — Lohnt sich dieses Angebot?">
+  <meta property="og:description" content="Gib dein Gehaltsangebot ein und erhalte sofort ein datenbasiertes Urteil. Erkenne, ob du unterbezahlt wirst, bevor du unterschreibst.">
+  <meta property="og:image" content="https://comp-verdict.netlify.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CompVerdict — Lohnt sich dieses Angebot?">
+  <meta name="twitter:description" content="Gib dein Gehaltsangebot ein und erhalte sofort ein datenbasiertes Urteil. Erkenne, ob du unterbezahlt wirst, bevor du unterschreibst.">
+  <meta name="twitter:image" content="https://comp-verdict.netlify.app/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -616,7 +625,33 @@
       font-size: 13px;
       margin-top: 1px;
     }
+
+    /* ─── Cookie consent ─── */
+    #cookie-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #0F172A;
+      color: #F8FAFC;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 1000;
+      font-size: 13px;
+      flex-wrap: wrap;
+      border-top: 2px solid #2563EB;
+    }
+    #cookie-banner a { color: #93c5fd; }
+    .cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+    .cookie-btn-accept { background: #2563EB; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .cookie-btn-decline { background: transparent; color: #94A3B8; border: 1px solid #334155; padding: 8px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; }
   </style>
+  <script>
+    window.GA_ID='G-XXXXXXXXXX';
+    function loadGA(){if(window._gaLoaded)return;window._gaLoaded=true;var s=document.createElement('script');s.src='https://www.googletagmanager.com/gtag/js?id='+window.GA_ID;s.async=true;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',window.GA_ID);}
+    if(localStorage.getItem('cv_consent')==='1'){loadGA();}
+  </script>
 </head>
 <body>
 
@@ -626,19 +661,39 @@
 <div id="s-input" class="screen">
 
   <!-- Brand + Network -->
-  <div style="margin-bottom: 44px; padding-top: 8px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
-    <span class="cv-brand"><span class="word">Comp</span><span class="accent">Verdict</span></span>
-    <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-      <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" class="network-link" style="font-size:11px;">SalaryVerdict</a>
-      <span class="network-sep" style="font-size:11px;">·</span>
-      <a href="https://www.spendverdict.com" target="_blank" rel="noopener" class="network-link" style="font-size:11px;">SpendVerdict</a>
+  <div style="margin-bottom: 32px; padding-top: 8px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px;">
+      <span class="cv-brand"><span class="word">Comp</span><span class="accent">Verdict</span></span>
+      <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+        <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style="font-size:11px; color:#f97316; font-weight:600; text-decoration:none;">SalaryVerdict</a>
+        <span style="font-size:11px; color:var(--border);">·</span>
+        <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style="font-size:11px; color:#a78bfa; font-weight:600; text-decoration:none;">SpendVerdict</a>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:4px;">
+      <a href="/" style="font-size:11px; color:var(--text-3); text-decoration:none; font-weight:500;">EN</a>
+      <span style="font-size:11px; color:var(--border); padding:0 1px;">·</span>
+      <a href="/es/" style="font-size:11px; color:var(--text-3); text-decoration:none; font-weight:500;">ES</a>
+      <span style="font-size:11px; color:var(--border); padding:0 1px;">·</span>
+      <span style="font-size:11px; font-weight:700; color:var(--cv-primary);">DE</span>
     </div>
   </div>
 
   <!-- Headline -->
-  <div style="margin-bottom: 36px;">
+  <div style="margin-bottom: 20px;">
     <h1 style="font-size: 32px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; margin: 0 0 11px; color: var(--text-1);">Lohnt sich<br>dieses Angebot?</h1>
     <p style="font-size: 15px; color: var(--text-2); line-height: 1.55; margin: 0;">Gib dein Paket ein. Wir geben dir das Urteil.</p>
+  </div>
+
+  <!-- Trust strip -->
+  <div style="display:flex; align-items:center; gap:6px; margin-bottom:28px; flex-wrap:wrap;">
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">✓ 39 Städte</span>
+    <span style="font-size:11px; color:var(--border);">·</span>
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">10 Berufe</span>
+    <span style="font-size:11px; color:var(--border);">·</span>
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">Aktualisiert Q1 2025</span>
+    <span style="font-size:11px; color:var(--border);">·</span>
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">Kostenlos · Keine Anmeldung</span>
   </div>
 
   <!-- ── Form ── -->
@@ -797,13 +852,13 @@
   <!-- Verdict Network -->
   <div class="network-bar fade-in delay-6">
     <span class="network-label">Verdict-Netzwerk</span>
-    <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" class="network-link">SalaryVerdict</a>
+    <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style="font-size:12px; font-weight:600; text-decoration:none; color:#f97316; letter-spacing:-0.01em;">SalaryVerdict</a>
     <span class="network-sep">·</span>
-    <a href="https://www.spendverdict.com" target="_blank" rel="noopener" class="network-link">SpendVerdict</a>
+    <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style="font-size:12px; font-weight:600; text-decoration:none; color:#a78bfa; letter-spacing:-0.01em;">SpendVerdict</a>
     <span class="network-sep">·</span>
     <span style="font-size:12px; font-weight:700; letter-spacing:-0.02em; color:var(--cv-primary);">CompVerdict</span>
   </div>
-  <p style="font-size: 11px; color: var(--text-3); margin-top: 14px; line-height: 1.6;">Daten sind indikativ. Ergebnisse basieren auf aggregierten Markt-Benchmarks, keine garantierten Angebote.</p>
+  <p style="font-size: 11px; color: var(--text-3); margin-top: 14px; line-height: 1.6;">Daten sind indikativ. Ergebnisse basieren auf aggregierten Markt-Benchmarks, keine garantierten Angebote. <a href="/privacy/" style="color:var(--text-3);">Datenschutz</a></p>
 </div>
 
 
@@ -871,6 +926,15 @@
         CompVerdict berücksichtigt keine Unternehmensgröße, Branche, Finanzierungsphase oder individuelle Verhandlungsergebnisse. Gehaltsdaten spiegeln das jährliche Bruttogehalt vor Steuern wider. Ergebnisse sind Schätzungen — nutze sie als Ausgangspunkt für Verhandlungen, nicht als Ober- oder Untergrenze.
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Cookie consent banner -->
+<div id="cookie-banner" style="display:none;">
+  <p style="margin:0; line-height:1.5;">Wir verwenden Analyse-Cookies, um zu verstehen, wie CompVerdict genutzt wird. <a href="/privacy/">Datenschutzerklärung</a></p>
+  <div class="cookie-btns">
+    <button class="cookie-btn-decline" onclick="cookieDecline()">Ablehnen</button>
+    <button class="cookie-btn-accept" onclick="cookieAccept()">Akzeptieren</button>
   </div>
 </div>
 
@@ -1323,6 +1387,7 @@ function shareResult() {
   if (!_shareData) return;
   const { role, city, bandLabel, pp, vType } = _shareData;
   const text = buildShareText(role, city, bandLabel, pp, vType);
+  trackEvent('share_result', { role, city, verdict: vType });
   if (navigator.share) {
     navigator.share({ text }).catch(() => copyText(text));
   } else {
@@ -1333,6 +1398,7 @@ function shareResult() {
 function copyScript() {
   if (!_shareData) return;
   const { role, city, bandLabel, yoe, r } = _shareData;
+  trackEvent('copy_script', { role, city });
   copyText(buildNegScript(role, city, bandLabel, yoe, r));
 }
 
@@ -1390,6 +1456,27 @@ function goBack() {
   document.getElementById('s-results').style.display = 'none';
   document.getElementById('s-input').style.display = 'block';
   window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════════════════
+// COOKIE CONSENT
+// ════════════════════════════════════════════════════
+(function() {
+  if (localStorage.getItem('cv_consent') === null) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+})();
+function cookieAccept() {
+  localStorage.setItem('cv_consent', '1');
+  document.getElementById('cookie-banner').style.display = 'none';
+  if (typeof loadGA === 'function') loadGA();
+}
+function cookieDecline() {
+  localStorage.setItem('cv_consent', '0');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function trackEvent(name, params) {
+  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
 }
 </script>
 </body>

@@ -147,8 +147,19 @@ a { color: #2563eb; text-decoration: none; }
 a:hover { text-decoration: underline; }
 .wrap { max-width: 740px; margin: 0 auto; padding: 0 20px; }
 header { border-bottom: 1px solid #e5e7eb; padding: 16px 0; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.header-left { display: flex; align-items: center; gap: 20px; }
 .brand { font-size: 15px; font-weight: 600; }
 .brand span { color: #2563eb; }
+.nav-links { display: flex; align-items: center; gap: 16px; }
+.nav-links a { font-size: 13px; color: #6b7280; text-decoration: none; }
+.nav-links a:hover { color: #2563eb; }
+.nav-cta { background: #2563eb; color: #fff !important; padding: 6px 14px; border-radius: 7px; font-weight: 600; font-size: 13px !important; }
+.nav-cta:hover { background: #1d4ed8 !important; text-decoration: none !important; }
+.lang-sw { display: flex; align-items: center; gap: 2px; }
+.lang-sw a, .lang-sw span { font-size: 11px; padding: 3px 5px; border-radius: 4px; text-decoration: none; color: #9ca3af; }
+.lang-sw a:hover { color: #2563eb; text-decoration: none; }
+.lang-sw .lang-active { color: #2563eb; font-weight: 700; }
 .breadcrumb { font-size: 13px; color: #6b7280; margin-top: 4px; }
 h1 { font-size: clamp(22px, 4vw, 34px); font-weight: 700; line-height: 1.2; margin: 32px 0 16px; letter-spacing: -0.02em; }
 .lead { font-size: 17px; color: #374151; line-height: 1.7; margin-bottom: 32px; }
@@ -185,26 +196,54 @@ ol.steps li::before { content: counter(step); flex-shrink: 0; width: 28px; heigh
 .leverage-list li { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 15px; color: #374151; }
 .leverage-list li:last-child { border-bottom: none; }
 .check { color: #2563eb; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-footer { border-top: 1px solid #e5e7eb; padding: 32px 0; margin-top: 64px; }
-.footer-note { font-size: 13px; color: #9ca3af; margin-bottom: 8px; }
-.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
-.footer-links a { font-size: 13px; color: #6b7280; }
+footer { border-top: 1px solid #e5e7eb; padding: 40px 0 28px; margin-top: 64px; }
+.footer-network { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 28px; }
+.footer-brand-name { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 5px; }
+.footer-brand-name a, .footer-brand-name span { text-decoration: none; }
+.footer-brand-name a:hover { text-decoration: underline; }
+.footer-brand-desc { font-size: 12px; color: #9ca3af; line-height: 1.5; margin: 0; }
+.footer-brand-sv .footer-brand-name a { color: #f97316; }
+.footer-brand-spv .footer-brand-name a { color: #a78bfa; }
+.footer-brand-cv .footer-brand-name span { color: #2563eb; }
+.footer-bottom { border-top: 1px solid #f3f4f6; padding-top: 18px; }
+.footer-note { font-size: 12px; color: #9ca3af; margin-bottom: 7px; }
+.footer-links { display: flex; gap: 14px; flex-wrap: wrap; }
+.footer-links a { font-size: 12px; color: #9ca3af; text-decoration: none; }
+.footer-links a:hover { color: #6b7280; }
 @media (max-width: 600px) {
   .stats-grid { grid-template-columns: 1fr 1fr; }
   table { font-size: 13px; }
   th, td { padding: 8px 10px; }
+  .footer-network { grid-template-columns: 1fr; gap: 14px; }
+  .nav-links { display: none; }
 }
 `.trim();
 
 // ── Page shell ────────────────────────────────────────────────────────────────
 function shell(locale, title, description, canonicalPath, jsonLd, bodyHtml, hreflangs) {
-  const homePath       = getHomePath(locale);
-  const salaryHubPath  = getHubPath(locale, 'salary');
-  const negHubPath     = getHubPath(locale, 'negotiate');
+  const homePath      = getHomePath(locale);
+  const salaryHubPath = getHubPath(locale, 'salary');
+  const negHubPath    = getHubPath(locale, 'negotiate');
+  const canonUrl      = SITE_URL + canonicalPath;
+  const ogImage       = `${SITE_URL}/og-image.png`;
 
   const hreflangTags = (hreflangs || [])
     .map(h => `<link rel="alternate" hreflang="${h.hreflang}" href="${h.href}">`)
     .join('\n');
+
+  // Language switcher from hreflangs
+  const langNames = { en: 'EN', es: 'ES', de: 'DE' };
+  const langSwitcherHtml = ['en', 'es', 'de'].map(code => {
+    const link = (hreflangs || []).find(h => h.hreflang === code);
+    if (!link) return '';
+    const isActive = code === locale.htmlLang;
+    if (isActive) return `<span class="lang-active">${langNames[code]}</span>`;
+    return `<a href="${link.href}">${langNames[code]}</a>`;
+  }).filter(Boolean).join('<span style="color:#e5e7eb;padding:0 2px">·</span>');
+
+  const navSalary = locale.footerLinkSalary || 'Salary Benchmarks';
+  const navNeg    = locale.footerLinkNeg    || 'Negotiation Guides';
+  const navTool   = locale.footerLinkTool   || 'Try CompVerdict';
 
   return `<!DOCTYPE html>
 <html lang="${locale.htmlLang}">
@@ -213,8 +252,18 @@ function shell(locale, title, description, canonicalPath, jsonLd, bodyHtml, href
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${title}</title>
 <meta name="description" content="${description}">
-<link rel="canonical" href="${SITE_URL}${canonicalPath}">
+<link rel="canonical" href="${canonUrl}">
 ${hreflangTags}
+<meta property="og:type" content="website">
+<meta property="og:url" content="${canonUrl}">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${description}">
+<meta property="og:image" content="${ogImage}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${title}">
+<meta name="twitter:description" content="${description}">
+<meta name="twitter:image" content="${ogImage}">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -222,21 +271,53 @@ ${hreflangTags}
 <script type="application/ld+json">
 ${JSON.stringify(jsonLd, null, 2)}
 </script>
+<script>
+window.GA_ID='G-XXXXXXXXXX';
+function loadGA(){if(window._gaLoaded)return;window._gaLoaded=true;var s=document.createElement('script');s.src='https://www.googletagmanager.com/gtag/js?id='+window.GA_ID;s.async=true;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',window.GA_ID);}
+if(localStorage.getItem('cv_consent')==='1'){loadGA();}
+</script>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <div class="brand"><a href="${homePath}" style="color:inherit;text-decoration:none">Comp<span>Verdict</span></a></div>
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="brand"><a href="${homePath}" style="color:inherit;text-decoration:none">Comp<span>Verdict</span></a></div>
+        <nav class="nav-links">
+          <a href="${salaryHubPath}">${navSalary}</a>
+          <a href="${negHubPath}">${navNeg}</a>
+          <a href="${homePath}" class="nav-cta">${navTool} →</a>
+        </nav>
+      </div>
+      ${langSwitcherHtml ? `<div class="lang-sw">${langSwitcherHtml}</div>` : ''}
+    </div>
   </div>
 </header>
 ${bodyHtml}
 <footer>
   <div class="wrap">
-    <p class="footer-note">${locale.footerNote}</p>
-    <div class="footer-links">
-      <a href="${homePath}">${locale.footerLinkTool}</a>
-      <a href="${salaryHubPath}">${locale.footerLinkSalary}</a>
-      <a href="${negHubPath}">${locale.footerLinkNeg}</a>
+    <div class="footer-network">
+      <div class="footer-brand-sv">
+        <div class="footer-brand-name"><a href="https://www.salaryverdict.com" target="_blank" rel="noopener">SalaryVerdict</a></div>
+        <p class="footer-brand-desc">Free salary benchmarks for tech roles across Europe and the US.</p>
+      </div>
+      <div class="footer-brand-spv">
+        <div class="footer-brand-name"><a href="https://www.spendverdict.com" target="_blank" rel="noopener">SpendVerdict</a></div>
+        <p class="footer-brand-desc">Know if your monthly spending is normal for your city.</p>
+      </div>
+      <div class="footer-brand-cv">
+        <div class="footer-brand-name"><span>CompVerdict</span></div>
+        <p class="footer-brand-desc">Is this offer worth taking? Get a data-backed verdict in seconds.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-note">${locale.footerNote}</p>
+      <div class="footer-links">
+        <a href="${homePath}">${navTool}</a>
+        <a href="${salaryHubPath}">${navSalary}</a>
+        <a href="${negHubPath}">${navNeg}</a>
+        <a href="/privacy/">Privacy Policy</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -634,14 +715,18 @@ function main() {
   const outDir = __dirname;
   let count = 0;
   const skipped = [];
+  const allPaths = ['/'];
 
   for (const locale of LOCALES) {
+    if (locale.code !== 'en') allPaths.push(getHomePath(locale));
+
     console.log(`\n[${locale.code.toUpperCase()}] Generating salary pages...`);
     for (const role of SALARY_ROLES) {
       for (const city of locale.SALARY_CITIES) {
         const page = salaryPage(locale, role, city);
         if (!page) { skipped.push(`[${locale.code}] salary: ${role} / ${city}`); continue; }
         writeFile(path.join(outDir, ...page.path.split('/').filter(Boolean), 'index.html'), page.html);
+        allPaths.push(page.path);
         count++;
       }
     }
@@ -652,6 +737,7 @@ function main() {
         const page = negotiatePage(locale, role, city);
         if (!page) { skipped.push(`[${locale.code}] negotiate: ${role} / ${city}`); continue; }
         writeFile(path.join(outDir, ...page.path.split('/').filter(Boolean), 'index.html'), page.html);
+        allPaths.push(page.path);
         count++;
       }
     }
@@ -659,23 +745,40 @@ function main() {
     console.log(`[${locale.code.toUpperCase()}] Generating hub pages...`);
     const salaryHub = salaryHubPage(locale);
     writeFile(path.join(outDir, ...salaryHub.path.split('/').filter(Boolean), 'index.html'), salaryHub.html);
+    allPaths.push(salaryHub.path);
     count++;
 
     const negHub = negotiateHubPage(locale);
     writeFile(path.join(outDir, ...negHub.path.split('/').filter(Boolean), 'index.html'), negHub.html);
+    allPaths.push(negHub.path);
     count++;
   }
 
+  // Add static pages
+  allPaths.push('/privacy/');
+
+  // Sitemap
+  const today = new Date().toISOString().split('T')[0];
+  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allPaths.map(p => {
+    const isHome = p === '/' || p === '/es/' || p === '/de/';
+    const isHub  = (p.match(/\//g) || []).length === 2 && !isHome;
+    const priority = p === '/' ? '1.0' : isHome ? '0.9' : isHub ? '0.8' : '0.7';
+    const changefreq = isHome ? 'weekly' : 'monthly';
+    return `  <url>\n    <loc>${SITE_URL}${p}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  }).join('\n')}
+</urlset>`;
+  fs.writeFileSync(path.join(outDir, 'sitemap.xml'), sitemapXml, 'utf8');
+  console.log(`\nWrote sitemap.xml (${allPaths.length} URLs)`);
+
+  // robots.txt
+  const robotsTxt = `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+  fs.writeFileSync(path.join(outDir, 'robots.txt'), robotsTxt, 'utf8');
+  console.log('Wrote robots.txt');
+
   console.log(`\nDone — ${count} pages generated across ${LOCALES.length} locales`);
   if (skipped.length) console.log(`Skipped (no data): ${skipped.join(', ')}`);
-
-  console.log('\nSample paths:');
-  console.log('  /salary/software-engineer-salary-barcelona/');
-  console.log('  /es/salarios/software-engineer-salario-barcelona/');
-  console.log('  /de/gehalt/software-engineer-gehalt-berlin/');
-  console.log('  /negotiate/software-engineer-negotiation-san-francisco/');
-  console.log('  /es/negociacion/software-engineer-negociacion-barcelona/');
-  console.log('  /de/verhandlung/software-engineer-verhandlung-berlin/');
 }
 
 main();
