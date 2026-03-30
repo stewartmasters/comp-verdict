@@ -2,6 +2,9 @@
   command = "npm install && npm run build"
   publish = "out"
 
+[build.environment]
+  NEXT_PUBLIC_BASE_URL = "https://www.compverdict.com"
+
 [[headers]]
   for = "/*"
   [headers.values]
@@ -10,6 +13,6 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 [[headers]]
-  for = "/out/salary/*"
+  for = "/salary/*"
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
