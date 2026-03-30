@@ -1,7 +1,5 @@
-'use strict';
-
 // German locale
-module.exports = {
+const de = {
   code:     'de',
   htmlLang: 'de',
 
@@ -186,3 +184,4 @@ module.exports = {
     ],
   },
 };
+export default de;

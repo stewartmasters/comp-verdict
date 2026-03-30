@@ -1,7 +1,5 @@
-'use strict';
-
 // Spanish locale
-module.exports = {
+const es = {
   code:     'es',
   htmlLang: 'es',
 
@@ -186,3 +184,4 @@ module.exports = {
     ],
   },
 };
+export default es;

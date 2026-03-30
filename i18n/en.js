@@ -1,7 +1,5 @@
-'use strict';
-
 // English locale — extracted from generate.js
-module.exports = {
+const en = {
   code:     'en',
   htmlLang: 'en',
 
@@ -221,3 +219,4 @@ module.exports = {
     ],
   },
 };
+export default en;
