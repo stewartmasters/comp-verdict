@@ -125,6 +125,7 @@ const en = {
   ],
   NEGOTIATE_CITIES: [
     'Barcelona', 'Madrid', 'London', 'Amsterdam', 'Berlin', 'Munich',
+    'Paris', 'Dublin', 'Lisbon', 'Frankfurt', 'Austin', 'Toronto', 'Singapore',
     'San Francisco', 'New York',
   ],
 
@@ -219,6 +220,48 @@ const en = {
       "Competing offers from both finance and tech significantly strengthen your position",
       "Annual bonuses in finance-adjacent tech roles are a meaningful and negotiable component",
       "New York cost of living is well understood by employers — use it without apology",
+    ],
+    'Paris': [
+      "French labour law gives candidates real protections — employers expect you to understand and use them",
+      "The startup ecosystem has imported US-style total comp conversations — reference equity and bonus, not just base",
+      "Cadre status and its tax implications are negotiable components often overlooked by candidates",
+      "Paris employers routinely benchmark against London rates — use cross-border data explicitly",
+    ],
+    'Dublin': [
+      "US tech HQs in Dublin create a competitive market — benchmark against SF and NYC roles in the same company",
+      "Tax treatment of share options and RSUs is favourable — make equity a central part of your negotiation",
+      "EU passport holders have mobility leverage — employers know you have real cross-border alternatives",
+      "Competing offers are common and expected — companies in Dublin move fast when you have one",
+    ],
+    'Lisbon': [
+      "International tech employers in Lisbon consistently pay above local market rates — use this as a floor",
+      "Cost of living is lower than most EU capitals — frame negotiation around market value, not local norms",
+      "Relocation allowances and housing support are genuinely negotiable for international hires",
+      "The market is growing fast — senior candidates have more leverage here than the headline numbers suggest",
+    ],
+    'Frankfurt': [
+      "Frankfurt's finance sector creates strong salary floors — always benchmark against banking rates for adjacent tech roles",
+      "German Tarifvertrag structures give you a framework, not a ceiling — negotiate above the band where relevant",
+      "Annual bonuses in finance-adjacent roles are significant and explicitly negotiable",
+      "Remote-first policies post-pandemic mean you can negotiate against Munich and Berlin rates without relocating",
+    ],
+    'Austin': [
+      "No state income tax is a genuine financial advantage — factor it into your total compensation calculation",
+      "Major tech relocations have created genuine salary pressure; reference coastal benchmarks without apology",
+      "Cost of living is lower than SF and NYC — but so are offers; push back using market data, not geography",
+      "Equity packages at Austin tech companies have matured — treat RSUs and options as seriously as base salary",
+    ],
+    'Toronto': [
+      "US company subsidiaries in Toronto often have access to US pay bands — ask directly about the global band",
+      "Exchange rate dynamics work in your favour when negotiating with US-headquartered employers",
+      "Canada's tech immigration pipeline creates competition for experienced candidates — use your options",
+      "Annual reviews in Canadian tech tend to be conservative — negotiate hard at the offer stage, not later",
+    ],
+    'Singapore': [
+      "Tax treatment is highly favourable — net compensation comparisons with European cities almost always favour Singapore",
+      "Regional HQ roles carry premium pay — make the regional scope of your role explicit in negotiation",
+      "Competing offers from the regional tech ecosystem are frequent and well understood by recruiters",
+      "Housing allowances and relocation packages for international hires are standard and negotiable",
     ],
   },
 };
