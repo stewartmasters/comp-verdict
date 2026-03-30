@@ -3,8 +3,8 @@ import {
   getSalaryPath, getNegPath, getHomePath, getHubPath, SITE_URL
 } from '../../../../lib/page-helpers.js'
 import SalaryPageContent from '../../../../components/SalaryPageContent.jsx'
-import SeoHeader from '../../../../components/SeoHeader.jsx'
-import SeoFooter from '../../../../components/SeoFooter.jsx'
+import Navigation from '../../../../components/Navigation.jsx'
+import Footer from '../../../../components/Footer.jsx'
 
 const locale = de
 const slugMap = buildSalarySlugMap(locale)
@@ -46,8 +46,8 @@ export default async function DeGehaltPage({ params }) {
 
   return (
     <>
-      <SeoHeader homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} hreflangs={props.hreflangs} />
-      <SalaryPageContent
+      <Navigation />
+            <SalaryPageContent
         locale={locale} role={match.role} city={match.city}
         bands={props.bands} symbol={props.symbol} faqs={props.faqs}
         hreflangs={props.hreflangs} salaryHubPath={props.salaryHubPath}
@@ -55,7 +55,7 @@ export default async function DeGehaltPage({ params }) {
         relatedCities={props.relatedCities} relatedRoles={props.relatedRoles}
         jsonLd={props.jsonLd} getSalaryPathFn={getSalaryPath} getNegPathFn={getNegPath}
       />
-      <SeoFooter homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} />
+      <Footer locale="de" />
     </>
   )
 }

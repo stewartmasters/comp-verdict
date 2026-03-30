@@ -1,7 +1,7 @@
 import { es, buildHubHreflangs, getHomePath, getHubPath, getNegPath, getSalaryPath, SITE_URL } from '../../../lib/page-helpers.js'
 import HubPageContent from '../../../components/HubPageContent.jsx'
-import SeoHeader from '../../../components/SeoHeader.jsx'
-import SeoFooter from '../../../components/SeoFooter.jsx'
+import Navigation from '../../../components/Navigation.jsx'
+import Footer from '../../../components/Footer.jsx'
 
 const locale = es
 const hreflangs = buildHubHreflangs('negotiate')
@@ -19,9 +19,9 @@ export default function EsNegociacionHubPage() {
 
   return (
     <>
-      <SeoHeader homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} hreflangs={hreflangs} />
-      <HubPageContent type="negotiate" locale={locale} getSalaryPathFn={getSalaryPath} getNegPathFn={getNegPath} homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} />
-      <SeoFooter homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} />
+      <Navigation />
+            <HubPageContent type="negotiate" locale={locale} getSalaryPathFn={getSalaryPath} getNegPathFn={getNegPath} homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} />
+      <Footer locale="es" />
     </>
   )
 }

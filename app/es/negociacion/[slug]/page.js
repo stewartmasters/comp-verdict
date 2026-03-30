@@ -3,8 +3,8 @@ import {
   getSalaryPath, getNegPath, getHomePath, getHubPath, SITE_URL
 } from '../../../../lib/page-helpers.js'
 import NegotiatePageContent from '../../../../components/NegotiatePageContent.jsx'
-import SeoHeader from '../../../../components/SeoHeader.jsx'
-import SeoFooter from '../../../../components/SeoFooter.jsx'
+import Navigation from '../../../../components/Navigation.jsx'
+import Footer from '../../../../components/Footer.jsx'
 
 const locale = es
 const slugMap = buildNegSlugMap(locale)
@@ -46,8 +46,8 @@ export default async function EsNegociacioPage({ params }) {
 
   return (
     <>
-      <SeoHeader homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} hreflangs={props.hreflangs} />
-      <NegotiatePageContent
+      <Navigation />
+            <NegotiatePageContent
         locale={locale} role={match.role} city={match.city}
         bands={props.bands} symbol={props.symbol}
         hreflangs={props.hreflangs} negHubPath={props.negHubPath}
@@ -55,7 +55,7 @@ export default async function EsNegociacioPage({ params }) {
         relatedRoles={props.relatedRoles} relatedCities={props.relatedCities}
         jsonLd={props.jsonLd} getNegPathFn={getNegPath} getSalaryPathFn={getSalaryPath}
       />
-      <SeoFooter homePath={homePath} salaryHubPath={salaryHubPath} negHubPath={negHubPath} locale={locale} />
+      <Footer locale="es" />
     </>
   )
 }
