@@ -348,8 +348,8 @@ function Autocomplete({ id, value, onChange, onPick, list, placeholder, label })
   const wrapRef = useRef(null)
 
   const filtered = value
-    ? list.filter(x => x.toLowerCase().includes(value.toLowerCase())).slice(0, 9)
-    : list.slice(0, 9)
+    ? list.filter(x => x.toLowerCase().includes(value.toLowerCase())).slice(0, 12)
+    : list
 
   useEffect(() => {
     function handleClick(e) {
