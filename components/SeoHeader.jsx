@@ -1,44 +1,35 @@
 export default function SeoHeader({ homePath, salaryHubPath, negHubPath, locale, hreflangs }) {
-  const navSalary = locale.footerLinkSalary || 'Salary Benchmarks'
-  const navNeg    = locale.footerLinkNeg    || 'Negotiation Guides'
-  const navTool   = locale.footerLinkTool   || 'Try CompVerdict'
+  const navSalary = locale.footerLinkSalary || 'Salaries'
+  const navNeg    = locale.footerLinkNeg    || 'Negotiate'
 
-  const langNames = { en: 'EN', es: 'ES', de: 'DE' }
-  const langSwitcher = ['en', 'es', 'de'].map(code => {
-    const link = (hreflangs || []).find(h => h.hreflang === code)
+  const langItems = ['en', 'es', 'de'].map((code, i) => {
+    const link    = (hreflangs || []).find(h => h.hreflang === code)
     if (!link) return null
     const isActive = code === locale.htmlLang
-    return isActive
-      ? <span key={code} className="lang-active">{langNames[code]}</span>
-      : <a key={code} href={link.href}>{langNames[code]}</a>
+    return (
+      <span key={code} style={{ display: 'inline-flex', alignItems: 'center', gap: '1px' }}>
+        {i > 0 && <span className="lang-sep">·</span>}
+        {isActive
+          ? <span className="lang-active">{code.toUpperCase()}</span>
+          : <a href={link.href}>{code.toUpperCase()}</a>}
+      </span>
+    )
   }).filter(Boolean)
 
-  const withSeps = langSwitcher.reduce((acc, el, i) => {
-    if (i > 0) acc.push(<span key={`s${i}`} style={{ color: '#e5e7eb', padding: '0 2px' }}>·</span>)
-    acc.push(el)
-    return acc
-  }, [])
-
   return (
-    <header>
-      <div className="wrap">
-        <div className="header-inner">
-          <div className="header-left">
-            <div className="brand">
-              <a href={homePath} style={{ color: 'inherit', textDecoration: 'none' }}>
-                Comp<span>Verdict</span>
-              </a>
-            </div>
-            <nav className="nav-links">
-              <a href={salaryHubPath}>{navSalary}</a>
-              <a href={negHubPath}>{navNeg}</a>
-              <a href={homePath} className="nav-cta">{navTool} →</a>
-            </nav>
-          </div>
-          {withSeps.length > 0 && (
-            <div className="lang-sw">{withSeps}</div>
+    <header className="site-header">
+      <div className="site-header-inner wide">
+        <a href={homePath} className="cv-brand" style={{ textDecoration: 'none', flexShrink: 0 }}>
+          <span className="word">Comp</span><span className="accent">Verdict</span>
+        </a>
+        <nav className="site-nav">
+          <a href={salaryHubPath} className="nav-text">{navSalary}</a>
+          <a href={negHubPath} className="nav-text">{navNeg}</a>
+          {langItems.length > 0 && (
+            <div className="lang-links">{langItems}</div>
           )}
-        </div>
+          <a href={homePath} className="nav-pill">Check this offer →</a>
+        </nav>
       </div>
     </header>
   )

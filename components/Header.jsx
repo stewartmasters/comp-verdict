@@ -1,7 +1,7 @@
 'use client'
 
 const NAV_LABELS = {
-  en: { salary: 'Salaries', negotiate: 'Negotiate', cta: 'Check my offer →' },
+  en: { salary: 'Salaries', negotiate: 'Negotiate', cta: 'Check this offer →' },
   es: { salary: 'Salarios', negotiate: 'Negociar', cta: 'Analizar mi oferta →' },
   de: { salary: 'Gehälter', negotiate: 'Verhandeln', cta: 'Angebot prüfen →' },
 }
