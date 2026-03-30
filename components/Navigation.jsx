@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import LanguageSelect from './LanguageSelect.jsx'
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -38,6 +39,7 @@ export default function Navigation() {
           >
             Methodology
           </Link>
+          <LanguageSelect />
           <Link
             href="/#offer-tool"
             className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors flex-shrink-0 ml-2"
