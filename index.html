@@ -14,17 +14,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:           #0a0a0f;
-      --surface:      #111118;
-      --border:       #1f2028;
-      --border-sub:   #1a1a22;
-      --text-1:       #f9fafb;
-      --text-2:       #9ca3af;
-      --text-3:       #6b7280;
-      --text-dim:     #374151;
-      --cv-accent:    #60a5fa;   /* CompVerdict blue  */
-      --sv-accent:    #f97316;   /* SalaryVerdict orange */
-      --spv-accent:   #a78bfa;   /* SpendVerdict purple  */
+      --bg:            #F8FAFC;
+      --surface:       #FFFFFF;
+      --surface-sub:   #F1F5F9;
+      --border:        #E2E8F0;
+      --border-sub:    #EFF3F8;
+      --text-1:        #0F172A;
+      --text-2:        #475569;
+      --text-3:        #94A3B8;
+      --text-dim:      #CBD5E1;
+      --cv-primary:    #2563EB;
+      --cv-secondary:  #3B82F6;
+      --cv-accent:     #1D4ED8;
+      --cv-tint:       #EFF6FF;
+      --cv-tint-border:#BFDBFE;
     }
 
     * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing: border-box; }
@@ -48,7 +51,7 @@
     .field-label {
       display: block;
       font-size: 11px;
-      color: #555;
+      color: var(--text-2);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       font-weight: 600;
@@ -60,17 +63,20 @@
     .input-field {
       width: 100%;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 10px;
       padding: 14px 16px;
       font-size: 16px;
       color: var(--text-1);
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
       appearance: none;
       -webkit-appearance: none;
     }
-    .input-field:focus { border-color: var(--cv-accent); }
+    .input-field:focus {
+      border-color: var(--cv-primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
     .input-field::placeholder { color: var(--text-3); }
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -81,7 +87,7 @@
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: #666;
+      color: var(--text-3);
       font-size: 16px;
       pointer-events: none;
       user-select: none;
@@ -91,15 +97,15 @@
     /* ─── Autocomplete ─── */
     .ac-dropdown {
       position: absolute;
-      top: calc(100% + 2px);
+      top: calc(100% + 4px);
       left: 0; right: 0;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
       max-height: 204px;
       overflow-y: auto;
       z-index: 100;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.10), 0 2px 8px rgba(15,23,42,0.06);
     }
     .ac-item {
       padding: 11px 14px;
@@ -109,103 +115,126 @@
       transition: background 0.1s, color 0.1s;
     }
     .ac-item:hover, .ac-item.active {
-      background: #1a1a28;
-      color: var(--cv-accent);
+      background: var(--cv-tint);
+      color: var(--cv-primary);
     }
-    .ac-item:first-child { border-radius: 10px 10px 0 0; }
-    .ac-item:last-child { border-radius: 0 0 10px 10px; }
+    .ac-item:first-child { border-radius: 11px 11px 0 0; }
+    .ac-item:last-child { border-radius: 0 0 11px 11px; }
 
     /* ─── Buttons ─── */
     .btn-primary {
       width: 100%;
       padding: 16px;
-      background: #f0f0f0;
-      color: #0a0a0a;
+      background: var(--cv-primary);
+      color: #fff;
       font-weight: 700;
       font-size: 16px;
       border-radius: 12px;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
       border: none;
       letter-spacing: -0.01em;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.25);
     }
-    .btn-primary:hover { background: #ddd; }
-    .btn-primary:active { transform: scale(0.99); background: #ccc; }
+    .btn-primary:hover {
+      background: var(--cv-accent);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+    }
+    .btn-primary:active { transform: scale(0.99); background: #1e40af; }
 
     .btn-ghost {
       width: 100%;
       padding: 14px;
       background: transparent;
-      color: var(--text-3);
+      color: var(--text-2);
       font-size: 15px;
       border-radius: 12px;
       cursor: pointer;
-      border: 1px solid var(--border);
-      transition: color 0.15s, border-color 0.15s;
+      border: 1.5px solid var(--border);
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
       letter-spacing: -0.01em;
     }
-    .btn-ghost:hover { color: var(--text-1); border-color: #374151; }
+    .btn-ghost:hover {
+      color: var(--cv-primary);
+      border-color: var(--cv-tint-border);
+      background: var(--cv-tint);
+    }
 
     .toggle-pill {
       display: inline-flex;
       align-items: center;
       gap: 5px;
       padding: 7px 13px;
-      background: transparent;
-      border: 1px solid var(--border);
+      background: var(--surface);
+      border: 1.5px solid var(--border);
       border-radius: 20px;
       cursor: pointer;
       font-size: 13px;
       color: var(--text-3);
       transition: all 0.15s;
     }
-    .toggle-pill:hover { border-color: #374151; color: var(--text-2); }
-    .toggle-pill.on { border-color: #374151; color: var(--text-1); background: rgba(255,255,255,0.04); }
+    .toggle-pill:hover { border-color: var(--cv-tint-border); color: var(--cv-primary); background: var(--cv-tint); }
+    .toggle-pill.on { border-color: var(--cv-primary); color: var(--cv-primary); background: var(--cv-tint); }
 
     /* ─── Error ─── */
     .error-msg {
       padding: 11px 14px;
-      background: rgba(239,68,68,0.08);
-      border: 1px solid rgba(239,68,68,0.2);
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
       border-radius: 8px;
       font-size: 14px;
-      color: #f87171;
+      color: #DC2626;
       margin-top: 14px;
     }
 
     /* ─── Result cards ─── */
     .stat-card {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 14px;
       padding: 18px 18px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.04);
     }
     .stat-label {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-3);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 7px;
     }
     .stat-value {
       font-size: 19px;
-      font-weight: 650;
+      font-weight: 700;
       letter-spacing: -0.025em;
       line-height: 1.25;
       color: var(--text-1);
     }
 
-    /* Verdict card */
+    /* ─── Verdict card ─── */
     .verdict-card {
       border-radius: 16px;
-      padding: 24px 20px 22px;
-      margin-bottom: 12px;
+      padding: 28px 24px 22px;
+      margin-bottom: 10px;
+      border-left-width: 4px;
+      border-left-style: solid;
     }
-    .verdict-weak   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.22); }
-    .verdict-fair   { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.22); }
-    .verdict-strong { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.22); }
+    .verdict-weak   {
+      background: #FEF2F2;
+      border: 1.5px solid #FECACA;
+      border-left: 4px solid #EF4444;
+    }
+    .verdict-fair   {
+      background: #FFFBEB;
+      border: 1.5px solid #FDE68A;
+      border-left: 4px solid #F59E0B;
+    }
+    .verdict-strong {
+      background: #ECFDF5;
+      border: 1.5px solid #A7F3D0;
+      border-left: 4px solid #10B981;
+    }
 
     .verdict-tag {
       display: inline-flex;
@@ -215,34 +244,34 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .verdict-tag-dot {
-      width: 6px; height: 6px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       flex-shrink: 0;
     }
     .verdict-headline {
-      font-size: 25px;
-      font-weight: 750;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      margin-bottom: 12px;
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 14px;
     }
     .verdict-comp {
       font-size: 14px;
-      color: #666;
+      color: var(--text-2);
       line-height: 1.5;
     }
 
     /* ─── Range bar ─── */
     .range-wrap {
-      margin: 10px 0 6px;
+      margin: 12px 0 6px;
       position: relative;
-      padding-bottom: 32px;
+      padding-bottom: 34px;
     }
     .range-bar {
-      height: 5px;
+      height: 6px;
       border-radius: 100px;
       background: linear-gradient(to right, #ef4444 0%, #f59e0b 42%, #10b981 100%);
       position: relative;
@@ -253,15 +282,15 @@
       transform: translateX(-50%) translateY(-50%);
       width: 1.5px;
       height: 12px;
-      background: rgba(0,0,0,0.5);
+      background: rgba(15,23,42,0.2);
       border-radius: 1px;
     }
     .range-tick-label {
       position: absolute;
-      top: 12px;
+      top: 14px;
       transform: translateX(-50%);
       font-size: 10px;
-      color: #555;
+      color: var(--text-3);
       white-space: nowrap;
       font-weight: 500;
     }
@@ -269,17 +298,17 @@
       position: absolute;
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
-      width: 13px; height: 13px;
+      width: 14px; height: 14px;
       border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 0 2.5px rgba(255,255,255,0.2), 0 2px 8px rgba(0,0,0,0.4);
+      background: var(--surface);
+      box-shadow: 0 0 0 2.5px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.16);
       left: 2%;
       transition: left 0.85s cubic-bezier(0.34,1.4,0.64,1);
       z-index: 2;
     }
     .range-user-label {
       position: absolute;
-      bottom: 16px;
+      bottom: 18px;
       transform: translateX(-50%);
       font-size: 10px;
       font-weight: 700;
@@ -290,7 +319,7 @@
     }
 
     /* ─── Divider ─── */
-    .divider { height: 1px; background: var(--border-sub); margin: 20px 0; }
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
 
     /* ─── Animations ─── */
     @keyframes fadeUp {
@@ -309,12 +338,12 @@
     .cv-brand {
       font-weight: 800;
       font-size: 15px;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       text-decoration: none;
       line-height: 1;
     }
-    .cv-brand .word { color: var(--text-1); }
-    .cv-brand .accent { color: var(--cv-accent); }
+    .cv-brand .word   { color: var(--text-1); }
+    .cv-brand .accent { color: var(--cv-primary); }
 
     /* ─── Confidence badge ─── */
     .confidence-badge {
@@ -333,10 +362,10 @@
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .confidence-high  { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); color: #34d399; }
-    .confidence-high .dot  { background: #34d399; }
-    .confidence-med   { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); color: #fbbf24; }
-    .confidence-med .dot   { background: #fbbf24; }
+    .confidence-high { background: #ECFDF5; border: 1px solid #A7F3D0; color: #059669; }
+    .confidence-high .dot { background: #059669; }
+    .confidence-med  { background: #FFFBEB; border: 1px solid #FDE68A; color: #D97706; }
+    .confidence-med .dot  { background: #D97706; }
 
     /* ─── Trust attribution ─── */
     .trust-row {
@@ -349,7 +378,7 @@
     }
     .trust-source {
       font-size: 11px;
-      color: var(--text-dim);
+      color: var(--text-3);
       display: flex;
       align-items: center;
       gap: 5px;
@@ -367,7 +396,7 @@
       border-right: none;
       border-top: none;
     }
-    .methodology-link:hover { color: var(--cv-accent); border-color: var(--cv-accent); }
+    .methodology-link:hover { color: var(--cv-primary); border-color: var(--cv-primary); }
 
     /* ─── Verdict Network bar ─── */
     .network-bar {
@@ -386,19 +415,20 @@
     }
     .network-link {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       text-decoration: none;
+      color: var(--text-3);
       letter-spacing: -0.01em;
-      transition: opacity 0.15s;
+      transition: color 0.15s;
     }
-    .network-link:hover { opacity: 0.75; }
-    .network-sep { font-size: 12px; color: #2d2d38; }
+    .network-link:hover { color: var(--text-2); }
+    .network-sep { font-size: 12px; color: var(--border); }
 
     /* ─── Methodology Modal ─── */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(15,23,42,0.5);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
       z-index: 200;
@@ -412,16 +442,17 @@
     }
     .modal-box {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 20px 20px 0 0;
       width: 100%;
       max-width: 480px;
       max-height: 85dvh;
       overflow-y: auto;
       padding: 24px 20px 40px;
+      box-shadow: 0 -8px 32px rgba(15,23,42,0.08);
     }
     @media (min-height: 600px) {
-      .modal-box { border-radius: 20px; max-height: 80dvh; }
+      .modal-box { border-radius: 20px; max-height: 80dvh; box-shadow: 0 24px 48px rgba(15,23,42,0.12); }
     }
     .modal-header {
       display: flex;
@@ -437,8 +468,8 @@
     }
     .modal-close {
       width: 28px; height: 28px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
+      background: var(--surface-sub);
+      border: 1.5px solid var(--border);
       border-radius: 50%;
       cursor: pointer;
       display: flex;
@@ -447,9 +478,9 @@
       color: var(--text-2);
       font-size: 14px;
       flex-shrink: 0;
-      transition: background 0.15s;
+      transition: background 0.15s, border-color 0.15s;
     }
-    .modal-close:hover { background: rgba(255,255,255,0.1); }
+    .modal-close:hover { background: var(--cv-tint); border-color: var(--cv-tint-border); color: var(--cv-primary); }
     .modal-section { margin-bottom: 20px; }
     .modal-section-title {
       font-size: 11px;
@@ -465,7 +496,7 @@
       line-height: 1.65;
     }
     .modal-body strong { color: var(--text-1); font-weight: 600; }
-    .modal-divider { height: 1px; background: var(--border-sub); margin: 16px 0; }
+    .modal-divider { height: 1px; background: var(--border); margin: 16px 0; }
 
     /* ─── Share row ─── */
     .share-btn {
@@ -475,18 +506,22 @@
       justify-content: center;
       gap: 8px;
       padding: 13px 16px;
-      background: rgba(96,165,250,0.07);
-      border: 1px solid rgba(96,165,250,0.22);
+      background: var(--cv-tint);
+      border: 1.5px solid var(--cv-tint-border);
       border-radius: 12px;
-      color: var(--cv-accent);
+      color: var(--cv-primary);
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
       letter-spacing: -0.01em;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-    .share-btn:hover { background: rgba(96,165,250,0.13); border-color: rgba(96,165,250,0.35); }
+    .share-btn:hover {
+      background: #DBEAFE;
+      border-color: var(--cv-secondary);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.12);
+    }
     .share-btn:active { transform: scale(0.99); }
 
     /* ─── Copy toast ─── */
@@ -495,13 +530,13 @@
       bottom: 28px;
       left: 50%;
       transform: translateX(-50%) translateY(16px);
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--text-1);
+      border: none;
       border-radius: 20px;
       padding: 10px 18px;
       font-size: 13px;
       font-weight: 600;
-      color: #34d399;
+      color: #fff;
       display: flex;
       align-items: center;
       gap: 7px;
@@ -510,7 +545,7 @@
       transition: opacity 0.2s ease, transform 0.2s ease;
       pointer-events: none;
       white-space: nowrap;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.2);
     }
     .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -521,7 +556,7 @@
       margin-top: 6px;
       line-height: 1.5;
     }
-    .peer-line strong { font-weight: 600; }
+    .peer-line strong { color: var(--text-2); font-weight: 600; }
 
     /* ─── Negotiation script card ─── */
     .script-pre {
@@ -530,9 +565,9 @@
       line-height: 1.75;
       white-space: pre-wrap;
       font-family: inherit;
-      background: rgba(0,0,0,0.2);
-      border: 1px solid var(--border-sub);
-      border-radius: 8px;
+      background: var(--surface-sub);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
       padding: 14px;
       margin: 10px 0 10px;
     }
@@ -544,13 +579,17 @@
       font-weight: 600;
       color: var(--text-3);
       background: none;
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: 8px;
       padding: 7px 13px;
       cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
     }
-    .copy-script-btn:hover { color: var(--cv-accent); border-color: var(--cv-accent); }
+    .copy-script-btn:hover {
+      color: var(--cv-primary);
+      border-color: var(--cv-tint-border);
+      background: var(--cv-tint);
+    }
 
     /* ─── Strong-offer tips ─── */
     .tips-list {
@@ -571,7 +610,7 @@
     }
     .tips-list li::before {
       content: '→';
-      color: #10b981;
+      color: #059669;
       font-weight: 700;
       flex-shrink: 0;
       font-size: 13px;
@@ -590,20 +629,16 @@
   <div style="margin-bottom: 44px; padding-top: 8px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
     <span class="cv-brand"><span class="word">Comp</span><span class="accent">Verdict</span></span>
     <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-      <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" class="network-link" style="font-size:11px; font-weight:600; letter-spacing:-0.01em; text-decoration:none;">
-        <span style="color:var(--text-dim);">Salary</span><span style="color:var(--sv-accent);">Verdict</span>
-      </a>
+      <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" class="network-link" style="font-size:11px;">SalaryVerdict</a>
       <span class="network-sep" style="font-size:11px;">·</span>
-      <a href="https://www.spendverdict.com" target="_blank" rel="noopener" class="network-link" style="font-size:11px; font-weight:600; letter-spacing:-0.01em; text-decoration:none;">
-        <span style="color:var(--text-dim);">Spend</span><span style="color:var(--spv-accent);">Verdict</span>
-      </a>
+      <a href="https://www.spendverdict.com" target="_blank" rel="noopener" class="network-link" style="font-size:11px;">SpendVerdict</a>
     </div>
   </div>
 
   <!-- Headline -->
   <div style="margin-bottom: 36px;">
-    <h1 style="font-size: 30px; font-weight: 780; letter-spacing: -0.035em; line-height: 1.12; margin: 0 0 11px; color: #f2f2f2;">Is this offer<br>worth taking?</h1>
-    <p style="font-size: 15px; color: #666; line-height: 1.55; margin: 0;">Enter the package. We'll give you the verdict.</p>
+    <h1 style="font-size: 32px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; margin: 0 0 11px; color: var(--text-1);">Is this offer<br>worth taking?</h1>
+    <p style="font-size: 15px; color: var(--text-2); line-height: 1.55; margin: 0;">Enter the package. We'll give you the verdict.</p>
   </div>
 
   <!-- ── Form ── -->
@@ -644,7 +679,7 @@
 
     <!-- Optional toggles -->
     <div style="margin-top: 2px;">
-      <div style="font-size: 11px; color: #444; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 10px;">Optional</div>
+      <div style="font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 10px;">Optional</div>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="toggle-pill" id="t-bonus" onclick="toggleField('bonus')">+ Bonus</button>
         <button class="toggle-pill" id="t-equity" onclick="toggleField('equity')">+ Equity</button>
@@ -679,7 +714,7 @@
     <button class="btn-primary" onclick="runVerdict()">Get Verdict →</button>
   </div>
 
-  <p style="text-align:center; font-size: 11px; color: #333; margin-top: 18px; line-height: 1.5;">Based on aggregated market benchmarks. Results are estimates.</p>
+  <p style="text-align:center; font-size: 11px; color: var(--text-3); margin-top: 18px; line-height: 1.5;">Based on aggregated market benchmarks. Results are estimates.</p>
 </div>
 
 
@@ -690,14 +725,14 @@
 
   <!-- Nav -->
   <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 28px; padding-top: 8px;">
-    <button onclick="goBack()" style="background:none; border:none; cursor:pointer; color:#555; font-size:14px; padding: 4px 0; display:flex; align-items:center; gap:6px; transition: color 0.15s;" onmouseover="this.style.color='#bbb'" onmouseout="this.style.color='#555'">← Back</button>
+    <button onclick="goBack()" style="background:none; border:none; cursor:pointer; color:var(--text-3); font-size:14px; padding: 4px 0; display:flex; align-items:center; gap:6px; transition: color 0.15s;" onmouseover="this.style.color='var(--cv-primary)'" onmouseout="this.style.color='var(--text-3)'">← Back</button>
     <span class="cv-brand" style="font-size:13px;"><span class="word">Comp</span><span class="accent">Verdict</span></span>
   </div>
 
   <!-- Context line -->
-  <p id="r-context" style="font-size: 13px; color: #555; margin: 0 0 6px; line-height: 1.5;"></p>
+  <p id="r-context" style="font-size: 13px; color: var(--text-2); margin: 0 0 6px; line-height: 1.5;"></p>
   <!-- Fallback notice (shown when data is approximated from market default) -->
-  <p id="r-fallback" style="display:none; font-size: 11px; color: #4a3a1a; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.15); border-radius: 6px; padding: 7px 10px; margin: 0 0 14px; line-height: 1.5;"></p>
+  <p id="r-fallback" style="display:none; font-size: 11px; color: #92400E; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 6px; padding: 7px 10px; margin: 0 0 14px; line-height: 1.5;"></p>
 
   <!-- Verdict -->
   <div id="r-verdict-card" class="verdict-card fade-in delay-1"></div>
@@ -750,7 +785,7 @@
 
   <!-- Emotional line -->
   <div class="fade-in delay-6" style="padding: 14px 2px 6px;">
-    <p id="r-emotional" style="font-size: 15px; color: #666; font-style: italic; line-height: 1.65; margin: 0;"></p>
+    <p id="r-emotional" style="font-size: 15px; color: var(--text-2); font-style: italic; line-height: 1.65; margin: 0;"></p>
   </div>
 
   <div class="divider"></div>
@@ -762,19 +797,13 @@
   <!-- Verdict Network -->
   <div class="network-bar fade-in delay-6">
     <span class="network-label">Verdict network</span>
-    <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" class="network-link">
-      <span style="color:var(--text-dim);">Salary</span><span style="color:var(--sv-accent);">Verdict</span>
-    </a>
+    <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" class="network-link">SalaryVerdict</a>
     <span class="network-sep">·</span>
-    <a href="https://www.spendverdict.com" target="_blank" rel="noopener" class="network-link">
-      <span style="color:var(--text-dim);">Spend</span><span style="color:var(--spv-accent);">Verdict</span>
-    </a>
+    <a href="https://www.spendverdict.com" target="_blank" rel="noopener" class="network-link">SpendVerdict</a>
     <span class="network-sep">·</span>
-    <span style="font-size:12px; font-weight:700; letter-spacing:-0.01em;">
-      <span style="color:var(--text-1);">Comp</span><span style="color:var(--cv-accent);">Verdict</span>
-    </span>
+    <span style="font-size:12px; font-weight:700; letter-spacing:-0.02em; color:var(--cv-primary);">CompVerdict</span>
   </div>
-  <p style="font-size: 11px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">Data is indicative. Results are based on aggregated market benchmarks, not guaranteed offers.</p>
+  <p style="font-size: 11px; color: var(--text-3); margin-top: 14px; line-height: 1.6;">Data is indicative. Results are based on aggregated market benchmarks, not guaranteed offers.</p>
 </div>
 
 
@@ -828,9 +857,9 @@
     <div class="modal-section">
       <div class="modal-section-title">Confidence levels</div>
       <div class="modal-body">
-        <strong style="color:#34d399;">High confidence</strong> — Spain, UK, Germany: explicitly benchmarked per role, city, and band from multiple sources.
+        <strong style="color:#059669;">High confidence</strong> — Spain, UK, Germany: explicitly benchmarked per role, city, and band from multiple sources.
         <br><br>
-        <strong style="color:#fbbf24;">Estimated range</strong> — all other markets: derived from mid-level survey data using consistent band scaling ratios. Treat as directional.
+        <strong style="color:#D97706;">Estimated range</strong> — all other markets: derived from mid-level survey data using consistent band scaling ratios. Treat as directional.
       </div>
     </div>
 
@@ -1094,7 +1123,7 @@ function runVerdict() {
 
   // Context
   document.getElementById('r-context').innerHTML =
-    `<strong style="color:#999;">${role}</strong> &nbsp;·&nbsp; <strong style="color:#999;">${city}</strong> &nbsp;·&nbsp; ${yoeLabel} &nbsp;·&nbsp; <span style="color:#666;">${bandLabel}</span>`;
+    `<strong style="color:var(--text-1);">${role}</strong> &nbsp;·&nbsp; <strong style="color:var(--text-1);">${city}</strong> &nbsp;·&nbsp; ${yoeLabel} &nbsp;·&nbsp; <span style="color:var(--text-3);">${bandLabel}</span>`;
 
   // Confidence indicator
   renderConfidence(city);
@@ -1118,8 +1147,8 @@ function runVerdict() {
     </div>
     <div class="verdict-headline" style="color:${vColor};">${vTitle}</div>
     <div class="verdict-comp">
-      Base: <strong style="color:#aaa;">${fmt(salaryRaw,r.symbol)}</strong>
-      ${bonusRaw > 0 || equityRaw > 0 ? `&nbsp;·&nbsp; Total comp: <strong style="color:#aaa;">${fmt(totalComp,r.symbol)}</strong>` : ''}
+      Base: <strong style="color:var(--text-1);">${fmt(salaryRaw,r.symbol)}</strong>
+      ${bonusRaw > 0 || equityRaw > 0 ? `&nbsp;·&nbsp; Total comp: <strong style="color:var(--text-1);">${fmt(totalComp,r.symbol)}</strong>` : ''}
     </div>`;
 
   // Range
@@ -1160,7 +1189,7 @@ function runVerdict() {
   if (vType === 'strong') {
     scriptLabel.textContent = 'Next Steps';
     scriptBody.innerHTML = `
-      <p style="font-size:14px;color:var(--text-2);line-height:1.6;margin:0 0 10px;">Your base is already strong. If you negotiate, focus on:</p>
+      <p style="font-size:14px;color:var(--text-2);line-height:1.6;margin:0 0 12px;">Your base is already strong. If you negotiate, focus on:</p>
       <ul class="tips-list">
         <li>Equity / RSUs — often more flexible than base salary</li>
         <li>Signing bonus — one-time, lower ongoing risk for the company</li>
@@ -1206,7 +1235,7 @@ function renderBar(r, userVal, percentile, vColor) {
     const label = document.createElement('div');
     label.className = 'range-tick-label';
     label.style.left = p + '%';
-    label.innerHTML = `${fmt(v, r.symbol)}<br><span style="color:#3a3a3a">${lbl}</span>`;
+    label.innerHTML = `${fmt(v, r.symbol)}<br><span style="color:var(--text-3)">${lbl}</span>`;
     bar.appendChild(label);
   });
 
@@ -1222,7 +1251,7 @@ function renderBar(r, userVal, percentile, vColor) {
   const dot = document.createElement('div');
   dot.className = 'range-user-dot';
   dot.style.background = '#fff';
-  dot.style.boxShadow = `0 0 0 3px ${vColor}55, 0 2px 8px rgba(0,0,0,0.5)`;
+  dot.style.boxShadow = `0 0 0 3px ${vColor}66, 0 2px 8px rgba(15,23,42,0.18)`;
   bar.appendChild(dot);
 
   // Animate dot into position
@@ -1329,6 +1358,7 @@ function renderConfidence(city) {
     el.className = 'confidence-badge confidence-med';
     el.innerHTML = '<span class="dot"></span><span>Estimated range</span>';
   }
+  // trust source stays neutral
 }
 
 // ════════════════════════════════════════════════════
