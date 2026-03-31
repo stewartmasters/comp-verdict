@@ -55,29 +55,33 @@ export default function TrustSection({ variant = 'full' }) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
-      <div className="text-center mb-10 space-y-2">
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Built on official data</p>
-        <p className="text-xl font-bold text-gray-900">Every benchmark comes from national statistics agencies</p>
-        <p className="text-sm text-gray-500">Not crowdsourcing. Not estimates. Primary government wage surveys — updated Q1 2026.</p>
-      </div>
+      <div className="grid sm:grid-cols-2 gap-10 items-start">
 
-      <div className="grid sm:grid-cols-2 gap-x-16 gap-y-3 mb-10 max-w-3xl mx-auto">
-        {TEXT_SOURCES.map((s) => (
-          <div key={s.abbr} className="flex items-baseline gap-2">
-            <span className="text-sm font-bold text-gray-900 flex-shrink-0 w-28">{s.abbr}</span>
-            <span className="text-sm text-gray-400 leading-relaxed">{s.full}</span>
+        {/* Left — heading + description */}
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Built on official data</h2>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">Updated Q1 2026</span>
+            <span className="text-xs font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">10 official sources</span>
           </div>
-        ))}
-      </div>
+          <p className="text-sm text-gray-500 leading-relaxed mb-5">
+            Every benchmark comes from national statistics agencies — not crowdsourcing, not estimates. Primary government wage surveys only.
+          </p>
+          <Link href="/methodology/" className="text-sm font-semibold text-blue-600 hover:underline">
+            See methodology →
+          </Link>
+        </div>
 
-      <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
-        <span>Updated Q1 2026</span>
-        <span>·</span>
-        <span>10 official sources</span>
-        <span>·</span>
-        <Link href="/methodology/" className="text-blue-600 hover:underline font-medium">
-          Read methodology →
-        </Link>
+        {/* Right — bordered source list */}
+        <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
+          {TEXT_SOURCES.map((s) => (
+            <div key={s.abbr} className="flex items-start gap-4 px-4 py-3 bg-white hover:bg-gray-50 transition-colors">
+              <span className="text-sm font-bold text-blue-600 w-24 flex-shrink-0">{s.abbr}</span>
+              <span className="text-sm text-gray-400 leading-relaxed">{s.full}</span>
+            </div>
+          ))}
+        </div>
+
       </div>
     </div>
   )
