@@ -45,9 +45,16 @@ const LANG_SWITCH = {
 
 export default function Navigation() {
   const pathname = usePathname()
+  const router = useRouter()
 
   const locale = pathname?.startsWith('/de') ? 'de' : pathname?.startsWith('/es') ? 'es' : 'en'
   const cfg = NAV_CONFIG[locale]
+
+  function handleLangChange(e) {
+    const target = e.target.value
+    if (target === locale) return
+    router.push(LANG_SWITCH[locale]?.[target] ?? '/')
+  }
 
   return (
     <nav className="border-b border-gray-100 bg-white/90 backdrop-blur-sm sticky top-0 z-50">
@@ -89,23 +96,17 @@ export default function Navigation() {
           </Link>
 
           {/* Language switcher */}
-          <div className="flex items-center gap-1 ml-1 text-xs font-medium">
-            {['en', 'es', 'de'].map((lang, i) => (
-              <span key={lang} className="flex items-center gap-1">
-                {i > 0 && <span className="text-gray-300">·</span>}
-                {lang === locale ? (
-                  <span className="text-gray-900 font-bold">{lang.toUpperCase()}</span>
-                ) : (
-                  <Link
-                    href={LANG_SWITCH[locale]?.[lang] ?? '/'}
-                    className="text-gray-400 hover:text-gray-700 transition-colors"
-                  >
-                    {lang.toUpperCase()}
-                  </Link>
-                )}
-              </span>
-            ))}
-          </div>
+          <select
+            value={locale}
+            onChange={handleLangChange}
+            className="ml-1 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg px-2 py-1 cursor-pointer hover:border-gray-300 focus:outline-none focus:border-gray-400 appearance-none pr-6"
+            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 6px center' }}
+            aria-label="Select language"
+          >
+            <option value="en">EN</option>
+            <option value="es">ES</option>
+            <option value="de">DE</option>
+          </select>
 
           <Link
             href={cfg.homePath + '#offer-tool'}
