@@ -333,7 +333,7 @@ export default function EsHomePage() {
               Spend<span className="text-violet-500">Verdict</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              La oferta parece buena sobre el papel — ¿pero funciona realmente para tu estilo de vida? Ve qué significa para el alquiler, ahorros y gastos.
+              Introduce tu salario, ciudad y alquiler. Obtén un veredicto instantáneo sobre si estás gastando demasiado — basado en datos reales de vivienda, no en reglas generales.
             </p>
             <p className="text-xs text-violet-500 mt-2 font-semibold">Verificar mi estilo de vida &rarr;</p>
           </a>

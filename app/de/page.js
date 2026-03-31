@@ -333,7 +333,7 @@ export default function DeHomePage() {
               Spend<span className="text-violet-500">Verdict</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Angebot sieht auf dem Papier gut aus — aber funktioniert es wirklich für deinen Lebensstil? Sieh, was es für Miete, Ersparnisse und Ausgaben bedeutet.
+              Gib dein Gehalt, deine Stadt und deine Miete ein. Erhalte sofort ein Urteil, ob du zu viel ausgibst — basierend auf echten Wohnungsdaten, nicht auf Faustregeln.
             </p>
             <p className="text-xs text-violet-500 mt-2 font-semibold">Meinen Lebensstil prüfen &rarr;</p>
           </a>
