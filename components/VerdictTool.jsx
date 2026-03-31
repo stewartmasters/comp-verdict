@@ -34,9 +34,9 @@ const LABELS = {
       'Accelerated first review (e.g. 6-month instead of 12-month)',
     ],
     verdictLabel: 'Verdict',
-    verdictWeak: 'This is a weak offer',
-    verdictFair: 'This is a fair offer',
-    verdictStrong: 'This is a strong offer',
+    verdictWeak: 'Below market — push back',
+    verdictFair: 'Good offer, but room to negotiate',
+    verdictStrong: 'Strong offer — above market',
     modalTitle: 'How CompVerdict works',
     methodology: 'Methodology ↗',
     confidenceHigh: 'High confidence',
@@ -73,7 +73,10 @@ const LABELS = {
     actionLifestyleSub: 'Does this salary work for your city?',
     actionMarket: 'Market pay for this role',
     actionMarketSub: 'Browse salary data by city',
-    shareTitle: 'Share this verdict',
+    shareTitle: 'Share your result',
+    copyResult: 'Copy result',
+    shareLinkedIn: 'LinkedIn',
+    shareX: 'Share on X',
     percentileStmt: (pp) => {
       if (pp < 10) return `Bottom 10% for this role and market`
       if (pp < 25) return `${pp}th percentile`
@@ -100,7 +103,7 @@ const LABELS = {
     recLabel:         'Recommended Action',
     recCounter:       (low, high) => `Counter at ${low}–${high}`,
     offerScoreLabel:  'Offer Score',
-    scoreDesc:        (pp) => pp < 25 ? 'Below market — significant room to negotiate' : pp < 50 ? 'Below median — negotiation recommended' : pp < 63 ? 'Near median — some room to push' : pp < 80 ? 'Above median — strong offer' : 'Top-tier — exceptional package',
+    scoreDesc:        (pp) => pp < 25 ? 'Bottom 25% — significant room to negotiate' : pp < 50 ? 'Below median — negotiation recommended' : pp < 63 ? 'Near median — some room to push' : pp < 90 ? `Top ${100-pp}% of offers for this role` : 'Top 10% of offers for this role',
     firstOfferLabel:  'First Offer Context',
     firstOfferCtx:    (pp) => pp < 25 ? 'This appears to be a low opening offer. Companies routinely agree to 10–20% above the initial number. Do not accept without countering.' : pp < 50 ? 'Standard first offer. Most candidates at this level successfully negotiate 5–12% above the opening number. A counter is expected and appropriate.' : pp < 75 ? 'This offer is above median, which suggests the company is motivated. Limited room on base — but equity, signing bonus, and flexible arrangements are often still negotiable.' : 'Companies rarely open this high. This is likely their best offer, not a first offer. Prioritise non-cash elements over pushing on base salary.',
     simLabel:         'Scenario Simulator',
@@ -141,9 +144,9 @@ const LABELS = {
       'Primera revisión acelerada (ej. a los 6 meses en lugar de 12)',
     ],
     verdictLabel: 'Veredicto',
-    verdictWeak: 'Esta es una oferta débil',
-    verdictFair: 'Esta es una oferta justa',
-    verdictStrong: 'Esta es una oferta fuerte',
+    verdictWeak: 'Por debajo del mercado — negocia',
+    verdictFair: 'Buena oferta, pero hay margen de mejora',
+    verdictStrong: 'Oferta sólida — por encima del mercado',
     modalTitle: 'Cómo funciona CompVerdict',
     methodology: 'Metodología ↗',
     confidenceHigh: 'Alta confianza',
@@ -180,7 +183,10 @@ const LABELS = {
     actionLifestyleSub: '¿Este salario funciona para tu ciudad?',
     actionMarket: 'Salarios de mercado para este perfil',
     actionMarketSub: 'Consulta datos salariales por ciudad',
-    shareTitle: 'Comparte este veredicto',
+    shareTitle: 'Comparte tu resultado',
+    copyResult: 'Copiar resultado',
+    shareLinkedIn: 'LinkedIn',
+    shareX: 'Compartir en X',
     percentileStmt: (pp) => {
       if (pp < 10) return `Inferior al 10% del mercado`
       if (pp < 25) return `Percentil ${pp}`
@@ -207,7 +213,7 @@ const LABELS = {
     recLabel:         'Acción Recomendada',
     recCounter:       (low, high) => `Contraoferta en ${low}–${high}`,
     offerScoreLabel:  'Puntuación de la Oferta',
-    scoreDesc:        (pp) => pp < 25 ? 'Por debajo del mercado — margen significativo para negociar' : pp < 50 ? 'Por debajo de la mediana — se recomienda negociar' : pp < 63 ? 'Cerca de la mediana — algo de margen' : pp < 80 ? 'Por encima de la mediana — oferta sólida' : 'Nivel premium — paquete excepcional',
+    scoreDesc:        (pp) => pp < 25 ? 'Cuartil inferior — margen significativo para negociar' : pp < 50 ? 'Por debajo de la mediana — se recomienda negociar' : pp < 63 ? 'Cerca de la mediana — algo de margen' : pp < 90 ? `Top ${100-pp}% de las ofertas para este perfil` : 'Top 10% de las ofertas para este perfil',
     firstOfferLabel:  'Contexto de Primera Oferta',
     firstOfferCtx:    (pp) => pp < 25 ? 'Parece una oferta inicial baja. Las empresas suelen aceptar un 10–20% más cuando el candidato negocia. No aceptes sin contraoferta.' : pp < 50 ? 'Primera oferta estándar. La mayoría de candidatos de este nivel negocian con éxito un 5–12% más. Una contraoferta es esperada y apropiada.' : pp < 75 ? 'Esta oferta está por encima de la mediana, lo que sugiere que la empresa está motivada. El margen en salario base es limitado, pero equity, bonus de firma y condiciones flexibles suelen ser negociables.' : 'Las empresas raramente abren tan alto. Probablemente es su mejor oferta, no una primera. Prioriza elementos no monetarios antes que insistir en el salario base.',
     simLabel:         'Simulador de Escenarios',
@@ -248,9 +254,9 @@ const LABELS = {
       'Vorgezogene erste Gehaltsüberprüfung (z.B. nach 6 statt 12 Monaten)',
     ],
     verdictLabel: 'Urteil',
-    verdictWeak: 'Dies ist ein schwaches Angebot',
-    verdictFair: 'Dies ist ein faires Angebot',
-    verdictStrong: 'Dies ist ein starkes Angebot',
+    verdictWeak: 'Unter Marktniveau — verhandeln',
+    verdictFair: 'Gutes Angebot, aber Verhandlungsspielraum',
+    verdictStrong: 'Starkes Angebot — über Marktniveau',
     modalTitle: 'Wie CompVerdict funktioniert',
     methodology: 'Methodik ↗',
     confidenceHigh: 'Hohe Konfidenz',
@@ -288,6 +294,9 @@ const LABELS = {
     actionMarket: 'Marktgehälter für diese Stelle',
     actionMarketSub: 'Gehaltsdaten nach Stadt durchsuchen',
     shareTitle: 'Ergebnis teilen',
+    copyResult: 'Ergebnis kopieren',
+    shareLinkedIn: 'LinkedIn',
+    shareX: 'Auf X teilen',
     percentileStmt: (pp) => {
       if (pp < 10) return `Untere 10% für diese Stelle`
       if (pp < 25) return `${pp}. Perzentil`
@@ -314,7 +323,7 @@ const LABELS = {
     recLabel:         'Empfohlene Maßnahme',
     recCounter:       (low, high) => `Gegenangebot bei ${low}–${high}`,
     offerScoreLabel:  'Angebotsbewertung',
-    scoreDesc:        (pp) => pp < 25 ? 'Unter Marktniveau — erheblicher Verhandlungsspielraum' : pp < 50 ? 'Unter dem Median — Verhandlung empfohlen' : pp < 63 ? 'Nahe am Median — etwas Spielraum' : pp < 80 ? 'Über dem Median — starkes Angebot' : 'Spitzenniveau — außergewöhnliches Paket',
+    scoreDesc:        (pp) => pp < 25 ? 'Unteres Quartil — erheblicher Verhandlungsspielraum' : pp < 50 ? 'Unter dem Median — Verhandlung empfohlen' : pp < 63 ? 'Nahe am Median — etwas Spielraum' : pp < 90 ? `Top ${100-pp}% der Angebote für diese Stelle` : 'Top 10% der Angebote für diese Stelle',
     firstOfferLabel:  'Kontext Erstangebot',
     firstOfferCtx:    (pp) => pp < 25 ? 'Dies scheint ein niedrig angesetztes Erstangebot zu sein. Unternehmen akzeptieren bei Verhandlungen routinemäßig 10–20% mehr. Nicht ohne Gegenangebot annehmen.' : pp < 50 ? 'Typisches Erstangebot. Die meisten Kandidaten auf diesem Level verhandeln erfolgreich 5–12% mehr heraus. Ein Gegenangebot ist erwartet und angemessen.' : pp < 75 ? 'Dieses Angebot liegt über dem Median, was auf ein hohes Interesse des Unternehmens hindeutet. Wenig Spielraum beim Grundgehalt — aber Equity, Signing Bonus und flexible Regelungen sind oft noch verhandelbar.' : 'Unternehmen eröffnen selten so hoch. Dies ist wahrscheinlich ihr bestes Angebot. Fokussiere auf nicht-monetäre Elemente statt auf das Grundgehalt.',
     simLabel:         'Szenario-Simulator',
@@ -410,15 +419,17 @@ function getOfferIdentity(pp) {
 }
 
 function buildShareText(role, city, bandLabel, pp, vType, simSal, simVT, r, totalComp) {
-  const url = 'https://comp-verdict.netlify.app'
+  const url = 'https://www.compverdict.com'
   const above = 100 - pp
+  const gap = r.p50 - totalComp
   let base
   if (vType === 'weak') {
-    base = `Just checked my ${role} offer in ${city} with CompVerdict.\n\nVerdict: weak offer — bottom ${pp}% for a ${bandLabel}. Time to negotiate.`
+    const gapStr = gap > 0 ? `${fmt(gap, r.symbol)} below market` : `bottom ${pp}% for this role`
+    base = `Just ran my ${role} offer in ${city} through CompVerdict.\n\nVerdict: ${gapStr}. Time to negotiate before signing.`
   } else if (vType === 'fair') {
-    base = `Ran my ${role} offer in ${city} through CompVerdict.\n\nFair offer — ${pp}th percentile for a ${bandLabel}. Could be better.`
+    base = `Checked my ${role} offer in ${city} — ${pp}th percentile for a ${bandLabel}. Good offer, but there's still room to push.\n\nVia CompVerdict`
   } else {
-    base = `CompVerdict: my ${role} offer in ${city} is in the top ${above}% for a ${bandLabel}. Strong offer. 💪`
+    base = `Just checked my ${role} offer in ${city} — top ${above}% for a ${bandLabel}. Strong offer. 💪\n\nVia CompVerdict`
   }
 
   if (simSal != null && simSal !== totalComp && simVT && simVT !== vType) {
@@ -426,7 +437,7 @@ function buildShareText(role, city, bandLabel, pp, vType, simSal, simVT, r, tota
     base += `\n\nSimulator: at ${fmt(simSal, r.symbol)} it ${simVerb}.`
   }
 
-  return base + `\n\nCheck yours → ${url}`
+  return base + `\n\n${url}`
 }
 
 function buildNegScript(role, city, bandLabel, r) {
@@ -837,6 +848,21 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     }
   }
 
+  function shareLinkedIn() {
+    const linkedInUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://www.compverdict.com')
+    if (typeof window !== 'undefined') window.open(linkedInUrl, '_blank', 'width=600,height=500')
+    if (results) trackEvent('share_linkedin', { role: results.role, city: results.city, verdict: results.vType })
+  }
+
+  function shareX() {
+    if (!results) return
+    const { role: r2, city: c2, bandLabel: bl, pp: pp2, vType: vt, r: rData, totalComp: tc } = results
+    const text = buildShareText(r2, c2, bl, pp2, vt, simSalary, simVType, rData, tc)
+    const xUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text)
+    if (typeof window !== 'undefined') window.open(xUrl, '_blank', 'width=550,height=450')
+    trackEvent('share_x', { role: r2, city: c2, verdict: vt })
+  }
+
   function copyScript() {
     if (!results) return
     const { role: r2, city: c2, bandLabel: bl, r: rangeData } = results
@@ -1057,7 +1083,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
               {lbl.verdictLabel}
             </div>
             <div className="verdict-headline" style={{ color: results.vColor }}>
-              {results.vType === 'weak' ? 'Weak Offer' : results.vType === 'fair' ? 'Fair — Can Do Better' : 'Strong Offer'}
+              {results.vTitle}
             </div>
             <div className="verdict-action">{results.verdictAction}</div>
             <div className="verdict-comp">
@@ -1224,13 +1250,34 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
           {/* 10. SHARE */}
           <div className="share-block fade-in delay-5">
             <p className="share-block-title">{lbl.shareTitle}</p>
-            <button className="share-btn-main" onClick={shareResult}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-              </svg>
-              {lbl.shareBtn}
-            </button>
+            <div style={{ marginBottom: '10px', fontSize: '13px', color: 'var(--text-2)', lineHeight: 1.5 }}>
+              {results.vType === 'weak'
+                ? `This offer is ${fmt(Math.max(0, results.r.p50 - results.totalComp), results.r.symbol)} below market`
+                : results.vType === 'fair'
+                ? `This offer is ${results.pp}th percentile — good, but room to push`
+                : `This offer is top ${100 - results.pp}% for this role`
+              }
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <button className="share-btn-main" onClick={shareResult} style={{ flex: '1 1 auto', minWidth: '120px' }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                {lbl.copyResult}
+              </button>
+              <button className="share-btn-main" onClick={shareLinkedIn} style={{ flex: '1 1 auto', minWidth: '100px', background: '#0077b5', borderColor: '#0077b5' }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
+                </svg>
+                {lbl.shareLinkedIn}
+              </button>
+              <button className="share-btn-main" onClick={shareX} style={{ flex: '1 1 auto', minWidth: '100px', background: '#000', borderColor: '#000' }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                {lbl.shareX}
+              </button>
+            </div>
           </div>
 
           {/* 11. ACTIONS */}
@@ -1283,12 +1330,13 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             <div className="modal-section">
               <div className="modal-section-title">Data sources</div>
               <div className="modal-body">
-                CompVerdict draws from four primary sources, all publicly available and legally open for reuse:<br /><br />
+                CompVerdict draws from five primary sources, all publicly available and legally open for reuse:<br /><br />
                 <strong>BLS OEWS</strong> (U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics) — official wage percentiles by US metro area. Public domain.<br /><br />
                 <strong>ONS ASHE</strong> (UK Office for National Statistics, Annual Survey of Hours and Earnings) — earnings by occupation and region. Open Government Licence v3.<br /><br />
                 <strong>INE EES</strong> (Instituto Nacional de Estadística, Encuesta de Estructura Salarial) — national tech wage data for Spain with city-level adjustments. CC-BY.<br /><br />
+                <strong>Destatis VSE</strong> (Statistisches Bundesamt, Verdienststrukturerhebung) — German earnings structure survey by occupation, region, and seniority. dl-de/by-2-0.<br /><br />
                 <strong>Stack Overflow Developer Survey</strong> — annual self-reported compensation by role, country, and experience level. Open Database Licence (ODbL).<br /><br />
-                <strong>ECB exchange rates</strong> — European Central Bank daily rates used to convert all figures to local currency.
+                <strong>ECB exchange rates</strong> — European Central Bank daily rates used to convert all figures to local currency. Cross-validated against SalaryVerdict benchmark outputs for consistency.
               </div>
             </div>
             <div className="modal-divider" />
@@ -1312,7 +1360,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             <div className="modal-section">
               <div className="modal-section-title">Confidence levels</div>
               <div className="modal-body">
-                <strong style={{ color: '#059669' }}>High confidence</strong> — Spain, UK, Germany: government data with explicit role and band breakdown, cross-validated against multiple sources.<br /><br />
+                <strong style={{ color: '#059669' }}>High confidence</strong> — UK (ONS ASHE), Spain (INE EES), Germany (Destatis VSE): government data with explicit role and band breakdown, cross-validated against multiple sources.<br /><br />
                 <strong style={{ color: '#D97706' }}>Estimated range</strong> — all other markets: derived from mid-level survey data using the calibrated scaling model. Treat as directional guidance, not a precise figure.
               </div>
             </div>

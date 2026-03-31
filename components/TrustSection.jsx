@@ -11,7 +11,7 @@ export default function TrustSection({ variant = 'full' }) {
     year: 'numeric',
   })
 
-  const SOURCES = ['BLS OEWS', 'ONS ASHE', 'INE EES', 'Stack Overflow Survey']
+  const SOURCES = ['BLS OEWS', 'ONS ASHE', 'INE EES', 'Destatis VSE', 'Stack Overflow Survey']
 
   if (variant === 'minimal') {
     return (

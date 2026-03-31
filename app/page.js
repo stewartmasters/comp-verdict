@@ -283,9 +283,9 @@ export default function HomePage() {
               Spend<span className="text-violet-500">Verdict</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Offer looks good on paper &mdash; but does it actually work for your lifestyle? See what it means for rent, savings, and spending.
+              Can you actually afford this lifestyle? Check if your salary covers rent in your city &mdash; based on real housing data, not rules of thumb.
             </p>
-            <p className="text-xs text-violet-500 mt-2 font-semibold">Check my lifestyle &rarr;</p>
+            <p className="text-xs text-violet-500 mt-2 font-semibold">Check my rent &rarr;</p>
           </a>
         </div>
       </section>
