@@ -239,6 +239,10 @@ export default function Footer({ locale = 'en' }) {
           <a href="https://www.spendverdict.com" target="_blank" rel="noopener noreferrer" className="font-bold text-xs text-gray-900 hover:opacity-75 transition-opacity">
             Spend<span className="text-violet-500">Verdict</span>
           </a>
+          <span className="text-gray-300">·</span>
+          <a href="https://www.pathverdict.com" target="_blank" rel="noopener noreferrer" className="font-bold text-xs text-gray-900 hover:opacity-75 transition-opacity">
+            Path<span className="text-teal-500">Verdict</span>
+          </a>
         </div>
 
         {/* Bottom bar */}
