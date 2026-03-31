@@ -1116,9 +1116,10 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             </div>
             <div className="verdict-action">{results.verdictAction}</div>
             <div className="verdict-comp">
-              Base: <strong style={{ color: 'var(--text-1)' }}>{fmt(results.salaryRaw, results.r.symbol)}</strong>
+              <span style={{ color: 'var(--text-3)', fontWeight: 500 }}>Base</span>{' '}
+              <strong style={{ color: 'var(--text-1)' }}>{fmt(results.salaryRaw, results.r.symbol)}</strong>
               {(results.bonusRaw > 0 || results.equityRaw > 0) && (
-                <> &nbsp;·&nbsp; Total: <strong style={{ color: 'var(--text-1)' }}>{fmt(results.totalComp, results.r.symbol)}</strong></>
+                <> &nbsp;·&nbsp; <span style={{ color: 'var(--text-3)', fontWeight: 500 }}>Total</span>{' '}<strong style={{ color: 'var(--text-1)' }}>{fmt(results.totalComp, results.r.symbol)}</strong></>
               )}
             </div>
             <RangeBar r={results.r} userVal={results.totalComp} percentile={results.pp} vColor={results.vColor} />
