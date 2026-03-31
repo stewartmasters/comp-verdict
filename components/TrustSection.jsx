@@ -55,22 +55,22 @@ export default function TrustSection({ variant = 'full' }) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
-      <div className="text-center mb-8 space-y-2">
+      <div className="text-center mb-10 space-y-2">
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Built on official data</p>
-        <p className="text-lg font-bold text-gray-900">Every benchmark comes from national statistics agencies</p>
+        <p className="text-xl font-bold text-gray-900">Every benchmark comes from national statistics agencies</p>
         <p className="text-sm text-gray-500">Not crowdsourcing. Not estimates. Primary government wage surveys — updated Q1 2026.</p>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-x-10 gap-y-2 mb-8 max-w-2xl mx-auto">
+      <div className="grid sm:grid-cols-2 gap-x-16 gap-y-3 mb-10 max-w-3xl mx-auto">
         {TEXT_SOURCES.map((s) => (
-          <div key={s.abbr} className="flex items-baseline gap-2 text-sm">
-            <span className="font-semibold text-gray-900 flex-shrink-0">{s.abbr}</span>
-            <span className="text-gray-400 text-xs leading-relaxed">{s.full}</span>
+          <div key={s.abbr} className="flex items-baseline gap-2">
+            <span className="text-sm font-bold text-gray-900 flex-shrink-0 w-28">{s.abbr}</span>
+            <span className="text-sm text-gray-400 leading-relaxed">{s.full}</span>
           </div>
         ))}
       </div>
 
-      <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
+      <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
         <span>Updated Q1 2026</span>
         <span>·</span>
         <span>10 official sources</span>
