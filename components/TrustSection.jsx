@@ -1,59 +1,75 @@
 import Link from 'next/link'
+import Image from 'next/image'
+
+const SOURCES = [
+  { src: '/logos/ons.png',      alt: 'ONS — UK Office for National Statistics',           label: 'ONS ASHE 2025'         },
+  { src: '/logos/bls.png',      alt: 'BLS — US Bureau of Labor Statistics',               label: 'BLS OEWS 2025'         },
+  { src: '/logos/ine.png',      alt: 'INE — Spain Instituto Nacional de Estadística',     label: 'INE EES 2024'          },
+  { src: '/logos/destatis.png', alt: 'Destatis — German Federal Statistical Office',      label: 'Destatis 2024'         },
+  { src: '/logos/eurostat.png', alt: 'Eurostat — European Statistics',                    label: 'Eurostat SES 2022'     },
+  { src: '/logos/insee.svg',    alt: 'INSEE — French National Statistics Institute',      label: 'INSEE 2024'            },
+  { src: '/logos/cbs.png',      alt: 'CBS — Statistics Netherlands',                      label: 'CBS 2024'              },
+  { src: '/logos/statscan.png', alt: 'Statistics Canada',                                 label: 'StatsCan CMHC 2024'   },
+  { src: '/logos/abs.png',      alt: 'ABS — Australian Bureau of Statistics',             label: 'ABS 2024'              },
+  { src: '/logos/oecd.png',     alt: 'OECD — Organisation for Economic Co-operation',     label: 'OECD IDD 2024'        },
+]
 
 /**
- * TrustSection — adapted from SalaryVerdict's TrustSection for offer benchmarks.
- * variant="full"    — shows copy, sources, update date, methodology link (default)
- * variant="minimal" — shows source tags only
+ * TrustSection
+ * variant="full"    — heading + logo grid + date + methodology link (home page trust block)
+ * variant="minimal" — compact logo row (hero inline)
  */
 export default function TrustSection({ variant = 'full' }) {
-  const MONTH_YEAR = new Date().toLocaleDateString('en-GB', {
-    month: 'long',
-    year: 'numeric',
-  })
-
-  const SOURCES = ['BLS OEWS', 'ONS ASHE', 'INE EES', 'Stack Overflow Survey']
-
   if (variant === 'minimal') {
     return (
-      <div className="flex flex-wrap items-center gap-2">
-        {SOURCES.map((src) => (
-          <span
-            key={src}
-            className="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium"
-          >
-            {src}
-          </span>
+      <div className="flex flex-wrap items-center gap-3">
+        {SOURCES.slice(0, 5).map((s) => (
+          <Image
+            key={s.src}
+            src={s.src}
+            alt={s.alt}
+            width={48}
+            height={20}
+            className="opacity-50 grayscale object-contain h-5 w-auto"
+            unoptimized
+          />
         ))}
+        <span className="text-xs text-gray-400 font-medium">+ 5 more</span>
       </div>
     )
   }
 
   return (
-    <div className="mt-4 pt-4 border-t border-gray-100">
-      <p className="text-xs font-medium text-gray-500 mb-3">
-        Built using public compensation benchmarks and government wage data
-      </p>
-      <div className="flex flex-wrap items-center gap-2 mb-2">
-        {SOURCES.map((src) => (
-          <span
-            key={src}
-            className="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium"
-          >
-            {src}
-          </span>
-        ))}
-        <span className="text-xs text-gray-400 font-medium">+ ECB exchange rates</span>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
+      <div className="text-center mb-8 space-y-2">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Built on official data</p>
+        <p className="text-lg font-bold text-gray-900">Every benchmark comes from national statistics agencies</p>
+        <p className="text-sm text-gray-500">Not crowdsourcing. Not estimates. Primary government wage surveys — updated Q1 2026.</p>
       </div>
-      <p className="text-xs text-gray-400 mb-2.5">Coverage varies by role and location.</p>
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-gray-300">
-          Updated {MONTH_YEAR} · Based on public benchmarks &amp; structured modelling
-        </p>
-        <Link
-          href="/methodology/"
-          className="text-xs text-blue-600 hover:underline font-medium whitespace-nowrap ml-3"
-        >
-          How we calculate →
+
+      <div className="grid grid-cols-5 sm:grid-cols-5 gap-x-6 gap-y-6 items-center justify-items-center mb-8">
+        {SOURCES.map((s) => (
+          <div key={s.src} className="flex flex-col items-center gap-1.5 group">
+            <Image
+              src={s.src}
+              alt={s.alt}
+              width={72}
+              height={28}
+              className="opacity-50 grayscale group-hover:opacity-80 group-hover:grayscale-0 transition-all duration-200 object-contain h-7 w-auto"
+              unoptimized
+            />
+            <span className="text-[10px] text-gray-400 font-medium text-center leading-tight">{s.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
+        <span>Updated Q1 2026</span>
+        <span>·</span>
+        <span>10 official sources</span>
+        <span>·</span>
+        <Link href="/methodology/" className="text-blue-600 hover:underline font-medium">
+          Read methodology →
         </Link>
       </div>
     </div>

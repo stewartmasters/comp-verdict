@@ -95,9 +95,9 @@ export default function HomePage() {
             {/* Trust stats */}
             <div className="grid grid-cols-3 gap-4 pt-2">
               {[
-                { value: '24',     label: 'Role types' },
-                { value: '44',     label: 'Cities' },
-                { value: '4,200+', label: 'Benchmarks' },
+                { value: '24',  label: 'Role types' },
+                { value: '44',  label: 'Cities' },
+                { value: '10',  label: 'Official sources' },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="text-2xl font-extrabold text-gray-900">{value}</div>
@@ -107,9 +107,9 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-2 pt-1">
-              <p className="text-xs text-gray-500 font-medium">Built using public salary benchmarks:</p>
+              <p className="text-xs text-gray-500 font-medium">Built on official government data:</p>
               <TrustSection variant="minimal" />
-              <p className="text-xs text-gray-400">Coverage varies by role and location.</p>
+              <p className="text-xs text-gray-400">10 national statistics agencies · Coverage varies by role and location.</p>
             </div>
 
             <div className="space-y-2 pt-2">
@@ -196,6 +196,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Built on official data */}
+      <TrustSection />
+
       {/* What you get */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-100">
         <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">What you get</h2>
@@ -252,6 +255,49 @@ export default function HomePage() {
               </Link>
             )
           })}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-100">
+        <h2 className="text-2xl font-bold text-gray-900 mb-8">Frequently asked questions</h2>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {[
+            {
+              q: 'Is this offer actually good?',
+              a: 'An offer is strong if it sits at or above the 75th percentile for your role, city, and experience level. If it\'s below the 40th percentile, there\'s almost always room to negotiate. Enter your package above to find out exactly where yours lands.',
+            },
+            {
+              q: 'Should I always negotiate?',
+              a: 'Yes — with one caveat. If your offer is already above the 75th percentile, aggressive negotiation carries more risk than reward. For offers below the median, negotiating is low-risk and usually expected. The tool tells you which situation you\'re in.',
+            },
+            {
+              q: 'Where does the salary data come from?',
+              a: 'We use primary government wage surveys from 10 national statistics agencies including ONS (UK), BLS (US), INE (Spain), Destatis (Germany), Eurostat, INSEE (France), CBS (Netherlands), ABS (Australia), Statistics Canada, and the OECD. Not crowdsourcing — official data.',
+            },
+            {
+              q: 'What counts as a weak offer?',
+              a: 'An offer below the 35th percentile for your role, city, and experience band is weak — meaning most comparable candidates earn more. A round-number first offer (€80k, £50k, $100k) is also a signal: those are placeholders, not benchmarked figures.',
+            },
+            {
+              q: 'Does this work for non-European markets?',
+              a: 'Yes. CompVerdict covers 44 cities across Europe, North America, Australia, Singapore, and Dubai. Coverage depth varies — European markets (UK, Germany, Spain, France, Netherlands) have the most granular official data.',
+            },
+            {
+              q: 'What\'s the difference between CompVerdict and SalaryVerdict?',
+              a: 'CompVerdict is for evaluating a job offer you\'ve received — should you accept, and how much can you push back? SalaryVerdict is for checking whether your current salary is below market. Different tools for different moments in your career.',
+            },
+          ].map(({ q, a }) => (
+            <details key={q} className="group border border-gray-100 rounded-xl overflow-hidden">
+              <summary className="flex items-center justify-between p-5 cursor-pointer list-none hover:bg-gray-50 transition-colors">
+                <h3 className="font-semibold text-gray-900 text-sm pr-4">{q}</h3>
+                <span className="text-gray-400 text-lg flex-shrink-0 group-open:rotate-45 transition-transform">+</span>
+              </summary>
+              <div className="px-5 pb-5">
+                <p className="text-sm text-gray-500 leading-relaxed">{a}</p>
+              </div>
+            </details>
+          ))}
         </div>
       </section>
 
