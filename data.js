@@ -1,16 +1,17 @@
 /**
  * CompVerdict — Benchmark Dataset
- * Version: 2026-Q1-r2
+ * Version: 2026-Q1-r3
  *
  * METHODOLOGY
  * -----------
  * Baseline role: Software Engineer
  * Baseline band: Mid (3–5 YoE)
- * Sources: BLS OEWS (US), ONS ASHE (UK), INE EES + Eurostat SES (Spain/Europe),
- *          Destatis VSE (Germany), Stack Overflow Developer Survey (global),
- *          ECB exchange rates
+ * Sources: BLS OEWS (US), ONS ASHE (UK), INE EES (Spain), Destatis VSE (Germany),
+ *          Eurostat SES + INSEE (France), Eurostat SES + CBS (Netherlands),
+ *          Stats Canada SEPH (Canada), ABS Employee Earnings (Australia),
+ *          OECD IDD (cross-country validation), Stack Overflow Survey (global signal)
  * Calibration: weighted median across sources (official govt 3×, survey 1×)
- * Cross-validated against SalaryVerdict benchmark engine outputs (2026-Q1)
+ * Cross-validated against SalaryVerdict benchmark engine outputs (2026-Q1-r3)
  * Currency: local, annual gross (pre-tax)
  *
  * All other roles are derived via role multipliers applied to the SE baseline.
@@ -271,18 +272,20 @@ window.CV_DATA = {
     },
 
     // ── REST OF EUROPE ─────────────────────────────────────────────────────
-    // Derived from mid-level surveys. Bands scaled proportionally.
+    // Recalibrated 2026-Q1 against Eurostat SES + CBS (NL) / INSEE (FR).
+    // Amsterdam ×0.892: SE mid p50 €78,500→€70,000 (Eurostat SES NL + CBS, 2024)
+    // Paris     ×0.873: SE mid p50 €65,000→€56,700 (Eurostat SES FR weighted 3:1 with Levels.fyi)
     "Amsterdam": {
-      junior: { p25: 35000,  p50: 44500,  p75: 55500  },
-      mid:    { p25: 62000,  p50: 78500,  p75: 100000 },
-      senior: { p25: 97000,  p50: 122000, p75: 147000 },
-      staff:  { p25: 130000, p50: 160000, p75: 193000 },
+      junior: { p25: 31000,  p50: 39500,  p75: 49500  },
+      mid:    { p25: 55000,  p50: 70000,  p75: 89000  },
+      senior: { p25: 86500,  p50: 109000, p75: 131000 },
+      staff:  { p25: 116000, p50: 143000, p75: 172000 },
     },
     "Paris": {
-      junior: { p25: 29000,  p50: 37000,  p75: 46500  },
-      mid:    { p25: 51500,  p50: 65000,  p75: 83500  },
-      senior: { p25: 81500,  p50: 102000, p75: 124000 },
-      staff:  { p25: 108000, p50: 134000, p75: 161000 },
+      junior: { p25: 25000,  p50: 32500,  p75: 40500  },
+      mid:    { p25: 45000,  p50: 57000,  p75: 73000  },
+      senior: { p25: 71000,  p50: 89000,  p75: 108000 },
+      staff:  { p25: 94000,  p50: 117000, p75: 140500 },
     },
     "Dublin": {
       junior: { p25: 33500,  p50: 44000,  p75: 55500  },
@@ -406,19 +409,23 @@ window.CV_DATA = {
       senior: { p25: 215000, p50: 270000, p75: 329000 },
       staff:  { p25: 289000, p50: 356000, p75: 429000 },
     },
+    // Recalibrated 2026-Q1 against Stats Canada SEPH 2023 (NOC 21232).
+    // Toronto ×0.871: SE mid p50 CA$132,000→CA$115,000
     "Toronto": {
-      junior: { p25: 56500,  p50: 73000,  p75: 93500  },
-      mid:    { p25: 101000, p50: 132000, p75: 169000 },
-      senior: { p25: 164000, p50: 206000, p75: 250000 },
-      staff:  { p25: 219000, p50: 270000, p75: 327000 },
+      junior: { p25: 49000,  p50: 63500,  p75: 81500  },
+      mid:    { p25: 88000,  p50: 115000, p75: 147000 },
+      senior: { p25: 143000, p50: 179500, p75: 218000 },
+      staff:  { p25: 191000, p50: 235000, p75: 285000 },
     },
 
+    // Recalibrated 2026-Q1 against ABS Employee Earnings 2023 (ICT professionals).
+    // Sydney ×0.872: SE mid p50 A$149,000→A$130,000
     // ── APAC / MENA ────────────────────────────────────────────────────────
     "Sydney": {
-      junior: { p25: 65000,  p50: 83500,  p75: 107000 },
-      mid:    { p25: 115000, p50: 149000, p75: 190000 },
-      senior: { p25: 183000, p50: 231000, p75: 280000 },
-      staff:  { p25: 246000, p50: 303000, p75: 366000 },
+      junior: { p25: 56500,  p50: 73000,  p75: 93000  },
+      mid:    { p25: 100500, p50: 130000, p75: 165500 },
+      senior: { p25: 159500, p50: 201500, p75: 244000 },
+      staff:  { p25: 214500, p50: 264000, p75: 319000 },
     },
     "Singapore": {
       junior: { p25: 50000,  p50: 64500,  p75: 83000  },
