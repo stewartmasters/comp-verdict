@@ -1,3 +1,9 @@
 node_modules/
 .next/
 out/
+.claude/
+# Loose image files in root (logos belong in public/logos/)
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
