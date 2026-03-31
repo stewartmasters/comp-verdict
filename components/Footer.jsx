@@ -245,11 +245,11 @@ export default function Footer({ locale = 'en' }) {
         <div className="border-t border-gray-100 pt-6 flex flex-wrap items-center justify-between gap-4">
           <p className="text-xs text-gray-400 leading-relaxed max-w-xl">{l.copyright}</p>
           <div className="flex items-center gap-3 text-xs text-gray-400">
-            <a href="/methodology/" className="hover:text-gray-700 transition-colors">{l.howWeCalc}</a>
+            <a href="/methodology/" className="text-gray-400 hover:text-gray-700 transition-colors no-underline">{l.howWeCalc}</a>
             <span className="text-gray-200">·</span>
-            <a href="/privacy/" className="hover:text-gray-700 transition-colors">{l.privacy}</a>
+            <a href="/privacy/" className="text-gray-400 hover:text-gray-700 transition-colors no-underline">{l.privacy}</a>
             <span className="text-gray-200">·</span>
-            <a href="/sitemap.xml" className="hover:text-gray-700 transition-colors">{l.sitemap}</a>
+            <a href="/sitemap.xml" className="text-gray-400 hover:text-gray-700 transition-colors no-underline">{l.sitemap}</a>
           </div>
         </div>
       </div>
