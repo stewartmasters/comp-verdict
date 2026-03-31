@@ -74,9 +74,10 @@ const LABELS = {
     actionMarket: 'Market pay for this role',
     actionMarketSub: 'Browse salary data by city',
     shareTitle: 'Share your result',
-    copyResult: 'Copy result',
+    copyResult: 'Copy',
     shareLinkedIn: 'LinkedIn',
-    shareX: 'Share on X',
+    shareX: 'X Post',
+    shareLink: 'Link',
     percentileStmt: (pp) => {
       if (pp < 10) return `Bottom 10% for this role and market`
       if (pp < 25) return `${pp}th percentile`
@@ -184,9 +185,10 @@ const LABELS = {
     actionMarket: 'Salarios de mercado para este perfil',
     actionMarketSub: 'Consulta datos salariales por ciudad',
     shareTitle: 'Comparte tu resultado',
-    copyResult: 'Copiar resultado',
+    copyResult: 'Copiar',
     shareLinkedIn: 'LinkedIn',
-    shareX: 'Compartir en X',
+    shareX: 'X Post',
+    shareLink: 'Enlace',
     percentileStmt: (pp) => {
       if (pp < 10) return `Inferior al 10% del mercado`
       if (pp < 25) return `Percentil ${pp}`
@@ -294,9 +296,10 @@ const LABELS = {
     actionMarket: 'Marktgehälter für diese Stelle',
     actionMarketSub: 'Gehaltsdaten nach Stadt durchsuchen',
     shareTitle: 'Ergebnis teilen',
-    copyResult: 'Ergebnis kopieren',
+    copyResult: 'Kopieren',
     shareLinkedIn: 'LinkedIn',
-    shareX: 'Auf X teilen',
+    shareX: 'X Post',
+    shareLink: 'Link',
     percentileStmt: (pp) => {
       if (pp < 10) return `Untere 10% für diese Stelle`
       if (pp < 25) return `${pp}. Perzentil`
@@ -860,6 +863,12 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     trackEvent('share_x', { role: r2, city: c2, verdict: vt })
   }
 
+  function copyLink() {
+    const url = 'https://www.compverdict.com'
+    copyText(url)
+    if (results) trackEvent('share_link', { role: results.role, city: results.city, verdict: results.vType })
+  }
+
   function copyScript() {
     if (!results) return
     const { role: r2, city: c2, bandLabel: bl, r: rangeData } = results
@@ -1270,32 +1279,38 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
           {/* 10. SHARE */}
           <div className="share-block fade-in delay-5">
             <p className="share-block-title">{lbl.shareTitle}</p>
-            <div style={{ marginBottom: '10px', fontSize: '13px', color: 'var(--text-2)', lineHeight: 1.5 }}>
-              {results.vType === 'weak'
-                ? `This offer is ${fmt(Math.max(0, results.r.p50 - results.totalComp), results.r.symbol)} below market`
-                : results.vType === 'fair'
-                ? `This offer is ${results.pp}th percentile — good, but room to push`
-                : `This offer is top ${100 - results.pp}% for this role`
-              }
+            {/* Quoted preview */}
+            <div style={{ background: 'var(--bg-2, #f3f4f6)', border: '1px solid var(--border)', borderRadius: '10px', padding: '12px 14px', marginBottom: '10px', fontSize: '13px', color: 'var(--text-1)', lineHeight: 1.6, fontStyle: 'italic' }}>
+              {(() => {
+                const { role: r2, city: c2, bandLabel: bl, pp: pp2, vType: vt, r: rData, totalComp: tc } = results
+                const shareText = buildShareText(r2, c2, bl, pp2, vt, simSalary, simVType, rData, tc)
+                return shareText.split('\n\nhttps')[0]
+              })()}
             </div>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <button className="share-btn-main" onClick={shareResult} style={{ flex: '1 1 auto', minWidth: '120px' }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '6px' }}>
+              <button className="share-btn-main" onClick={shareResult} style={{ flexDirection: 'column', gap: '4px', padding: '8px 4px', fontSize: '11px', fontWeight: 600 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
                 </svg>
                 {lbl.copyResult}
               </button>
-              <button className="share-btn-main" onClick={shareLinkedIn} style={{ flex: '1 1 auto', minWidth: '100px', background: '#0077b5', borderColor: '#0077b5' }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+              <button className="share-btn-main" onClick={shareX} style={{ flexDirection: 'column', gap: '4px', padding: '8px 4px', fontSize: '11px', fontWeight: 600, background: '#000', borderColor: '#000' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                {lbl.shareX}
+              </button>
+              <button className="share-btn-main" onClick={shareLinkedIn} style={{ flexDirection: 'column', gap: '4px', padding: '8px 4px', fontSize: '11px', fontWeight: 600, background: '#0077b5', borderColor: '#0077b5' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
                 </svg>
                 {lbl.shareLinkedIn}
               </button>
-              <button className="share-btn-main" onClick={shareX} style={{ flex: '1 1 auto', minWidth: '100px', background: '#000', borderColor: '#000' }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              <button className="share-btn-main" onClick={copyLink} style={{ flexDirection: 'column', gap: '4px', padding: '8px 4px', fontSize: '11px', fontWeight: 600 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                {lbl.shareX}
+                {lbl.shareLink}
               </button>
             </div>
           </div>

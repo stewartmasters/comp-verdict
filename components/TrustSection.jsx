@@ -30,7 +30,8 @@ export default function TrustSection({ variant = 'full' }) {
             alt={s.alt}
             width={48}
             height={20}
-            className="opacity-50 grayscale object-contain h-5 w-auto"
+            className="object-contain h-5 w-auto"
+            style={{ opacity: 0.55, mixBlendMode: 'multiply', filter: 'grayscale(1)' }}
             unoptimized
           />
         ))}
@@ -55,7 +56,8 @@ export default function TrustSection({ variant = 'full' }) {
               alt={s.alt}
               width={72}
               height={28}
-              className="opacity-50 grayscale group-hover:opacity-80 group-hover:grayscale-0 transition-all duration-200 object-contain h-7 w-auto"
+              className="object-contain h-[27px] w-auto transition-all duration-200"
+              style={{ opacity: 0.55, mixBlendMode: 'multiply', filter: 'grayscale(1)' }}
               unoptimized
             />
             <span className="text-[10px] text-gray-400 font-medium text-center leading-tight">{s.label}</span>
