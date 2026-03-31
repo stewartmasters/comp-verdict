@@ -6,6 +6,9 @@ import NegotiatePageContent from '../../../../components/NegotiatePageContent.js
 import Navigation from '../../../../components/Navigation.jsx'
 import Footer from '../../../../components/Footer.jsx'
 
+export const dynamic = 'force-static'
+export const dynamicParams = false
+
 const locale = de
 const slugMap = buildNegSlugMap(locale)
 
