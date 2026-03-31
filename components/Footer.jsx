@@ -1,3 +1,5 @@
+'use client'
+
 const SALARY_PATH  = { en: '/salary/', es: '/es/salarios/', de: '/de/gehalt/' }
 const NEG_PATH     = { en: '/negotiate/', es: '/es/negociacion/', de: '/de/verhandlung/' }
 const HOME_PATH    = { en: '/', es: '/es/', de: '/de/' }
