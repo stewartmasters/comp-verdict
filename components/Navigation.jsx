@@ -8,30 +8,36 @@ const NAV_CONFIG = {
     salaryPath: '/salary/',
     negPath: '/negotiate/',
     methodPath: '/methodology/',
+    blogPath: '/blog/',
     homePath: '/',
     salaryLabel: 'Offer guides',
     negLabel: 'Negotiate',
     methodLabel: 'Methodology',
+    blogLabel: 'Blog',
     ctaLabel: 'Check this offer',
   },
   es: {
     salaryPath: '/es/salarios/',
     negPath: '/es/negociacion/',
     methodPath: '/methodology/',
+    blogPath: '/blog/',
     homePath: '/es/',
     salaryLabel: 'Guías de oferta',
     negLabel: 'Negociar',
     methodLabel: 'Metodología',
+    blogLabel: 'Blog',
     ctaLabel: 'Analizar mi oferta',
   },
   de: {
     salaryPath: '/de/gehalt/',
     negPath: '/de/verhandlung/',
     methodPath: '/methodology/',
+    blogPath: '/blog/',
     homePath: '/de/',
     salaryLabel: 'Gehaltsführer',
     negLabel: 'Verhandeln',
     methodLabel: 'Methodik',
+    blogLabel: 'Blog',
     ctaLabel: 'Angebot prüfen',
   },
 }
@@ -93,6 +99,16 @@ export default function Navigation() {
             }`}
           >
             {cfg.methodLabel}
+          </Link>
+          <Link
+            href={cfg.blogPath}
+            className={`transition-colors hidden md:block px-3 py-1.5 rounded-lg ${
+              pathname?.startsWith('/blog')
+                ? 'text-gray-900 font-medium'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+            }`}
+          >
+            {cfg.blogLabel}
           </Link>
 
           {/* Language switcher */}

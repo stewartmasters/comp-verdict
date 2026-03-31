@@ -22,6 +22,7 @@ const LABELS = {
     offerChecker: 'Offer checker',
     methodology:  'Methodology',
     allGuides:    'All offer guides',
+    blog:         'Blog',
     howWeCalc:    'How we calculate',
     privacy:      'Privacy policy',
     sitemap:      'Sitemap',
@@ -61,6 +62,7 @@ const LABELS = {
     offerChecker: 'Verificador de oferta',
     methodology:  'Metodología',
     allGuides:    'Todas las guías',
+    blog:         'Blog',
     howWeCalc:    'Cómo calculamos',
     privacy:      'Política de privacidad',
     sitemap:      'Sitemap',
@@ -100,6 +102,7 @@ const LABELS = {
     offerChecker: 'Angebots-Prüfer',
     methodology:  'Methodik',
     allGuides:    'Alle Ratgeber',
+    blog:         'Blog',
     howWeCalc:    'So berechnen wir',
     privacy:      'Datenschutz',
     sitemap:      'Sitemap',
@@ -193,6 +196,7 @@ export default function Footer({ locale = 'en' }) {
             <a href={homePath} className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">{l.offerChecker}</a>
             <a href="/methodology/" className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">{l.methodology}</a>
             <a href={salaryPath} className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">{l.allGuides}</a>
+            <a href="/blog/" className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">{l.blog}</a>
             <div className="pt-4">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">{l.dataHead}</p>
               <p className="text-xs text-gray-400">Eurostat · ONS · Destatis · INE · BLS · INSEE · CBS · ABS · OECD</p>
