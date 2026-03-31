@@ -31,7 +31,7 @@ const de = {
   salaryRelCitiesTitle: (role) => `${role} Gehalt in anderen Städten`,
   salaryRelRolesTitle:  (city) => `Andere Tech-Gehälter in ${city}`,
   salaryTableHeaders:   ['Erfahrungsniveau', '25. Perzentil', 'Median', '75. Perzentil'],
-  footerNote:           'Daten basieren auf aggregierten Gehaltsumfragen aus Q1 2025. Alle Zahlen sind Jahresbruttogehalt (vor Steuern) in Landeswährung.',
+  footerNote:           'Daten basieren auf aggregierten Gehaltsumfragen (2024–2025). Aktualisiert Q1 2026. Alle Zahlen sind Jahresbruttogehalt (vor Steuern) in Landeswährung.',
   footerLinkTool:       'CompVerdict Tool',
   footerLinkSalary:     'Gehalts-Benchmarks',
   footerLinkNeg:        'Verhandlungsratgeber',

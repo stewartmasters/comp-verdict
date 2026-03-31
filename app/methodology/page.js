@@ -96,7 +96,7 @@ const SECTIONS = [
       <>
         <p>We believe transparency about limitations matters. Here is what you should keep in mind:</p>
         <ul>
-          <li><strong>We only cover 10 roles and 39 cities.</strong> If your exact role or city is not in our dataset, we apply the nearest available market. Results will be less precise.</li>
+          <li><strong>We cover 24 roles and 44 cities.</strong> If your exact role or city is not in our dataset, we apply the nearest available market. Results will be less precise.</li>
           <li><strong>We cover base salary only.</strong> Total compensation — equity, bonuses, benefits, pension contributions — is not included in our benchmarks. For senior roles at growth-stage companies, total comp can be significantly higher than base.</li>
           <li><strong>Company stage and size are not modelled.</strong> A senior engineer at a Series A startup and one at a FAANG company are not the same. Our benchmarks reflect a broad market average.</li>
           <li><strong>Data is not real-time.</strong> We update periodically, but salaries can move quickly in fast-changing markets.</li>

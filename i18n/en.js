@@ -36,7 +36,7 @@ const en = {
   salaryRelRolesTitle:  (city) => `Other Tech Salaries in ${city}`,
   salaryTableHeaders:   ['Experience', '25th Pct', 'Median', '75th Pct'],
   salaryRangeLabel:     (band, role, city) => `Typical range for ${band} ${role} in ${city}`,
-  footerNote:           'Data based on 2025-Q1 aggregated salary surveys. All figures are annual gross (pre-tax) in local currency.',
+  footerNote:           'Data based on aggregated salary surveys (2024–2025). Updated Q1 2026. All figures are annual gross (pre-tax) in local currency.',
   footerLinkTool:       'CompVerdict Tool',
   footerLinkSalary:     'Salary Benchmarks',
   footerLinkNeg:        'Negotiation Guides',

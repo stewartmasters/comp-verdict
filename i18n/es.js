@@ -31,7 +31,7 @@ const es = {
   salaryRelCitiesTitle: (role) => `Salario de ${role} en Otras Ciudades`,
   salaryRelRolesTitle:  (city) => `Otros Salarios Tech en ${city}`,
   salaryTableHeaders:   ['Nivel', 'Percentil 25', 'Mediana', 'Percentil 75'],
-  footerNote:           'Datos basados en encuestas salariales agregadas del primer trimestre de 2025. Todas las cifras son salario bruto anual (antes de impuestos) en moneda local.',
+  footerNote:           'Datos basados en encuestas salariales agregadas (2024–2025). Actualizado T1 2026. Todas las cifras son salario bruto anual (antes de impuestos) en moneda local.',
   footerLinkTool:       'Herramienta CompVerdict',
   footerLinkSalary:     'Benchmarks Salariales',
   footerLinkNeg:        'Guías de Negociación',
