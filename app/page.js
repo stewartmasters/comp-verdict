@@ -44,18 +44,6 @@ const CURATED_GUIDES = [
   { role: 'Product Designer',          city: 'Amsterdam' },
 ]
 
-const DATA_SOURCES = [
-  { name: 'BLS OEWS',           note: 'US Bureau of Labor Statistics occupational wage estimates' },
-  { name: 'ONS ASHE',           note: 'UK Annual Survey of Hours and Earnings (2023)' },
-  { name: 'INE EES',            note: 'Spanish earnings structure survey (2022–23)' },
-  { name: 'Destatis VSE',       note: 'German wage structure survey (dl-de/by-2-0)' },
-  { name: 'INSEE',              note: 'French national income statistics (2022)' },
-  { name: 'CBS',                note: 'Netherlands income distribution data (2022)' },
-  { name: 'Statistics Canada',  note: 'Canadian labour earnings (2023)' },
-  { name: 'ABS',                note: 'Australian housing & income data (2023)' },
-  { name: 'OECD IDD',           note: 'Cross-country income benchmarks (2022–23)' },
-]
-
 const WEAK_OFFER_SIGNALS = [
   {
     signal: "It\u2019s the first number they gave you",
@@ -267,47 +255,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Built on official data */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-100">
-        <div className="grid sm:grid-cols-2 gap-8 items-start">
-          <div className="space-y-3">
-            <h2 className="text-2xl font-bold text-gray-900">
-              Built on official data
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              <span className="inline-block text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
-                Updated Q1 2026
-              </span>
-              <span className="inline-block text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
-                Official national datasets
-              </span>
-            </div>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              Every benchmark comes from national statistics agencies — not crowdsourcing, not estimates.
-            </p>
-            <Link
-              href="/methodology/"
-              className="inline-block text-sm text-blue-600 font-semibold hover:underline"
-            >
-              See methodology →
-            </Link>
-          </div>
-          <div className="space-y-1.5">
-            {DATA_SOURCES.map(({ name, note }) => (
-              <div
-                key={name}
-                className="flex items-center gap-3 p-2.5 bg-gray-50 rounded-lg"
-              >
-                <span className="text-xs font-bold text-blue-600 flex-shrink-0 w-[140px]">
-                  {name}
-                </span>
-                <span className="text-xs text-gray-400">{note}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Verdict network cross-link */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-100">
         <h2 className="text-xl font-bold text-gray-900 mb-6">More from the Verdict network</h2>
@@ -336,9 +283,9 @@ export default function HomePage() {
               Spend<span className="text-violet-500">Verdict</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Can you actually afford this lifestyle? Check if your salary covers rent in your city &mdash; based on real housing data, not rules of thumb.
+              Offer looks good on paper &mdash; but does it actually work for your lifestyle? See what it means for rent, savings, and spending.
             </p>
-            <p className="text-xs text-violet-500 mt-2 font-semibold">Check my rent &rarr;</p>
+            <p className="text-xs text-violet-500 mt-2 font-semibold">Check my lifestyle &rarr;</p>
           </a>
         </div>
       </section>
