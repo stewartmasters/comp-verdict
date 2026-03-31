@@ -4,6 +4,8 @@
 
 [build.environment]
   NEXT_PUBLIC_BASE_URL = "https://www.compverdict.com"
+  # GA4 Measurement ID — override in Netlify dashboard under Site settings > Environment variables
+  # NEXT_PUBLIC_GA_ID = "G-PCW5JTQ8HY"
 
 [[headers]]
   for = "/*"

@@ -638,6 +638,9 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   const [showCookie, setShowCookie] = useState(false)
   const [simSalary, setSimSalary]   = useState(null)
   const [compactMode, setCompactMode] = useState(false)
+  // Email capture
+  const [emailInput, setEmailInput] = useState('')
+  const [emailSent, setEmailSent]   = useState(false)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -646,25 +649,19 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     }
   }, [])
 
-  // GA
+  // GA consent — GA script is now loaded by GoogleAnalytics in layout.js.
+  // On mount: if user previously accepted, grant consent immediately.
+  // If no prior choice, show the cookie banner.
   useEffect(() => {
     if (typeof window === 'undefined') return
-    window.GA_ID = 'G-PCW5JTQ8HY'
-    window.loadGA = function() {
-      if (window._gaLoaded) return
-      window._gaLoaded = true
-      const s = document.createElement('script')
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_ID
-      s.async = true
-      document.head.appendChild(s)
-      window.dataLayer = window.dataLayer || []
-      function gtag() { window.dataLayer.push(arguments) }
-      window.gtag = gtag
-      gtag('js', new Date())
-      gtag('config', window.GA_ID)
+    const stored = localStorage.getItem('cv_consent')
+    if (stored === '1') {
+      if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', { analytics_storage: 'granted' })
+      }
+    } else if (stored === null) {
+      setShowCookie(true)
     }
-    if (localStorage.getItem('cv_consent') === '1') window.loadGA()
-    if (localStorage.getItem('cv_consent') === null) setShowCookie(true)
   }, [])
 
   // Close modal on Escape
@@ -870,10 +867,33 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     copyText(buildNegScript(r2, c2, bl, rangeData))
   }
 
+  async function submitEmail(e) {
+    e.preventDefault()
+    if (!emailInput || !results) return
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'offer-results',
+          email: emailInput,
+          role: results.role,
+          city: results.city,
+          verdict: results.vType,
+          locale,
+        }).toString(),
+      })
+    } catch (_) { /* Netlify Forms submission — fail silently */ }
+    trackEvent('email_signup', { role: results.role, city: results.city, verdict: results.vType })
+    setEmailSent(true)
+  }
+
   function cookieAccept() {
     localStorage.setItem('cv_consent', '1')
     setShowCookie(false)
-    if (typeof window !== 'undefined' && typeof window.loadGA === 'function') window.loadGA()
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', { analytics_storage: 'granted' })
+    }
   }
   function cookieDecline() {
     localStorage.setItem('cv_consent', '0')
@@ -1280,7 +1300,42 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
             </div>
           </div>
 
-          {/* 11. ACTIONS */}
+          {/* 11. EMAIL CAPTURE */}
+          <div className="fade-in delay-5" style={{ margin: '0 0 16px', padding: '14px 16px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+            {!emailSent ? (
+              <>
+                <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-1)', margin: '0 0 4px' }}>
+                  {locale === 'de' ? 'Ergebnisse per E-Mail senden' : locale === 'es' ? 'Recibir resultados por email' : 'Save your results'}
+                </p>
+                <p style={{ fontSize: '12px', color: 'var(--text-2)', margin: '0 0 10px', lineHeight: 1.5 }}>
+                  {locale === 'de' ? 'Verhandlungsskript und Verdikt an deine E-Mail senden.' : locale === 'es' ? 'Recibe el guión de negociación y el veredicto en tu bandeja de entrada.' : 'Get your negotiation script and verdict delivered to your inbox.'}
+                </p>
+                <form onSubmit={submitEmail} style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder={locale === 'de' ? 'deine@email.de' : locale === 'es' ? 'tu@email.com' : 'your@email.com'}
+                    value={emailInput}
+                    onChange={e => setEmailInput(e.target.value)}
+                    style={{ flex: '1 1 180px', padding: '9px 12px', fontSize: '13px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg)', color: 'var(--text-1)', outline: 'none' }}
+                  />
+                  <button type="submit" style={{ padding: '9px 16px', fontSize: '13px', fontWeight: 600, background: 'var(--cv-primary)', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                    {locale === 'de' ? 'Senden →' : locale === 'es' ? 'Enviar →' : 'Send →'}
+                  </button>
+                </form>
+                <p style={{ fontSize: '11px', color: 'var(--text-3)', margin: '6px 0 0' }}>
+                  {locale === 'de' ? 'Kein Spam. Jederzeit abmeldbar.' : locale === 'es' ? 'Sin spam. Cancela cuando quieras.' : 'No spam. Unsubscribe any time.'}
+                </p>
+              </>
+            ) : (
+              <p style={{ fontSize: '13px', color: '#059669', fontWeight: 600, margin: 0 }}>
+                {locale === 'de' ? '✓ Gesendet!' : locale === 'es' ? '✓ ¡Enviado!' : '✓ Sent — check your inbox.'}
+              </p>
+            )}
+          </div>
+
+          {/* 12. ACTIONS */}
           <div className="actions-grid fade-in delay-5">
             <button className="action-card" onClick={goBack}>
               <svg className="action-icon-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

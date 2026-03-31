@@ -348,6 +348,16 @@ export default function HomePage() {
       </section>
 
       <Footer locale="en" />
+
+      {/* Netlify Forms — static declaration for build-time detection.
+          VerdictTool submits to this form via fetch POST. Must stay in static HTML. */}
+      <form name="offer-results" data-netlify="true" hidden aria-hidden="true">
+        <input type="email" name="email" />
+        <input type="hidden" name="role" />
+        <input type="hidden" name="city" />
+        <input type="hidden" name="verdict" />
+        <input type="hidden" name="locale" />
+      </form>
     </>
   )
 }

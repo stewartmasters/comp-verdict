@@ -5,6 +5,7 @@ import {
 import NegotiatePageContent from '../../../components/NegotiatePageContent.jsx'
 import Navigation from '../../../components/Navigation.jsx'
 import Footer from '../../../components/Footer.jsx'
+import PageTracker from '../../../components/PageTracker.jsx'
 
 export const dynamic = 'force-static'
 export const dynamicParams = false
@@ -50,6 +51,7 @@ export default async function NegotiatePage({ params }) {
   return (
     <>
       <Navigation />
+      <PageTracker event="negotiate_page_view" role={match.role} city={match.city} locale="en" />
       <NegotiatePageContent
         locale={locale}
         role={match.role}

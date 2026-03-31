@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CompVerdict — Lohnt sich dieses Angebot?</title>
+  <link rel="alternate" hreflang="en" href="https://comp-verdict.netlify.app/">
+  <link rel="alternate" hreflang="es" href="https://comp-verdict.netlify.app/es/">
+  <link rel="alternate" hreflang="de" href="https://comp-verdict.netlify.app/de/">
+  <link rel="alternate" hreflang="x-default" href="https://comp-verdict.netlify.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://comp-verdict.netlify.app/de/">
+  <meta property="og:title" content="CompVerdict — Lohnt sich dieses Angebot?">
+  <meta property="og:description" content="Gib dein Gehaltsangebot ein und erhalte sofort ein datenbasiertes Urteil. Erkenne, ob du unterbezahlt wirst, bevor du unterschreibst.">
+  <meta property="og:image" content="https://comp-verdict.netlify.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CompVerdict — Lohnt sich dieses Angebot?">
+  <meta name="twitter:description" content="Gib dein Gehaltsangebot ein und erhalte sofort ein datenbasiertes Urteil. Erkenne, ob du unterbezahlt wirst, bevor du unterschreibst.">
+  <meta name="twitter:image" content="https://comp-verdict.netlify.app/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:            #F8FAFC;
+      --surface:       #FFFFFF;
+      --surface-sub:   #F1F5F9;
+      --border:        #E2E8F0;
+      --border-sub:    #EFF3F8;
+      --text-1:        #0F172A;
+      --text-2:        #475569;
+      --text-3:        #94A3B8;
+      --text-dim:      #CBD5E1;
+      --cv-primary:    #2563EB;
+      --cv-secondary:  #3B82F6;
+      --cv-accent:     #1D4ED8;
+      --cv-tint:       #EFF6FF;
+      --cv-tint-border:#BFDBFE;
+    }
+
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; box-sizing: border-box; }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      min-height: 100dvh;
+    }
+
+    .screen {
+      padding: 28px 20px 56px;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    /* ─── Site header ─── */
+    .site-header { position: sticky; top: 0; z-index: 50; background: rgba(248,250,252,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .site-header-inner { max-width: 460px; margin: 0 auto; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .site-nav { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+    .site-nav a { font-size: 13px; font-weight: 500; color: var(--text-3); text-decoration: none; padding: 5px 8px; border-radius: 7px; transition: color 0.15s; white-space: nowrap; }
+    .site-nav a:hover { color: var(--cv-primary); }
+    .site-nav .nav-pill { font-size: 12px; font-weight: 700; color: #fff !important; background: var(--cv-primary); padding: 6px 14px; border-radius: 20px; margin-left: 4px; }
+    .site-nav .nav-pill:hover { background: var(--cv-accent) !important; }
+    .header-lang { display: flex; align-items: center; gap: 3px; margin-right: 6px; }
+    .header-lang a, .header-lang span { font-size: 11px; color: var(--text-3); text-decoration: none; padding: 2px 4px; border-radius: 4px; }
+    .header-lang a:hover { color: var(--cv-primary); }
+    .header-lang .lang-on { color: var(--cv-primary); font-weight: 700; }
+    @media (max-width: 380px) { .site-nav .nav-text { display: none; } }
+
+    /* ─── Site footer ─── */
+    .site-footer { border-top: 1px solid var(--border); background: var(--surface); padding: 40px 0 24px; }
+    .site-footer-inner { max-width: 460px; margin: 0 auto; padding: 0 20px; }
+    .footer-top { margin-bottom: 24px; }
+    .footer-brand-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; margin: 6px 0 4px; }
+    .footer-data-note { font-size: 11px; color: var(--text-3); }
+    .footer-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; margin-bottom: 24px; }
+    .footer-col-head { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .footer-col a { display: block; font-size: 13px; color: var(--text-2); text-decoration: none; line-height: 1.9; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--cv-primary); }
+    .footer-network-row { border-top: 1px solid var(--border); padding: 16px 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .footer-net-label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; }
+    .footer-net-sep { font-size: 12px; color: var(--border); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+    .footer-copy { font-size: 11px; color: var(--text-3); }
+    .footer-bottom-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .footer-bottom-links a { font-size: 11px; color: var(--text-3); text-decoration: none; transition: color 0.15s; }
+    .footer-bottom-links a:hover { color: var(--text-2); }
+    .footer-bottom-sep { font-size: 11px; color: var(--border); }
+
+    /* ─── Inputs ─── */
+    .field-label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .input-wrap { position: relative; }
+
+    .input-field {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 16px;
+      color: var(--text-1);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .input-field:focus {
+      border-color: var(--cv-primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+    .input-field::placeholder { color: var(--text-3); }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+
+    .currency-prefix {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      font-size: 16px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .input-with-prefix { padding-left: 30px !important; }
+
+    /* ─── Autocomplete ─── */
+    .ac-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      max-height: 204px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.10), 0 2px 8px rgba(15,23,42,0.06);
+    }
+    .ac-item {
+      padding: 11px 14px;
+      font-size: 15px;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+    .ac-item:hover, .ac-item.active {
+      background: var(--cv-tint);
+      color: var(--cv-primary);
+    }
+    .ac-item:first-child { border-radius: 11px 11px 0 0; }
+    .ac-item:last-child { border-radius: 0 0 11px 11px; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: var(--cv-primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      border: none;
+      letter-spacing: -0.01em;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+    }
+    .btn-primary:hover {
+      background: var(--cv-accent);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+    }
+    .btn-primary:active { transform: scale(0.99); background: #1e40af; }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: var(--text-2);
+      font-size: 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .btn-ghost:hover {
+      color: var(--cv-primary);
+      border-color: var(--cv-tint-border);
+      background: var(--cv-tint);
+    }
+
+    .toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 13px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-3);
+      transition: all 0.15s;
+    }
+    .toggle-pill:hover { border-color: var(--cv-tint-border); color: var(--cv-primary); background: var(--cv-tint); }
+    .toggle-pill.on { border-color: var(--cv-primary); color: var(--cv-primary); background: var(--cv-tint); }
+
+    /* ─── Error ─── */
+    .error-msg {
+      padding: 11px 14px;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #DC2626;
+      margin-top: 14px;
+    }
+
+    /* ─── Result cards ─── */
+    .stat-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 18px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+    }
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+    .stat-value {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--text-1);
+    }
+
+    /* ─── Verdict card ─── */
+    .verdict-card {
+      border-radius: 16px;
+      padding: 28px 24px 22px;
+      margin-bottom: 10px;
+      border-left-width: 4px;
+      border-left-style: solid;
+    }
+    .verdict-weak   {
+      background: #FEF2F2;
+      border: 1.5px solid #FECACA;
+      border-left: 4px solid #EF4444;
+    }
+    .verdict-fair   {
+      background: #FFFBEB;
+      border: 1.5px solid #FDE68A;
+      border-left: 4px solid #F59E0B;
+    }
+    .verdict-strong {
+      background: #ECFDF5;
+      border: 1.5px solid #A7F3D0;
+      border-left: 4px solid #10B981;
+    }
+
+    .verdict-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+    .verdict-tag-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .verdict-headline {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+    .verdict-comp {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    /* ─── Range bar ─── */
+    .range-wrap {
+      margin: 12px 0 6px;
+      position: relative;
+      padding-bottom: 34px;
+    }
+    .range-bar {
+      height: 6px;
+      border-radius: 100px;
+      background: linear-gradient(to right, #ef4444 0%, #f59e0b 42%, #10b981 100%);
+      position: relative;
+    }
+    .range-tick {
+      position: absolute;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      width: 1.5px;
+      height: 12px;
+      background: rgba(15,23,42,0.2);
+      border-radius: 1px;
+    }
+    .range-tick-label {
+      position: absolute;
+      top: 14px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: var(--text-3);
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .range-user-dot {
+      position: absolute;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--surface);
+      box-shadow: 0 0 0 2.5px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.16);
+      left: 2%;
+      transition: left 0.85s cubic-bezier(0.34,1.4,0.64,1);
+      z-index: 2;
+    }
+    .range-user-label {
+      position: absolute;
+      bottom: 18px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      left: 2%;
+      transition: left 0.85s cubic-bezier(0.34,1.4,0.64,1);
+    }
+
+    /* ─── Divider ─── */
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp 0.38s ease-out both; }
+    .delay-1 { animation-delay: 0.04s; }
+    .delay-2 { animation-delay: 0.10s; }
+    .delay-3 { animation-delay: 0.17s; }
+    .delay-4 { animation-delay: 0.24s; }
+    .delay-5 { animation-delay: 0.32s; }
+    .delay-6 { animation-delay: 0.40s; }
+
+    /* ─── Brand ─── */
+    .cv-brand {
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -0.025em;
+      text-decoration: none;
+      line-height: 1;
+    }
+    .cv-brand .word   { color: var(--text-1); }
+    .cv-brand .accent { color: var(--cv-primary); }
+
+    /* ─── Confidence badge ─── */
+    .confidence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 8px 3px 6px;
+      border-radius: 20px;
+    }
+    .confidence-badge .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .confidence-high { background: #ECFDF5; border: 1px solid #A7F3D0; color: #059669; }
+    .confidence-high .dot { background: #059669; }
+    .confidence-med  { background: #FFFBEB; border: 1px solid #FDE68A; color: #D97706; }
+    .confidence-med .dot  { background: #D97706; }
+
+    /* ─── Trust attribution ─── */
+    .trust-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .trust-source {
+      font-size: 11px;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .methodology-link {
+      font-size: 11px;
+      color: var(--text-3);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      background: none;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+    }
+    .methodology-link:hover { color: var(--cv-primary); border-color: var(--cv-primary); }
+
+    /* ─── Verdict Network bar ─── */
+    .network-bar {
+      padding: 16px 0 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .network-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .network-link {
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-3);
+      letter-spacing: -0.01em;
+      transition: color 0.15s;
+    }
+    .network-link:hover { color: var(--text-2); }
+    .network-sep { font-size: 12px; color: var(--border); }
+
+    /* ─── Methodology Modal ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+    @media (min-height: 600px) {
+      .modal-overlay { align-items: center; padding: 20px; }
+    }
+    .modal-box {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 480px;
+      max-height: 85dvh;
+      overflow-y: auto;
+      padding: 24px 20px 40px;
+      box-shadow: 0 -8px 32px rgba(15,23,42,0.08);
+    }
+    @media (min-height: 600px) {
+      .modal-box { border-radius: 20px; max-height: 80dvh; box-shadow: 0 24px 48px rgba(15,23,42,0.12); }
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text-1);
+    }
+    .modal-close {
+      width: 28px; height: 28px;
+      background: var(--surface-sub);
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-2);
+      font-size: 14px;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .modal-close:hover { background: var(--cv-tint); border-color: var(--cv-tint-border); color: var(--cv-primary); }
+    .modal-section { margin-bottom: 20px; }
+    .modal-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-3);
+      margin-bottom: 8px;
+    }
+    .modal-body {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.65;
+    }
+    .modal-body strong { color: var(--text-1); font-weight: 600; }
+    .modal-divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+    /* ─── Share row ─── */
+    .share-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 16px;
+      background: var(--cv-tint);
+      border: 1.5px solid var(--cv-tint-border);
+      border-radius: 12px;
+      color: var(--cv-primary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .share-btn:hover {
+      background: #DBEAFE;
+      border-color: var(--cv-secondary);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.12);
+    }
+    .share-btn:active { transform: scale(0.99); }
+
+    /* ─── Copy toast ─── */
+    .copy-toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--text-1);
+      border: none;
+      border-radius: 20px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      z-index: 400;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.2);
+    }
+    .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── Peer comparison ─── */
+    .peer-line {
+      font-size: 13px;
+      color: var(--text-3);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .peer-line strong { color: var(--text-2); font-weight: 600; }
+
+    /* ─── Negotiation script card ─── */
+    .script-pre {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.75;
+      white-space: pre-wrap;
+      font-family: inherit;
+      background: var(--surface-sub);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin: 10px 0 10px;
+    }
+    .copy-script-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-3);
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 13px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .copy-script-btn:hover {
+      color: var(--cv-primary);
+      border-color: var(--cv-tint-border);
+      background: var(--cv-tint);
+    }
+
+    /* ─── Strong-offer tips ─── */
+    .tips-list {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .tips-list li {
+      font-size: 14px;
+      color: var(--text-2);
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      line-height: 1.5;
+    }
+    .tips-list li::before {
+      content: '→';
+      color: #059669;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 13px;
+      margin-top: 1px;
+    }
+
+    /* ─── Cookie consent ─── */
+    #cookie-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #0F172A;
+      color: #F8FAFC;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 1000;
+      font-size: 13px;
+      flex-wrap: wrap;
+      border-top: 2px solid #2563EB;
+    }
+    #cookie-banner a { color: #93c5fd; }
+    .cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+    .cookie-btn-accept { background: #2563EB; color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .cookie-btn-decline { background: transparent; color: #94A3B8; border: 1px solid #334155; padding: 8px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+  </style>
+  <script>
+    window.GA_ID='G-XXXXXXXXXX';
+    function loadGA(){if(window._gaLoaded)return;window._gaLoaded=true;var s=document.createElement('script');s.src='https://www.googletagmanager.com/gtag/js?id='+window.GA_ID;s.async=true;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',window.GA_ID);}
+    if(localStorage.getItem('cv_consent')==='1'){loadGA();}
+  </script>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     SITE HEADER
+═══════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="/de/" class="cv-brand" style="text-decoration:none; flex-shrink:0;"><span class="word">Comp</span><span class="accent">Verdict</span></a>
+    <nav class="site-nav">
+      <a href="/de/gehalt/" class="nav-text">Gehälter</a>
+      <a href="/de/verhandlung/" class="nav-text">Verhandeln</a>
+      <div class="header-lang">
+        <a href="/">EN</a>
+        <span style="color:var(--border);">·</span>
+        <a href="/es/">ES</a>
+        <span style="color:var(--border);">·</span>
+        <span class="lang-on">DE</span>
+      </div>
+      <a href="#" onclick="document.getElementById('s-results').style.display='none';document.getElementById('s-input').style.display='block';window.scrollTo(0,0);return false;" class="nav-pill">Urteil →</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     SCREEN 1 — INPUT
+═══════════════════════════════════════════ -->
+<div id="s-input" class="screen">
+
+  <!-- Headline -->
+  <div style="margin-bottom: 20px;">
+    <h1 style="font-size: 32px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; margin: 0 0 11px; color: var(--text-1);">Lohnt sich<br>dieses Angebot?</h1>
+    <p style="font-size: 15px; color: var(--text-2); line-height: 1.55; margin: 0;">Gib dein Paket ein. Wir geben dir das Urteil.</p>
+  </div>
+
+  <!-- Trust strip -->
+  <div style="display:flex; align-items:center; gap:6px; margin-bottom:28px; flex-wrap:wrap;">
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">✓ 39 Städte</span>
+    <span style="font-size:11px; color:var(--border);">·</span>
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">10 Berufe</span>
+    <span style="font-size:11px; color:var(--border);">·</span>
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">Aktualisiert Q1 2025</span>
+    <span style="font-size:11px; color:var(--border);">·</span>
+    <span style="font-size:11px; color:var(--text-3); font-weight:500;">Kostenlos · Keine Anmeldung</span>
+  </div>
+
+  <!-- ── Form ── -->
+  <div style="display: flex; flex-direction: column; gap: 15px;">
+
+    <!-- Role -->
+    <div>
+      <label class="field-label">Stelle</label>
+      <div class="input-wrap">
+        <input id="f-role" type="text" class="input-field" placeholder="z.B. Software Engineer" autocomplete="off" spellcheck="false">
+        <div id="d-role" class="ac-dropdown" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- City -->
+    <div>
+      <label class="field-label">Stadt</label>
+      <div class="input-wrap">
+        <input id="f-city" type="text" class="input-field" placeholder="z.B. Berlin" autocomplete="off" spellcheck="false">
+        <div id="d-city" class="ac-dropdown" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Salary -->
+    <div>
+      <label class="field-label">Grundgehalt</label>
+      <div class="input-wrap">
+        <span id="sym-base" class="currency-prefix">€</span>
+        <input id="f-salary" type="number" class="input-field input-with-prefix" placeholder="50,000" min="1">
+      </div>
+    </div>
+
+    <!-- YoE -->
+    <div>
+      <label class="field-label">Jahre Berufserfahrung</label>
+      <input id="f-yoe" type="number" class="input-field" placeholder="e.g. 5" min="0" max="40">
+    </div>
+
+    <!-- Optional toggles -->
+    <div style="margin-top: 2px;">
+      <div style="font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 10px;">Optional</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="toggle-pill" id="t-bonus" onclick="toggleField('bonus')">+ Bonus</button>
+        <button class="toggle-pill" id="t-equity" onclick="toggleField('equity')">+ Equity</button>
+      </div>
+    </div>
+
+    <!-- Bonus -->
+    <div id="wrap-bonus" style="display:none;">
+      <label class="field-label">Jahresbonus</label>
+      <div class="input-wrap">
+        <span id="sym-bonus" class="currency-prefix">€</span>
+        <input id="f-bonus" type="number" class="input-field input-with-prefix" placeholder="5,000" min="0">
+      </div>
+    </div>
+
+    <!-- Equity -->
+    <div id="wrap-equity" style="display:none;">
+      <label class="field-label">Equity — Jahreswert</label>
+      <div class="input-wrap">
+        <span id="sym-equity" class="currency-prefix">€</span>
+        <input id="f-equity" type="number" class="input-field input-with-prefix" placeholder="10,000" min="0">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Error -->
+  <div id="form-err" class="error-msg" style="display:none;"></div>
+
+  <!-- CTA -->
+  <div style="margin-top: 28px;">
+    <button class="btn-primary" onclick="runVerdict()">Urteil einholen →</button>
+  </div>
+
+  <p style="text-align:center; font-size: 11px; color: var(--text-3); margin-top: 18px; line-height: 1.5;">Basiert auf aggregierten Markt-Benchmarks. Ergebnisse sind Schätzungen.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     SCREEN 2 — RESULTS
+═══════════════════════════════════════════ -->
+<div id="s-results" class="screen" style="display:none;">
+
+  <!-- Nav -->
+  <div style="margin-bottom: 20px; padding-top: 8px;">
+    <button onclick="goBack()" style="background:none; border:none; cursor:pointer; color:var(--text-3); font-size:14px; padding: 4px 0; display:flex; align-items:center; gap:6px; transition: color 0.15s;" onmouseover="this.style.color='var(--cv-primary)'" onmouseout="this.style.color='var(--text-3)'">← Zurück</button>
+  </div>
+
+  <!-- Context line -->
+  <p id="r-context" style="font-size: 13px; color: var(--text-2); margin: 0 0 6px; line-height: 1.5;"></p>
+  <!-- Fallback notice (shown when data is approximated from market default) -->
+  <p id="r-fallback" style="display:none; font-size: 11px; color: #92400E; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 6px; padding: 7px 10px; margin: 0 0 14px; line-height: 1.5;"></p>
+
+  <!-- Verdict -->
+  <div id="r-verdict-card" class="verdict-card fade-in delay-1"></div>
+
+  <!-- Share -->
+  <button class="share-btn fade-in delay-2" onclick="shareResult()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    Urteil teilen
+  </button>
+
+  <!-- Market Range -->
+  <div class="stat-card fade-in delay-2">
+    <div class="stat-label">Marktspanne</div>
+    <div id="r-range-headline" class="stat-value" style="margin-bottom: 3px;"></div>
+    <div id="r-range-sub" style="font-size: 12px; color: var(--text-3); margin-bottom: 10px;"></div>
+    <!-- Bar -->
+    <div class="range-wrap">
+      <div class="range-bar" id="r-bar">
+        <!-- injected by JS -->
+      </div>
+    </div>
+    <!-- Trust row -->
+    <div class="trust-row">
+      <div id="r-confidence" class="confidence-badge confidence-high">
+        <span class="dot"></span><span>Hohe Zuverlässigkeit</span>
+      </div>
+      <span class="trust-source">Basiert auf Marktgehaltsdaten</span>
+      <button class="methodology-link" onclick="openModal()">Methodik ↗</button>
+    </div>
+  </div>
+
+  <!-- Position -->
+  <div class="stat-card fade-in delay-3">
+    <div class="stat-label">Deine Position</div>
+    <div id="r-position" class="stat-value"></div>
+    <p id="r-peer" class="peer-line" style="display:none;"></p>
+  </div>
+
+  <!-- Negotiation -->
+  <div id="r-neg-card" class="stat-card fade-in delay-4" style="display:none;">
+    <div class="stat-label">Verhandlungssignal</div>
+    <div id="r-negotiation" class="stat-value"></div>
+  </div>
+
+  <!-- Negotiation script / Next steps -->
+  <div id="r-script-card" class="stat-card fade-in delay-5" style="display:none;">
+    <div id="r-script-label" class="stat-label">Verhandlungsskript</div>
+    <div id="r-script-body"></div>
+  </div>
+
+  <!-- Emotional line -->
+  <div class="fade-in delay-6" style="padding: 14px 2px 6px;">
+    <p id="r-emotional" style="font-size: 15px; color: var(--text-2); font-style: italic; line-height: 1.65; margin: 0;"></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div>
+    <button class="btn-ghost" onclick="goBack()">Weiteres Angebot vergleichen</button>
+  </div>
+
+  <!-- Verdict Network -->
+  <div class="network-bar fade-in delay-6">
+    <span class="network-label">Verdict-Netzwerk</span>
+    <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style="font-size:12px; font-weight:600; text-decoration:none; color:#f97316; letter-spacing:-0.01em;">SalaryVerdict</a>
+    <span class="network-sep">·</span>
+    <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style="font-size:12px; font-weight:600; text-decoration:none; color:#a78bfa; letter-spacing:-0.01em;">SpendVerdict</a>
+    <span class="network-sep">·</span>
+    <span style="font-size:12px; font-weight:700; letter-spacing:-0.02em; color:var(--cv-primary);">CompVerdict</span>
+  </div>
+  <p style="font-size: 11px; color: var(--text-3); margin-top: 14px; line-height: 1.6;">Daten sind indikativ. Ergebnisse basieren auf aggregierten Markt-Benchmarks, keine garantierten Angebote. <a href="/privacy/" style="color:var(--text-3);">Datenschutz</a></p>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     SITE FOOTER
+═══════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-top">
+      <a href="/de/" class="cv-brand" style="text-decoration:none; display:inline-block; margin-bottom:6px;"><span class="word">Comp</span><span class="accent">Verdict</span></a>
+      <p class="footer-brand-desc">Lohnt sich dieses Angebot? Gib dein Paket ein und erhalte in Sekunden ein datenbasiertes Urteil. Kostenlos, keine Anmeldung.</p>
+      <p class="footer-data-note">BLS OEWS · ONS ASHE · INE EES · Stack Overflow Developer Survey · Aktualisiert Q1 2025</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <p class="footer-col-head">Tools</p>
+        <a href="/de/">Angebot prüfen</a>
+        <a href="/de/gehalt/">Gehaltsbenchmarks</a>
+        <a href="/de/verhandlung/">Verhandlungsguides</a>
+        <a href="/privacy/">Datenschutz</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-head">Beliebte Guides</p>
+        <a href="/de/gehalt/software-engineer-gehalt-berlin/">SE Gehalt · Berlin</a>
+        <a href="/de/gehalt/software-engineer-gehalt-munich/">SE Gehalt · München</a>
+        <a href="/de/gehalt/product-manager-gehalt-berlin/">PM Gehalt · Berlin</a>
+        <a href="/de/verhandlung/software-engineer-verhandlung-berlin/">Verhandeln · Berlin</a>
+      </div>
+    </div>
+    <div class="footer-network-row">
+      <span class="footer-net-label">Verdict-Netzwerk:</span>
+      <a href="https://www.salaryverdict.com" target="_blank" rel="noopener" style="font-size:13px; font-weight:700; text-decoration:none; color:#111827;">Salary<span style="color:#f97316;">Verdict</span></a>
+      <span class="footer-net-sep">·</span>
+      <a href="https://www.spendverdict.com" target="_blank" rel="noopener" style="font-size:13px; font-weight:700; text-decoration:none; color:#111827;">Spend<span style="color:#a78bfa;">Verdict</span></a>
+      <span class="footer-net-sep">·</span>
+      <span style="font-size:13px; font-weight:700; color:#111827;">Comp<span style="color:#2563EB;">Verdict</span></span>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 CompVerdict — Gehaltsdaten sind Richtwerte.</p>
+      <div class="footer-bottom-links">
+        <a href="/privacy/">Datenschutz</a>
+        <span class="footer-bottom-sep">·</span>
+        <a href="/">EN</a>
+        <span class="footer-bottom-sep">·</span>
+        <a href="/es/">ES</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Copy toast -->
+<div id="copy-toast" class="copy-toast">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  In die Zwischenablage kopiert
+</div>
+
+<!-- ════════════════════════════════════════
+     METHODOLOGY MODAL
+═══════════════════════════════════════════ -->
+<div id="modal" class="modal-overlay" style="display:none;" onclick="handleModalClick(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-title">Wie CompVerdict funktioniert</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Datenquellen</div>
+      <div class="modal-body">
+        Benchmarks werden aus öffentlichen Gehaltsumfragen aggregiert: <strong>Stack Overflow Developer Survey</strong>, <strong>Glassdoor</strong>, <strong>LinkedIn Salary</strong>, <strong>Levels.fyi</strong> sowie regionalen Arbeitsmarktberichten. Daten werden vierteljährlich überprüft.
+      </div>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Erfahrungsbänder</div>
+      <div class="modal-body">
+        Deine Berufsjahre werden einer von vier Bändern zugeordnet:
+        <br><br>
+        <strong>Junior</strong> (0–2 J.) · <strong>Mid-level</strong> (3–5 J.) · <strong>Senior</strong> (6–10 J.) · <strong>Staff / Lead</strong> (11+ J.)
+        <br><br>
+        Jede Band hat ihre eigene p25/p50/p75-Spanne. Dies vermeidet falsche Präzision durch kontinuierliche Erfahrungsmultiplikatoren.
+      </div>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Stellenanpassungen</div>
+      <div class="modal-body">
+        Alle Stellen werden relativ zu <strong>Software Engineer</strong> als Basislinie benchmarkt. Multiplikatoren werden pro Stelle — und in manchen Fällen pro Markt — angewendet. Zum Beispiel erzielt ein Product Manager in London (1,14×) eine höhere Prämie als in Barcelona (1,03×), was echte Marktunterschiede widerspiegelt.
+      </div>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Vertrauensniveaus</div>
+      <div class="modal-body">
+        <strong style="color:#059669;">Hohe Zuverlässigkeit</strong> — Spanien, UK, Deutschland: explizit nach Stelle, Stadt und Band aus mehreren Quellen benchmarkt.
+        <br><br>
+        <strong style="color:#D97706;">Geschätzte Spanne</strong> — alle anderen Märkte: aus Mid-Level-Umfragedaten mit konsistenten Band-Skalierungsratios abgeleitet. Als Richtwert verwenden.
+      </div>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Einschränkungen</div>
+      <div class="modal-body">
+        CompVerdict berücksichtigt keine Unternehmensgröße, Branche, Finanzierungsphase oder individuelle Verhandlungsergebnisse. Gehaltsdaten spiegeln das jährliche Bruttogehalt vor Steuern wider. Ergebnisse sind Schätzungen — nutze sie als Ausgangspunkt für Verhandlungen, nicht als Ober- oder Untergrenze.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie consent banner -->
+<div id="cookie-banner" style="display:none;">
+  <p style="margin:0; line-height:1.5;">Wir verwenden Analyse-Cookies, um zu verstehen, wie CompVerdict genutzt wird. <a href="/privacy/">Datenschutzerklärung</a></p>
+  <div class="cookie-btns">
+    <button class="cookie-btn-decline" onclick="cookieDecline()">Ablehnen</button>
+    <button class="cookie-btn-accept" onclick="cookieAccept()">Akzeptieren</button>
+  </div>
+</div>
+
+<script src="../data.js"></script>
+<script>
+// ════════════════════════════════════════════════════
+// LISTS  (CV_DATA loaded from data.js)
+// ════════════════════════════════════════════════════
+
+const ROLES = Object.keys(CV_DATA.roles);
+
+const CITIES = [
+  // Spain
+  "Barcelona","Madrid","Valencia","Seville","Bilbao","Remote (Spain)",
+  // UK
+  "London","Manchester","Edinburgh","Bristol","Remote (UK)",
+  // Germany
+  "Berlin","Munich","Hamburg","Frankfurt","Cologne","Stuttgart","Remote (Germany)",
+  // Rest of Europe
+  "Amsterdam","Paris","Dublin","Lisbon","Milan","Stockholm","Copenhagen",
+  "Zurich","Geneva","Warsaw","Prague","Bucharest","Remote (Europe)",
+  // Americas
+  "San Francisco","New York","Seattle","Austin","Boston",
+  "Chicago","Los Angeles","Miami","Remote (US)","Toronto",
+  // APAC / MENA
+  "Sydney","Singapore","Dubai"
+];
+
+// ════════════════════════════════════════════════════
+// ENGINE
+// ════════════════════════════════════════════════════
+
+function yoeToBand(yoe) {
+  const y = parseInt(yoe) || 0;
+  if (y <= 2)  return 'junior';
+  if (y <= 5)  return 'mid';
+  if (y <= 10) return 'senior';
+  return 'staff';
+}
+
+// Returns adjusted range for role+city+yoe, or null if no data.
+// Falls back to market default city with a note.
+function getRange(role, city, yoe) {
+  const band     = yoeToBand(yoe);
+  const cityMeta = CV_DATA.cities[city];
+  if (!cityMeta) return null;
+
+  let benchmarks  = CV_DATA.benchmarks[city];
+  let fallbackCity = null;
+
+  if (!benchmarks) {
+    const marketDef = CV_DATA.markets[cityMeta.market]?.defaultCity;
+    if (marketDef && CV_DATA.benchmarks[marketDef]) {
+      fallbackCity = marketDef;
+      benchmarks   = CV_DATA.benchmarks[marketDef];
+    }
+  }
+  if (!benchmarks) return null;
+
+  const bandData = benchmarks[band];
+  if (!bandData) return null;
+
+  // Role multiplier — prefer market override when available
+  const roleConfig = CV_DATA.roles[role] || { mul: 1.0 };
+  const mul = roleConfig.override?.[cityMeta.market] ?? roleConfig.mul;
+
+  const p25 = Math.round(bandData.p25 * mul);
+  const p50 = Math.round(bandData.p50 * mul);
+  const p75 = Math.round(bandData.p75 * mul);
+  // Estimate extremes for bar visualization
+  const p10 = Math.round(p25 - 0.85 * (p50 - p25));
+  const p90 = Math.round(p75 + 0.80 * (p75 - p50));
+
+  return { p10, p25, p50, p75, p90, band, fallbackCity, symbol: cityMeta.symbol };
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────
+
+function fmt(v, sym) {
+  v = Math.round(v);
+  if (v >= 1000000) return sym + (v/1000000).toFixed(1) + 'M';
+  if (v >= 10000)   return sym + Math.round(v/1000) + 'k';
+  return sym + v.toLocaleString();
+}
+
+function scorePct(val, p10, p25, p50, p75, p90) {
+  if (val <= p10) return Math.max(0, (val/p10)*10);
+  if (val <= p25) return 10 + ((val-p10)/(p25-p10))*15;
+  if (val <= p50) return 25 + ((val-p25)/(p50-p25))*25;
+  if (val <= p75) return 50 + ((val-p50)/(p75-p50))*25;
+  if (val <= p90) return 75 + ((val-p75)/(p90-p75))*15;
+  return Math.min(100, 90 + ((val-p90)/p90)*10);
+}
+
+function closestMatch(input, list) {
+  if (!input) return null;
+  const v = input.toLowerCase().trim();
+  return list.find(x => x.toLowerCase() === v) ||
+         list.find(x => x.toLowerCase().startsWith(v)) ||
+         list.find(x => x.toLowerCase().includes(v)) ||
+         null;
+}
+
+// ════════════════════════════════════════════════════
+// AUTOCOMPLETE ENGINE
+// ════════════════════════════════════════════════════
+
+function makeAC(inputId, dropId, list, onPick) {
+  const inp = document.getElementById(inputId);
+  const drop = document.getElementById(dropId);
+  let activeIdx = -1;
+
+  function show(items) {
+    if (!items.length) { drop.style.display = 'none'; return; }
+    drop.innerHTML = items.slice(0,9).map((m,i) =>
+      `<div class="ac-item" data-val="${m}">${m}</div>`
+    ).join('');
+    drop.style.display = 'block';
+    drop.querySelectorAll('.ac-item').forEach(el => {
+      el.addEventListener('mousedown', e => { e.preventDefault(); pick(el.dataset.val); });
+    });
+    activeIdx = -1;
+  }
+
+  function pick(val) {
+    inp.value = val;
+    drop.style.display = 'none';
+    onPick(val);
+  }
+
+  inp.addEventListener('input', () => {
+    const v = inp.value.toLowerCase().trim();
+    if (!v) { show(list.slice(0,9)); return; }
+    show(list.filter(x => x.toLowerCase().includes(v)));
+  });
+
+  inp.addEventListener('focus', () => {
+    const v = inp.value.toLowerCase().trim();
+    show(v ? list.filter(x => x.toLowerCase().includes(v)) : list.slice(0,9));
+  });
+
+  inp.addEventListener('keydown', e => {
+    const els = drop.querySelectorAll('.ac-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx+1,els.length-1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx-1,-1); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIdx >= 0 && els[activeIdx]) pick(els[activeIdx].dataset.val);
+      else if (els.length > 0) pick(els[0].dataset.val);
+    } else if (e.key === 'Escape') { drop.style.display = 'none'; }
+    els.forEach((el,i) => el.classList.toggle('active', i === activeIdx));
+  });
+
+  document.addEventListener('click', e => {
+    if (!inp.contains(e.target) && !drop.contains(e.target)) drop.style.display = 'none';
+  });
+}
+
+// Wire up autocompletes
+makeAC('f-role','d-role',ROLES, val => {});
+makeAC('f-city','d-city',CITIES, val => {
+  const meta = CV_DATA.cities[val];
+  if (meta) ['sym-base','sym-bonus','sym-equity'].forEach(id => document.getElementById(id).textContent = meta.symbol);
+});
+
+// ════════════════════════════════════════════════════
+// OPTIONAL FIELDS
+// ════════════════════════════════════════════════════
+
+function toggleField(name) {
+  const wrap = document.getElementById(`wrap-${name}`);
+  const btn  = document.getElementById(`t-${name}`);
+  const on   = wrap.style.display === 'none';
+  wrap.style.display = on ? 'block' : 'none';
+  btn.classList.toggle('on', on);
+  btn.textContent = on ? `− ${name.charAt(0).toUpperCase()+name.slice(1)}` : `+ ${name.charAt(0).toUpperCase()+name.slice(1)}`;
+  if (!on) document.getElementById(`f-${name}`).value = '';
+}
+
+// ════════════════════════════════════════════════════
+// VERDICT LOGIC
+// ════════════════════════════════════════════════════
+
+function runVerdict() {
+  const roleRaw   = document.getElementById('f-role').value.trim();
+  const cityRaw   = document.getElementById('f-city').value.trim();
+  const salaryRaw = parseFloat(document.getElementById('f-salary').value);
+  const yoeRaw    = document.getElementById('f-yoe').value;
+  const bonusRaw  = parseFloat(document.getElementById('f-bonus').value) || 0;
+  const equityRaw = parseFloat(document.getElementById('f-equity').value) || 0;
+
+  // Resolve role/city with fuzzy fallback
+  const role = closestMatch(roleRaw, ROLES);
+  const city = closestMatch(cityRaw, CITIES);
+
+  const errEl = document.getElementById('form-err');
+
+  if (!role) { errEl.textContent = 'Stelle nicht erkannt. Bitte aus der Liste wählen.'; errEl.style.display='block'; return; }
+  if (!city) { errEl.textContent = 'Stadt nicht erkannt. Bitte aus der Liste wählen.'; errEl.style.display='block'; return; }
+  if (!salaryRaw || isNaN(salaryRaw) || salaryRaw <= 0) { errEl.textContent = 'Bitte gib ein gültiges Grundgehalt ein.'; errEl.style.display='block'; return; }
+  errEl.style.display = 'none';
+
+  const r = getRange(role, city, yoeRaw);
+  if (!r) { errEl.textContent = "Noch keine Benchmark-Daten für diese Kombination."; errEl.style.display='block'; return; }
+
+  const totalComp = salaryRaw + bonusRaw + equityRaw;
+  const p = scorePct(totalComp, r.p10, r.p25, r.p50, r.p75, r.p90);
+
+  const yoeNum   = parseInt(yoeRaw) || 0;
+  const bandConf = CV_DATA.bands.find(b => b.id === r.band);
+  const bandLabel = bandConf ? bandConf.label : '';
+  const yoeLabel  = yoeNum === 1 ? '1 Jahr Erfahrung' : `${yoeNum} Jahre Erfahrung`;
+
+  // ── Verdict
+  let vType, vTitle, vColor;
+  if (p < 25)      { vType='weak';   vTitle='Dies ist ein schwaches Angebot';   vColor='#ef4444'; }
+  else if (p < 63) { vType='fair';   vTitle='Dies ist ein faires Angebot';      vColor='#f59e0b'; }
+  else             { vType='strong'; vTitle='Dies ist ein starkes Angebot';      vColor='#10b981'; }
+
+  // ── Position
+  const pp = Math.round(p);
+  let posText;
+  if      (pp < 10) posText = `Du bist im untersten 10% für diese Stelle und diesen Markt`;
+  else if (pp < 25) posText = `Du bist im untersten 25%`;
+  else if (pp < 40) posText = `Du liegst leicht unter dem Median`;
+  else if (pp < 60) posText = `Du liegst nahe am Marktmedian`;
+  else if (pp < 75) posText = `Du bist in den Top 40% — über dem Median`;
+  else if (pp < 90) posText = `Du bist in den Top 25%`;
+  else              posText = `Du bist in den Top 10% — außergewöhnlich`;
+
+  // ── Negotiation
+  let negText = null;
+  if      (p < 25) negText = `Du könntest vernünftigerweise ${fmt(r.p50,r.symbol)}–${fmt(r.p75,r.symbol)} verlangen`;
+  else if (p < 50) negText = `Ziele auf ${fmt(r.p75,r.symbol)} — das ist der Marktmittelwert für dieses Profil`;
+  else if (p < 75) negText = `Erwäge ${fmt(r.p90,r.symbol)} anzustreben, wenn du Verhandlungsspielraum hast`;
+
+  // ── Emotional
+  let emoText;
+  if      (p < 15) emoText = "Die meisten Kandidaten in deiner Position erhalten deutlich bessere Angebote. Dieses braucht Arbeit, bevor du unterschreibst.";
+  else if (p < 25) emoText = "Dieses Angebot liegt unter dem, was dein Profil verdient. Du hast echten Verhandlungsspielraum.";
+  else if (p < 40) emoText = "Im Bereich, aber nicht herausragend. Ein Gespräch über das obere Ende der Bandbreite ist es wert.";
+  else if (p < 63) emoText = "Wettbewerbsfähig, aber es gibt noch Luft nach oben.";
+  else if (p < 80) emoText = "Ein solides Angebot. Dein Profil wird richtig bewertet.";
+  else if (p < 92) emoText = "Dieses Unternehmen ist ernst darum bemüht, dich zu gewinnen. Das Paket spiegelt das wider.";
+  else             emoText = "Selten. Dir wird eine Top-Markt-Vergütung angeboten. Beachte dieses Signal.";
+
+  // ════════════════════════════════════════════
+  // RENDER
+  // ════════════════════════════════════════════
+
+  // Context
+  document.getElementById('r-context').innerHTML =
+    `<strong style="color:var(--text-1);">${role}</strong> &nbsp;·&nbsp; <strong style="color:var(--text-1);">${city}</strong> &nbsp;·&nbsp; ${yoeLabel} &nbsp;·&nbsp; <span style="color:var(--text-3);">${bandLabel}</span>`;
+
+  // Confidence indicator
+  renderConfidence(city);
+
+  // Fallback notice
+  const fbEl = document.getElementById('r-fallback');
+  if (r.fallbackCity) {
+    fbEl.textContent = `Keine direkten Daten für ${city}. Zeige ${r.fallbackCity} als nächste Referenz.`;
+    fbEl.style.display = 'block';
+  } else {
+    fbEl.style.display = 'none';
+  }
+
+  // Verdict card
+  const vc = document.getElementById('r-verdict-card');
+  vc.className = `verdict-card fade-in delay-1 verdict-${vType}`;
+  vc.innerHTML = `
+    <div class="verdict-tag" style="color:${vColor};">
+      <span class="verdict-tag-dot" style="background:${vColor};"></span>
+      Urteil
+    </div>
+    <div class="verdict-headline" style="color:${vColor};">${vTitle}</div>
+    <div class="verdict-comp">
+      Base: <strong style="color:var(--text-1);">${fmt(salaryRaw,r.symbol)}</strong>
+      ${bonusRaw > 0 || equityRaw > 0 ? `&nbsp;·&nbsp; Total comp: <strong style="color:var(--text-1);">${fmt(totalComp,r.symbol)}</strong>` : ''}
+    </div>`;
+
+  // Range
+  document.getElementById('r-range-headline').textContent = `${fmt(r.p25,r.symbol)} – ${fmt(r.p75,r.symbol)}`;
+  document.getElementById('r-range-sub').textContent = `Typische Spanne für ${bandLabel} ${role} in ${r.fallbackCity || city}`;
+
+  // Bar
+  renderBar(r, totalComp, p, vColor);
+
+  // Position
+  document.getElementById('r-position').textContent = posText;
+
+  // Negotiation
+  if (negText) {
+    document.getElementById('r-negotiation').textContent = negText;
+    document.getElementById('r-neg-card').style.display = 'block';
+  } else {
+    document.getElementById('r-neg-card').style.display = 'none';
+  }
+
+  // Emotional
+  document.getElementById('r-emotional').textContent = emoText;
+
+  // Save share data
+  _shareData = { role, city, bandLabel, yoe: yoeNum, pp, vType, r };
+
+  // Peer comparison
+  const peerEl = document.getElementById('r-peer');
+  peerEl.innerHTML = getPeerComparison(pp, role, city);
+  peerEl.style.display = 'block';
+
+  // Negotiation script / next steps
+  const scriptCard  = document.getElementById('r-script-card');
+  const scriptLabel = document.getElementById('r-script-label');
+  const scriptBody  = document.getElementById('r-script-body');
+  scriptCard.style.display = 'block';
+
+  if (vType === 'strong') {
+    scriptLabel.textContent = 'Nächste Schritte';
+    scriptBody.innerHTML = `
+      <p style="font-size:14px;color:var(--text-2);line-height:1.6;margin:0 0 10px;">Dein Grundgehalt ist bereits stark. Beim Verhandeln, fokussiere dich auf:</p>
+      <ul class="tips-list">
+        <li>Equity / RSUs — oft flexibler als das Grundgehalt</li>
+        <li>Signing Bonus — einmalig, geringeres laufendes Risiko für das Unternehmen</li>
+        <li>Mehr Urlaub oder flexible Remote-Regelungen</li>
+        <li>Beschleunigtes erstes Review (z.B. nach 6 statt 12 Monaten)</li>
+      </ul>`;
+  } else {
+    scriptLabel.textContent = 'Verhandlungsskript';
+    const script = buildNegScript(role, city, bandLabel, yoeNum, r);
+    scriptBody.innerHTML = `
+      <div class="script-pre">${script.replace(/\n/g,'<br>')}</div>
+      <button class="copy-script-btn" onclick="copyScript()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Skript kopieren
+      </button>`;
+  }
+
+  // Switch screens
+  document.getElementById('s-input').style.display = 'none';
+  document.getElementById('s-results').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════════════════
+// RANGE BAR
+// ════════════════════════════════════════════════════
+
+function renderBar(r, userVal, percentile, vColor) {
+  const bar = document.getElementById('r-bar');
+  bar.innerHTML = '';
+
+  // Map a value to 0–100% position within p10–p90 range
+  const pos = v => Math.max(2, Math.min(98, ((v - r.p10) / (r.p90 - r.p10)) * 100));
+
+  // Tick marks at p25, p50, p75
+  [[r.p25,'25th'],[r.p50,'Median'],[r.p75,'75th']].forEach(([v, lbl]) => {
+    const p = pos(v);
+    const tick = document.createElement('div');
+    tick.className = 'range-tick';
+    tick.style.left = p + '%';
+    bar.appendChild(tick);
+
+    const label = document.createElement('div');
+    label.className = 'range-tick-label';
+    label.style.left = p + '%';
+    label.innerHTML = `${fmt(v, r.symbol)}<br><span style="color:var(--text-3)">${lbl}</span>`;
+    bar.appendChild(label);
+  });
+
+  // User dot
+  const userPos = pos(userVal);
+
+  const dotLabel = document.createElement('div');
+  dotLabel.className = 'range-user-label';
+  dotLabel.textContent = 'You';
+  dotLabel.style.color = vColor;
+  bar.appendChild(dotLabel);
+
+  const dot = document.createElement('div');
+  dot.className = 'range-user-dot';
+  dot.style.background = '#fff';
+  dot.style.boxShadow = `0 0 0 3px ${vColor}66, 0 2px 8px rgba(15,23,42,0.18)`;
+  bar.appendChild(dot);
+
+  // Animate dot into position
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      dot.style.left = userPos + '%';
+      dotLabel.style.left = userPos + '%';
+    }, 80);
+  });
+}
+
+// ════════════════════════════════════════════════════
+// SHARE + ENGAGEMENT
+// ════════════════════════════════════════════════════
+
+let _shareData = null; // set on each runVerdict()
+
+function buildShareText(role, city, bandLabel, pp, vType) {
+  const url = 'https://comp-verdict.netlify.app/de/';
+  const above = 100 - pp;
+  if (vType === 'weak') {
+    return `Habe gerade mein ${role}-Angebot in ${city} mit CompVerdict geprüft.\n\nUrteil: schwaches Angebot — untere ${pp}% für ${bandLabel}. Zeit zu verhandeln.\n\nPrüf deins → ${url}`;
+  } else if (vType === 'fair') {
+    return `Mein ${role}-Angebot in ${city} durch CompVerdict laufen lassen.\n\nFaires Angebot — ${pp}tes Perzentil für ${bandLabel}. Könnte besser sein.\n\nIst deins besser? → ${url}`;
+  } else {
+    return `CompVerdict: Mein ${role}-Angebot in ${city} ist in den Top ${above}% für ${bandLabel}. Starkes Angebot. 💪\n\nPrüf deins → ${url}`;
+  }
+}
+
+function buildNegScript(role, city, bandLabel, yoe, r) {
+  const target = fmt(r.p75, r.symbol);
+  const range  = `${fmt(r.p50, r.symbol)}–${fmt(r.p75, r.symbol)}`;
+  return `Hallo [Name],\n\nVielen Dank für das Angebot — ich freue mich wirklich auf diese Stelle.\n\nIch habe aktuelle Marktdaten für ${role}s in ${city} auf ${bandLabel}-Niveau recherchiert. Die typische Spanne liegt bei ${range}, und ich würde gerne in Richtung ${target} kommen.\n\nGibt es Spielraum beim Grundgehalt?\n\nMit freundlichen Grüßen,\n[Dein Name]`;
+}
+
+function getPeerComparison(pp, role, city) {
+  const above = 100 - pp;
+  if (pp < 25)  return `Ungefähr <strong>${above}%</strong> der ${role}s in ${city} verdienen mehr als das.`;
+  if (pp < 50)  return `Etwa <strong>${above}%</strong> der ${role}s in ${city} verdienen mehr als das.`;
+  if (pp < 75)  return `Du verdienst mehr als ungefähr <strong>${pp}%</strong> der ${role}s in ${city}.`;
+  return `Weniger als <strong>${above}%</strong> der ${role}s in ${city} verdienen mehr.`;
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('In die Zwischenablage kopiert');
+  } catch {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('In die Zwischenablage kopiert');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('copy-toast');
+  t.querySelector('svg').nextSibling.textContent = ' ' + msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function shareResult() {
+  if (!_shareData) return;
+  const { role, city, bandLabel, pp, vType } = _shareData;
+  const text = buildShareText(role, city, bandLabel, pp, vType);
+  trackEvent('share_result', { role, city, verdict: vType });
+  if (navigator.share) {
+    navigator.share({ text }).catch(() => copyText(text));
+  } else {
+    copyText(text);
+  }
+}
+
+function copyScript() {
+  if (!_shareData) return;
+  const { role, city, bandLabel, yoe, r } = _shareData;
+  trackEvent('copy_script', { role, city });
+  copyText(buildNegScript(role, city, bandLabel, yoe, r));
+}
+
+// ════════════════════════════════════════════════════
+// TRUST LAYER
+// ════════════════════════════════════════════════════
+
+// High confidence = explicitly benchmarked markets (ES, UK, DE)
+// Medium = derived from mid-level surveys
+function getConfidence(city) {
+  const meta = CV_DATA.cities[city];
+  if (!meta) return 'med';
+  return ['ES','UK','DE'].includes(meta.market) ? 'high' : 'med';
+}
+
+function renderConfidence(city) {
+  const level = getConfidence(city);
+  const el = document.getElementById('r-confidence');
+  if (level === 'high') {
+    el.className = 'confidence-badge confidence-high';
+    el.innerHTML = '<span class="dot"></span><span>Hohe Zuverlässigkeit</span>';
+  } else {
+    el.className = 'confidence-badge confidence-med';
+    el.innerHTML = '<span class="dot"></span><span>Geschätzte Spanne</span>';
+  }
+}
+
+// ════════════════════════════════════════════════════
+// MODAL
+// ════════════════════════════════════════════════════
+
+function openModal() {
+  const m = document.getElementById('modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => { m.style.opacity = '1'; });
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function handleModalClick(e) {
+  if (e.target === document.getElementById('modal')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ════════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════════
+
+function goBack() {
+  document.getElementById('s-results').style.display = 'none';
+  document.getElementById('s-input').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════════════════
+// COOKIE CONSENT
+// ════════════════════════════════════════════════════
+(function() {
+  if (localStorage.getItem('cv_consent') === null) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+})();
+function cookieAccept() {
+  localStorage.setItem('cv_consent', '1');
+  document.getElementById('cookie-banner').style.display = 'none';
+  if (typeof loadGA === 'function') loadGA();
+}
+function cookieDecline() {
+  localStorage.setItem('cv_consent', '0');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function trackEvent(name, params) {
+  if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+}
+</script>
+</body>
+</html>

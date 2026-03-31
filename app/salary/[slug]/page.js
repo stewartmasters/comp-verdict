@@ -6,6 +6,7 @@ import { fmt } from '../../../lib/helpers.js'
 const YEAR = 2026
 import Navigation from '../../../components/Navigation.jsx'
 import Footer from '../../../components/Footer.jsx'
+import PageTracker from '../../../components/PageTracker.jsx'
 
 export const dynamic = 'force-static'
 export const dynamicParams = false
@@ -139,6 +140,7 @@ export default async function SalaryPage({ params }) {
       />
 
       <Navigation />
+      <PageTracker event="salary_page_view" role={role || ''} city={city || ''} locale="en" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
 
