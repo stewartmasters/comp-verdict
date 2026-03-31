@@ -1,0 +1,63 @@
+name: Publish scheduled draft post
+
+on:
+  schedule:
+    # Every 4 days at 8am UTC
+    - cron: "0 8 */4 * *"
+  workflow_dispatch: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Find next draft
+        id: find_draft
+        run: |
+          DRAFT=$(ls _drafts/*.md 2>/dev/null | sort | head -1 || echo "")
+          if [ -z "$DRAFT" ]; then
+            echo "No drafts to publish."
+            echo "has_draft=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Found draft: $DRAFT"
+            echo "draft_path=$DRAFT" >> "$GITHUB_OUTPUT"
+            echo "has_draft=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish draft
+        if: steps.find_draft.outputs.has_draft == 'true'
+        run: |
+          DRAFT="${{ steps.find_draft.outputs.draft_path }}"
+          TODAY=$(date -u +%Y-%m-%d)
+
+          # Update date in frontmatter to today
+          sed -i "s/^date: \"[^\"]*\"/date: \"${TODAY}\"/" "$DRAFT"
+
+          # Strip numeric prefix (e.g. 01-) from filename
+          BASENAME=$(basename "$DRAFT")
+          CLEAN_NAME=$(echo "$BASENAME" | sed 's/^[0-9]*-//')
+
+          mv "$DRAFT" "content/blog/$CLEAN_NAME"
+          echo "Published: content/blog/$CLEAN_NAME (date set to $TODAY)"
+          echo "slug=$CLEAN_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.find_draft.outputs.has_draft == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/blog/ _drafts/
+          SLUG=$(echo "${{ steps.find_draft.outputs.draft_path }}" | xargs basename -s .md | sed 's/^[0-9]*-//')
+          git commit -m "feat(blog): publish scheduled post — ${SLUG}"
+          git push origin HEAD
+
+      - name: Trigger Netlify deploy
+        if: steps.find_draft.outputs.has_draft == 'true' && secrets.NETLIFY_DEPLOY_HOOK != ''
+        run: curl -s -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}"

@@ -5,9 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "generate:article": "npx tsx scripts/generateArticle.ts",
+    "generate:article:dry": "npx tsx scripts/generateArticle.ts --dry-run"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
     "gray-matter": "^4.0.3",
     "marked": "^17.0.5",
     "next": "^14.2.15",
@@ -15,8 +18,11 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4"
+    "tailwindcss": "^3.4.4",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
   }
 }

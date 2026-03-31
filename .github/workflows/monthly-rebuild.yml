@@ -1,0 +1,14 @@
+name: Monthly site rebuild
+
+on:
+  schedule:
+    # 1st of each month at 05:00 UTC — refreshes "Updated Month Year" dates
+    - cron: "0 5 1 * *"
+  workflow_dispatch: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify deploy
+        run: curl -s -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}"
