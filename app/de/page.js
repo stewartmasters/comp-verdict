@@ -1,5 +1,6 @@
 import { CV_DATA } from '../../lib/cv-data.js'
-import VerdictTool from '../../components/VerdictTool.jsx'
+import dynamic from 'next/dynamic'
+const VerdictTool = dynamic(() => import('../../components/VerdictTool.jsx'), { ssr: false })
 import Header from '../../components/Header.jsx'
 import Footer from '../../components/Footer.jsx'
 
