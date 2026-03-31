@@ -1,41 +1,35 @@
 import Link from 'next/link'
-import Image from 'next/image'
 
 const SOURCES = [
-  { src: '/logos/ons.png',      alt: 'ONS — UK Office for National Statistics',           label: 'ONS ASHE 2025'         },
-  { src: '/logos/bls.png',      alt: 'BLS — US Bureau of Labor Statistics',               label: 'BLS OEWS 2025'         },
-  { src: '/logos/ine.png',      alt: 'INE — Spain Instituto Nacional de Estadística',     label: 'INE EES 2024'          },
-  { src: '/logos/destatis.png', alt: 'Destatis — German Federal Statistical Office',      label: 'Destatis 2024'         },
-  { src: '/logos/eurostat.png', alt: 'Eurostat — European Statistics',                    label: 'Eurostat SES 2022'     },
-  { src: '/logos/insee.svg',    alt: 'INSEE — French National Statistics Institute',      label: 'INSEE 2024'            },
-  { src: '/logos/cbs.png',      alt: 'CBS — Statistics Netherlands',                      label: 'CBS 2024'              },
-  { src: '/logos/statscan.png', alt: 'Statistics Canada',                                 label: 'StatsCan CMHC 2024'   },
-  { src: '/logos/abs.png',      alt: 'ABS — Australian Bureau of Statistics',             label: 'ABS 2024'              },
-  { src: '/logos/oecd.png',     alt: 'OECD — Organisation for Economic Co-operation',     label: 'OECD IDD 2024'        },
+  { abbr: 'ONS',             full: 'UK Annual Survey of Hours and Earnings (ASHE 2025)'       },
+  { abbr: 'BLS',             full: 'US Bureau of Labor Statistics (OEWS 2025)'                },
+  { abbr: 'INE',             full: 'Spanish earnings structure survey (EES 2024)'             },
+  { abbr: 'Destatis',        full: 'German earnings structure survey (2024)'                  },
+  { abbr: 'Eurostat',        full: 'European earnings statistics (SES 2022)'                  },
+  { abbr: 'INSEE',           full: 'French national income statistics (2024)'                 },
+  { abbr: 'CBS',             full: 'Netherlands labour accounts (2024)'                       },
+  { abbr: 'Statistics Canada', full: 'Labour Force Survey (2024)'                             },
+  { abbr: 'ABS',             full: 'Australian Bureau of Statistics (2024)'                   },
+  { abbr: 'OECD',            full: 'International income distribution data (2024)'            },
 ]
 
 /**
  * TrustSection
- * variant="full"    — heading + logo grid + date + methodology link (home page trust block)
- * variant="minimal" — compact logo row (hero inline)
+ * variant="full"    — heading + text source list + methodology link
+ * variant="minimal" — compact text abbreviations row (hero inline)
  */
 export default function TrustSection({ variant = 'full' }) {
   if (variant === 'minimal') {
     return (
-      <div className="flex flex-wrap items-center gap-3">
-        {SOURCES.slice(0, 5).map((s) => (
-          <Image
-            key={s.src}
-            src={s.src}
-            alt={s.alt}
-            width={48}
-            height={20}
-            className="object-contain h-5 w-auto"
-            style={{ opacity: 0.55, mixBlendMode: 'multiply', filter: 'grayscale(1)' }}
-            unoptimized
-          />
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-400 font-medium">
+        {SOURCES.slice(0, 5).map((s, i) => (
+          <span key={s.abbr} className="flex items-center gap-2">
+            {i > 0 && <span className="text-gray-300">·</span>}
+            {s.abbr}
+          </span>
         ))}
-        <span className="text-xs text-gray-400 font-medium">+ 5 more</span>
+        <span className="text-gray-300">·</span>
+        <span>+ 5 more</span>
       </div>
     )
   }
@@ -48,19 +42,11 @@ export default function TrustSection({ variant = 'full' }) {
         <p className="text-sm text-gray-500">Not crowdsourcing. Not estimates. Primary government wage surveys — updated Q1 2026.</p>
       </div>
 
-      <div className="grid grid-cols-5 sm:grid-cols-5 gap-x-6 gap-y-6 items-center justify-items-center mb-8">
+      <div className="grid sm:grid-cols-2 gap-x-10 gap-y-2 mb-8 max-w-2xl mx-auto">
         {SOURCES.map((s) => (
-          <div key={s.src} className="flex flex-col items-center gap-1.5 group">
-            <Image
-              src={s.src}
-              alt={s.alt}
-              width={72}
-              height={28}
-              className="object-contain h-[27px] w-auto transition-all duration-200"
-              style={{ opacity: 0.55, mixBlendMode: 'multiply', filter: 'grayscale(1)' }}
-              unoptimized
-            />
-            <span className="text-[10px] text-gray-400 font-medium text-center leading-tight">{s.label}</span>
+          <div key={s.abbr} className="flex items-baseline gap-2 text-sm">
+            <span className="font-semibold text-gray-900 flex-shrink-0">{s.abbr}</span>
+            <span className="text-gray-400 text-xs leading-relaxed">{s.full}</span>
           </div>
         ))}
       </div>

@@ -89,20 +89,21 @@ export default function Navigation() {
           </Link>
 
           {/* Language switcher */}
-          <div className="flex items-center gap-0.5 ml-1 border border-gray-200 rounded-lg overflow-hidden text-xs">
-            {['en', 'es', 'de'].map((lang) => (
-              <Link
-                key={lang}
-                href={lang === locale ? '#' : (LANG_SWITCH[locale]?.[lang] ?? '/')}
-                className={`px-2 py-1 font-medium transition-colors ${
-                  lang === locale
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-                onClick={lang === locale ? (e) => e.preventDefault() : undefined}
-              >
-                {lang.toUpperCase()}
-              </Link>
+          <div className="flex items-center gap-1 ml-1 text-xs font-medium">
+            {['en', 'es', 'de'].map((lang, i) => (
+              <span key={lang} className="flex items-center gap-1">
+                {i > 0 && <span className="text-gray-300">·</span>}
+                {lang === locale ? (
+                  <span className="text-gray-900 font-bold">{lang.toUpperCase()}</span>
+                ) : (
+                  <Link
+                    href={LANG_SWITCH[locale]?.[lang] ?? '/'}
+                    className="text-gray-400 hover:text-gray-700 transition-colors"
+                  >
+                    {lang.toUpperCase()}
+                  </Link>
+                )}
+              </span>
             ))}
           </div>
 
