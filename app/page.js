@@ -76,7 +76,7 @@ export default function HomePage() {
       <Navigation />
 
       {/* Hero */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-20 pb-8">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-20 pb-4">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
           {/* Copy */}
@@ -139,7 +139,7 @@ export default function HomePage() {
       </section>
 
       {/* Signs your offer is weak */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-t border-gray-100 mt-2">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-6 border-t border-gray-100">
         <div className="grid lg:grid-cols-[1fr_2fr] gap-10 items-start">
           <div className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900 leading-tight">
@@ -167,8 +167,8 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-gray-100">
-        <h2 className="text-2xl font-bold text-gray-900 mb-10 text-center">How it works</h2>
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-gray-100">
+        <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">How it works</h2>
         <div className="grid sm:grid-cols-3 gap-8">
           {[
             {
