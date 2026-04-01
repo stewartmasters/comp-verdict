@@ -646,10 +646,27 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   const [emailSent, setEmailSent]   = useState(false)
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search)
-      setCompactMode(params.get('compact') === '1')
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    setCompactMode(params.get('compact') === '1')
+
+    // Auto-run from shared result URL (e.g. ?role=...&city=...&salary=...)
+    const pRole   = params.get('role')
+    const pCity   = params.get('city')
+    const pSalary = params.get('salary')
+    if (pRole && pCity && pSalary) {
+      const pYoe    = params.get('yoe') || ''
+      const pBonus  = params.get('bonus') || ''
+      const pEquity = params.get('equity') || ''
+      setRole(pRole)
+      setCity(pCity)
+      setSalary(pSalary)
+      setYoe(pYoe)
+      if (pBonus)  { setBonus(pBonus);   setShowBonus(true) }
+      if (pEquity) { setEquity(pEquity); setShowEquity(true) }
+      computeAndSetResults(pRole, pCity, pSalary, pYoe, pBonus, pEquity)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // GA consent — GA script is now loaded by GoogleAnalytics in layout.js.
@@ -724,25 +741,25 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     else setShowEquity(true)
   }
 
-  function runVerdict() {
-    const resolvedRole = ROLES.includes(role) ? role : null
-    const resolvedCity = CITIES.includes(city) ? city : null
-    const salaryRaw    = parseFloat(salary)
-    const bonusRaw     = parseFloat(bonus) || 0
-    const equityRaw    = parseFloat(equity) || 0
+  function computeAndSetResults(roleArg, cityArg, salaryStr, yoeStr, bonusStr, equityStr) {
+    const resolvedRole = ROLES.includes(roleArg) ? roleArg : null
+    const resolvedCity = CITIES.includes(cityArg) ? cityArg : null
+    const salaryRaw    = parseFloat(salaryStr)
+    const bonusRaw     = parseFloat(bonusStr) || 0
+    const equityRaw    = parseFloat(equityStr) || 0
 
     if (!resolvedRole) { setError(lbl.errorRole); return }
     if (!resolvedCity) { setError(lbl.errorCity); return }
     if (!salaryRaw || isNaN(salaryRaw) || salaryRaw <= 0) { setError(lbl.errorSalary); return }
     setError('')
 
-    const r = getRange(cvData, resolvedRole, resolvedCity, yoe)
+    const r = getRange(cvData, resolvedRole, resolvedCity, yoeStr)
     if (!r) { setError(lbl.errorNoData); return }
 
     const totalComp = salaryRaw + bonusRaw + equityRaw
     const p = scorePct(totalComp, r.p10, r.p25, r.p50, r.p75, r.p90)
 
-    const yoeNum    = parseInt(yoe) || 0
+    const yoeNum    = parseInt(yoeStr) || 0
     const bandConf  = cvData.bands.find(b => b.id === r.band)
     const bandLabel = bandConf ? bandConf.label : ''
     const yoeLabel  = yoeNum === 1 ? lbl.yoe1 : lbl.yoeN(yoeNum)
@@ -804,6 +821,20 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
 
     let firstOfferCtx = lbl.firstOfferCtx(pp)
 
+    // Push result params to URL so this result is shareable
+    if (typeof window !== 'undefined') {
+      const qp = new URLSearchParams()
+      qp.set('role', resolvedRole)
+      qp.set('city', resolvedCity)
+      qp.set('salary', salaryRaw)
+      if (yoeNum) qp.set('yoe', yoeNum)
+      if (bonusRaw) qp.set('bonus', bonusRaw)
+      if (equityRaw) qp.set('equity', equityRaw)
+      const compact = new URLSearchParams(window.location.search).get('compact')
+      if (compact === '1') qp.set('compact', '1')
+      window.history.replaceState(null, '', '?' + qp.toString())
+    }
+
     setResults({
       role: resolvedRole, city: resolvedCity, yoeLabel, bandLabel, yoeNum,
       salaryRaw, bonusRaw, equityRaw, totalComp,
@@ -818,10 +849,18 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     if (typeof window !== 'undefined') window.scrollTo(0, 0)
   }
 
+  function runVerdict() {
+    computeAndSetResults(role, city, salary, yoe, bonus, equity)
+  }
+
   function goBack() {
     setSimSalary(null)
     setScreen('input')
-    if (typeof window !== 'undefined') window.scrollTo(0, 0)
+    if (typeof window !== 'undefined') {
+      const compact = new URLSearchParams(window.location.search).get('compact')
+      window.history.replaceState(null, '', compact === '1' ? '?compact=1' : window.location.pathname)
+      window.scrollTo(0, 0)
+    }
   }
 
   function testHigher() {
@@ -849,7 +888,8 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   }
 
   function shareLinkedIn() {
-    const linkedInUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://www.compverdict.com')
+    const url = typeof window !== 'undefined' ? window.location.href : 'https://www.compverdict.com'
+    const linkedInUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url)
     if (typeof window !== 'undefined') window.open(linkedInUrl, '_blank', 'width=600,height=500')
     if (results) trackEvent('share_linkedin', { role: results.role, city: results.city, verdict: results.vType })
   }
@@ -864,7 +904,7 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   }
 
   function copyLink() {
-    const url = 'https://www.compverdict.com'
+    const url = typeof window !== 'undefined' ? window.location.href : 'https://www.compverdict.com'
     copyText(url)
     if (results) trackEvent('share_link', { role: results.role, city: results.city, verdict: results.vType })
   }
