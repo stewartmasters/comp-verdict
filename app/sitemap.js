@@ -1,6 +1,7 @@
 import { generateSeoPages } from '../lib/seo-pages.js'
 import { LOCALES, getSalaryPath, getNegPath, getHubPath, SITE_URL as LEGACY_SITE_URL } from '../lib/page-helpers.js'
 import { SALARY_ROLES } from '../lib/helpers.js'
+import { getAllBlogPosts } from '../lib/blogPosts.js'
 
 export const dynamic = 'force-static'
 
@@ -59,5 +60,17 @@ export default function sitemap() {
     }
   }
 
-  return [...staticRoutes, ...salaryRoutes, ...legacySalaryRoutes, ...negRoutes]
+  // Blog routes
+  const blogPosts = getAllBlogPosts()
+  const blogRoutes = [
+    { url: BASE_URL + '/blog/', lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    ...blogPosts.map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}/`,
+      lastModified: new Date(post.date),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    })),
+  ]
+
+  return [...staticRoutes, ...blogRoutes, ...salaryRoutes, ...legacySalaryRoutes, ...negRoutes]
 }
