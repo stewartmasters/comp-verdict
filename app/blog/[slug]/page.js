@@ -35,11 +35,13 @@ export async function generateMetadata({ params }) {
       url: `https://www.compverdict.com/blog/${post.slug}/`,
       siteName: 'CompVerdict',
       publishedTime: post.date,
+      images: [{ url: 'https://www.compverdict.com/og-image.png', width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
+      images: ['https://www.compverdict.com/og-image.png'],
     },
   }
 }

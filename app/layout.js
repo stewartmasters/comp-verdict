@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import GoogleAnalytics from '../components/GoogleAnalytics.jsx'
+import ConsentManager from '../components/ConsentManager.jsx'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -38,11 +39,13 @@ export const metadata = {
     description:
       'Find out if your job offer is fair, weak, or strong. Compare to market data and see exactly what to negotiate.',
     url: BASE_URL,
+    images: [{ url: `${BASE_URL}/og-image.png`, width: 1200, height: 630, alt: 'CompVerdict — Is this offer worth taking?' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'CompVerdict — Is This Job Offer Actually Good?',
     description: 'Check your offer against market data in 30 seconds. Free, no signup.',
+    images: [`${BASE_URL}/og-image.png`],
   },
   robots: {
     index: true,
@@ -76,6 +79,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
       <body className="bg-[#F8FAFC] text-gray-900 min-h-screen font-sans">
+        <ConsentManager />
         {children}
       </body>
     </html>
