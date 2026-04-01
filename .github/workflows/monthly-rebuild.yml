@@ -11,4 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Netlify deploy
+        if: secrets.NETLIFY_DEPLOY_HOOK != ''
         run: curl -s -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}"
