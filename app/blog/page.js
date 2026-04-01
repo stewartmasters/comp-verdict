@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getAllBlogPosts } from '@/lib/blogPosts'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import PageTracker from '@/components/PageTracker'
 
 export const metadata = {
   title: 'Blog — CompVerdict',
@@ -14,6 +15,7 @@ export default function BlogPage() {
 
   return (
     <>
+      <PageTracker event="page_view" locale="en" />
       <Navigation />
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
         <div className="mb-10">

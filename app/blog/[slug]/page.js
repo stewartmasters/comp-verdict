@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/blogPosts'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import PageTracker from '@/components/PageTracker'
 
 export const dynamic = 'force-static'
 export const dynamicParams = false
@@ -86,6 +87,7 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <>
+      <PageTracker event="page_view" locale="en" />
       <Navigation />
       <script
         type="application/ld+json"

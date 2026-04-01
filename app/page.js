@@ -8,6 +8,7 @@ import Navigation from '../components/Navigation.jsx'
 import Footer from '../components/Footer.jsx'
 import TrustSection from '../components/TrustSection.jsx'
 import ScrollToTopButton from '../components/ScrollToTopButton.jsx'
+import PageTracker from '../components/PageTracker.jsx'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.compverdict.com'
 
@@ -73,6 +74,7 @@ export default function HomePage() {
 
   return (
     <>
+      <PageTracker event="page_view" locale="en" />
       <Navigation />
 
       {/* Hero */}
