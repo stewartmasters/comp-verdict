@@ -2,23 +2,40 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { generateSeoPages, getSeoPage, getRelatedPages, getLocationContext, getRoleContext, getIntroVariant, SALARY_ROLES, SEO_CITIES, slugify } from '../../../lib/seo-pages.js'
 import { fmt } from '../../../lib/helpers.js'
+import { getSalaryContent, getAllSalaryContentSlugs } from '../../../lib/salaryContent.js'
 
 const YEAR = 2026
 import Navigation from '../../../components/Navigation.jsx'
 import Footer from '../../../components/Footer.jsx'
 import PageTracker from '../../../components/PageTracker.jsx'
 
+const BASE_URL = 'https://www.compverdict.com'
+
 export const dynamic = 'force-static'
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return generateSeoPages().map((p) => ({ slug: p.slug }))
+  const dataSlugs = generateSeoPages().map((p) => ({ slug: p.slug }))
+  const contentSlugs = getAllSalaryContentSlugs()
+  const dataSlugSet = new Set(dataSlugs.map((s) => s.slug))
+  const newContentSlugs = contentSlugs.filter((s) => !dataSlugSet.has(s.slug))
+  return [...dataSlugs, ...newContentSlugs]
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const page = getSeoPage(slug)
-  if (!page) return {}
+  if (!page) {
+    const post = getSalaryContent(slug)
+    if (!post) return {}
+    return {
+      title: `${post.title} — CompVerdict`,
+      description: post.description,
+      alternates: { canonical: `${BASE_URL}/salary/${slug}/` },
+      openGraph: { title: post.title, description: post.description, type: 'article', publishedTime: post.date },
+      twitter: { card: 'summary_large_image', title: post.title, description: post.description },
+    }
+  }
   return {
     title: page.title,
     description: page.description,
@@ -117,7 +134,63 @@ function buildIntro(page) {
 export default async function SalaryPage({ params }) {
   const { slug } = await params
   const page = getSeoPage(slug)
-  if (!page) notFound()
+
+  // Markdown fallback: AI-generated comp guide content published by the Verdict SEO Platform
+  if (!page) {
+    const post = getSalaryContent(slug)
+    if (!post) notFound()
+    const articleSchema = {
+      '@context': 'https://schema.org', '@type': 'Article',
+      headline: post.title, description: post.description,
+      datePublished: post.date, dateModified: post.date,
+      url: `${BASE_URL}/salary/${slug}/`,
+      author: { '@type': 'Organization', name: 'CompVerdict' },
+      publisher: { '@type': 'Organization', name: 'CompVerdict', url: BASE_URL },
+    }
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Offer guides', item: `${BASE_URL}/salary/software-engineer-salary-london/` },
+        { '@type': 'ListItem', position: 3, name: post.title, item: `${BASE_URL}/salary/${slug}/` },
+      ],
+    }
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        <Navigation />
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+          <nav className="text-sm text-gray-400 mb-8 flex items-center gap-2">
+            <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+            <span>/</span>
+            <Link href="/salary/software-engineer-salary-london/" className="hover:text-blue-600 transition-colors">Offer guides</Link>
+            <span>/</span>
+            <span className="text-gray-600 truncate">{post.title}</span>
+          </nav>
+          <header className="mb-10 space-y-4">
+            <div className="flex items-center gap-3 text-xs text-gray-400">
+              <time dateTime={post.date}>{new Date(post.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+              <span>·</span>
+              <span>{post.readTime}</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">{post.title}</h1>
+            <p className="text-lg text-gray-500">{post.description}</p>
+          </header>
+          <article
+            className="prose prose-gray prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-3"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+          <div className="mt-10 bg-blue-50 rounded-2xl p-8 text-center space-y-3 border border-blue-100">
+            <h2 className="text-lg font-bold text-gray-900">Is this offer competitive?</h2>
+            <p className="text-sm text-gray-500">Check your offer against market data in 30 seconds. Free, no signup.</p>
+            <Link href="/" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition-colors">Check my offer →</Link>
+          </div>
+        </div>
+        <Footer />
+      </>
+    )
+  }
 
   const related = getRelatedPages(page)
   const faqs = buildFaqs(page)
