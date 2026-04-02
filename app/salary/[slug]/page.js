@@ -144,7 +144,7 @@ export default async function SalaryPage({ params }) {
       headline: post.title, description: post.description,
       datePublished: post.date, dateModified: post.date,
       url: `${BASE_URL}/salary/${slug}/`,
-      author: { '@type': 'Organization', name: 'CompVerdict' },
+      author: { '@type': 'Organization', name: 'CompVerdict', url: BASE_URL },
       publisher: { '@type': 'Organization', name: 'CompVerdict', url: BASE_URL },
     }
     const breadcrumbSchema = {
