@@ -21,7 +21,7 @@ const LABELS = {
     emailSent:    'Subscribed!',
     offerChecker: 'Offer checker',
     methodology:  'Methodology',
-    allGuides:    'All offer guides',
+    allGuides:    'Offer guides',
     blog:         'Blog',
     howWeCalc:    'How we calculate',
     privacy:      'Privacy policy',
@@ -197,7 +197,6 @@ export default function Footer({ locale = 'en' }) {
             <a href="/methodology/" className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">{l.methodology}</a>
             <a href={salaryPath} className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">{l.allGuides}</a>
             <a href="/blog/" className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">{l.blog}</a>
-            <a href="/rent-guide/" className="block text-xs text-gray-600 hover:text-gray-900 transition-colors">Rent guide</a>
             <div className="pt-4">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">{l.dataHead}</p>
               <p className="text-xs text-gray-400">Eurostat · ONS · Destatis · INE · BLS · INSEE · CBS · ABS · OECD</p>

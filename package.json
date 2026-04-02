@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "sync-records": "cp ../salary-verdict/data/normalized/records.json data/normalized/records.json && echo 'records.json synced from salary-verdict'",
     "generate:article": "npx tsx scripts/generateArticle.ts",
     "generate:article:dry": "npx tsx scripts/generateArticle.ts --dry-run"
   },

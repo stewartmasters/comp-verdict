@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { SALARY_ROLES, slug } from '../../lib/helpers.js'
-import { generateSeoPages, SEO_CITIES } from '../../lib/seo-pages.js'
+import { slug } from '../../lib/helpers.js'
 import Navigation from '../../components/Navigation.jsx'
 import Footer from '../../components/Footer.jsx'
 
@@ -34,8 +33,12 @@ const ROLE_CATEGORIES = [
     roles: ['UX Designer', 'UI Designer', 'Product Designer'],
   },
   {
+    label: 'Marketing',
+    roles: ['Marketing Manager', 'Growth Manager', 'Performance Marketing Manager', 'Social Media Manager', 'Content Manager'],
+  },
+  {
     label: 'Business',
-    roles: ['Marketing Manager', 'Growth Manager', 'Finance Analyst', 'Operations Manager'],
+    roles: ['Finance Analyst', 'Operations Manager', 'Business Analyst', 'Sales Manager', 'HR Manager', 'Project Manager'],
   },
 ]
 
