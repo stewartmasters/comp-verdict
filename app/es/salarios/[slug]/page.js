@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import {
   es, SALARY_ROLES, slug, buildSalaryPageProps, buildSalarySlugMap,
   getSalaryPath, getNegPath, getHomePath, getHubPath, SITE_URL
@@ -39,10 +40,10 @@ export async function generateMetadata({ params }) {
 export default async function EsSalaryPage({ params }) {
   const { slug: slugParam } = await params
   const match = slugMap[slugParam]
-  if (!match) return <div>Page not found</div>
+  if (!match) notFound()
 
   const props = buildSalaryPageProps(locale, match.role, match.city)
-  if (!props) return <div>Data not available</div>
+  if (!props) notFound()
 
   const homePath      = getHomePath(locale)
   const salaryHubPath = getHubPath(locale, 'salary')

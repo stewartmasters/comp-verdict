@@ -9,7 +9,8 @@ on:
 jobs:
   rebuild:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
     steps:
       - name: Trigger Netlify deploy
-        if: secrets.NETLIFY_DEPLOY_HOOK != ''
+        if: ${{ secrets.NETLIFY_DEPLOY_HOOK != '' }}
         run: curl -s -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}"
