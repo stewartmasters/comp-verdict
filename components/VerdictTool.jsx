@@ -637,8 +637,6 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
   // Toast
   const [toastMsg, setToastMsg]   = useState('')
   const [toastVisible, setToastVisible] = useState(false)
-  // Cookie
-  const [showCookie, setShowCookie] = useState(false)
   const [simSalary, setSimSalary]   = useState(null)
   const [compactMode, setCompactMode] = useState(false)
   // Email capture
@@ -667,21 +665,6 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
       computeAndSetResults(pRole, pCity, pSalary, pYoe, pBonus, pEquity)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // GA consent — GA script is now loaded by GoogleAnalytics in layout.js.
-  // On mount: if user previously accepted, grant consent immediately.
-  // If no prior choice, show the cookie banner.
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const stored = localStorage.getItem('cv_consent')
-    if (stored === '1') {
-      if (typeof window.gtag === 'function') {
-        window.gtag('consent', 'update', { analytics_storage: 'granted' })
-      }
-    } else if (stored === null) {
-      setShowCookie(true)
-    }
   }, [])
 
   // Close modal on Escape
@@ -935,18 +918,6 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     } catch (_) { /* Netlify Forms submission — fail silently */ }
     trackEvent('email_signup', { role: results.role, city: results.city, verdict: results.vType })
     setEmailSent(true)
-  }
-
-  function cookieAccept() {
-    localStorage.setItem('cv_consent', '1')
-    setShowCookie(false)
-    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-      window.gtag('consent', 'update', { analytics_storage: 'granted' })
-    }
-  }
-  function cookieDecline() {
-    localStorage.setItem('cv_consent', '0')
-    setShowCookie(false)
   }
 
   // Scenario simulator derived values
@@ -1495,18 +1466,6 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
         {toastMsg}
       </div>
 
-      {/* ── COOKIE BANNER ── */}
-      {showCookie && (
-        <div id="cookie-banner">
-          <p style={{ margin: 0, lineHeight: 1.5 }}>
-            {lbl.cookieMsg} <a href="/privacy/">{lbl.cookiePrivacy}</a>
-          </p>
-          <div className="cookie-btns">
-            <button className="cookie-btn-decline" onClick={cookieDecline}>{lbl.cookieDecline}</button>
-            <button className="cookie-btn-accept" onClick={cookieAccept}>{lbl.cookieAccept}</button>
-          </div>
-        </div>
-      )}
     </>
   )
 }

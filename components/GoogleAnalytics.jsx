@@ -26,7 +26,7 @@ export default function GoogleAnalytics() {
           gtag('consent', 'default', {
             analytics_storage: 'denied',
             ad_storage: 'denied',
-            wait_for_update: 500
+            wait_for_update: 2000
           });
           gtag('js', new Date());
           gtag('config', '${GA_ID}', { send_page_view: false });
