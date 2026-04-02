@@ -83,8 +83,8 @@ export default function SalaryHubPage() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {roles.map((role) => {
                   const roleSlug = slug(role)
-                  // Link to role-only hub page
-                  const href = `/salary/${roleSlug}-salary/`
+                  // Link to role + London page (guaranteed to exist for every role)
+                  const href = `/salary/${roleSlug}-salary-london/`
                   return (
                     <Link
                       key={role}
