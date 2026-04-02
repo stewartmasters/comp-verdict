@@ -1,9 +1,9 @@
 name: Auto-publish blog post
 
 on:
-  schedule:
-    # 8am UTC every other day
-    - cron: "0 8 */2 * *"
+  # schedule paused — re-enable cron when blog deletion issue is resolved
+  # schedule:
+  #   - cron: "0 8 */2 * *"
   workflow_dispatch:
     inputs:
       dry_run:
