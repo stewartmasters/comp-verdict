@@ -59,5 +59,10 @@ jobs:
           git push origin HEAD
 
       - name: Trigger Netlify deploy
-        if: ${{ steps.find_draft.outputs.has_draft == 'true' && secrets.NETLIFY_DEPLOY_HOOK != '' }}
-        run: curl -s -X POST "${{ secrets.NETLIFY_DEPLOY_HOOK }}"
+        if: steps.find_draft.outputs.has_draft == 'true'
+        env:
+          NETLIFY_DEPLOY_HOOK: ${{ secrets.NETLIFY_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$NETLIFY_DEPLOY_HOOK" ]; then
+            curl -s -X POST "$NETLIFY_DEPLOY_HOOK"
+          fi
