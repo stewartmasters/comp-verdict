@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.jsx'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.compverdict.com'
 
 export const metadata = {
-  title: 'Offer Benchmarks by Role & City — CompVerdict',
+  title: 'Offer Benchmarks by Role & City',
   description:
     'Browse 1,700+ offer benchmarks across 24 roles and 44 cities. Find the market rate for your role and city, and check if your offer is fair, weak, or strong.',
   alternates: { canonical: BASE_URL + '/salary/' },
