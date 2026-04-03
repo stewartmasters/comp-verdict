@@ -829,7 +829,11 @@ export default function VerdictTool({ cvData, locale = 'en' }) {
     })
     trackEvent('verdict_run', { role: resolvedRole, city: resolvedCity, verdict: vType, percentile: pp })
     setScreen('results')
-    if (typeof window !== 'undefined') window.scrollTo(0, 0)
+    if (typeof window !== 'undefined') {
+      const el = document.getElementById('offer-tool')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      else window.scrollTo(0, 0)
+    }
   }
 
   function runVerdict() {
