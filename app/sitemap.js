@@ -2,6 +2,7 @@ import { generateSeoPages } from '../lib/seo-pages.js'
 import { LOCALES, getSalaryPath, getNegPath, getHubPath, SITE_URL as LEGACY_SITE_URL } from '../lib/page-helpers.js'
 import { SALARY_ROLES } from '../lib/helpers.js'
 import { getAllBlogPosts } from '../lib/blogPosts.js'
+import { getAllEsSalaryContentSlugs } from '../lib/salaryContent.js'
 
 export const dynamic = 'force-static'
 
@@ -72,5 +73,13 @@ export default function sitemap() {
     })),
   ]
 
-  return [...staticRoutes, ...blogRoutes, ...salaryRoutes, ...legacySalaryRoutes, ...negRoutes]
+  // ES SEO content pages from pipeline
+  const esSalaryRoutes = getAllEsSalaryContentSlugs().map(({ slug }) => ({
+    url: `${BASE_URL}/es/salarios/${slug}/`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }))
+
+  return [...staticRoutes, ...blogRoutes, ...salaryRoutes, ...legacySalaryRoutes, ...negRoutes, ...esSalaryRoutes]
 }
