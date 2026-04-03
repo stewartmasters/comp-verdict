@@ -65,14 +65,14 @@ export default function Navigation() {
   return (
     <nav className="border-b border-gray-100 bg-white/90 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
-        <Link href={cfg.homePath} className="font-extrabold text-gray-900 text-lg tracking-tight flex-shrink-0">
+        <Link href={cfg.homePath} className="font-extrabold text-gray-900 text-lg tracking-tight flex-shrink-0 no-underline hover:no-underline">
           Comp<span className="text-blue-600">Verdict</span>
         </Link>
 
         <div className="flex items-center gap-1 sm:gap-2 text-sm">
           <Link
             href={cfg.salaryPath}
-            className={`transition-colors hidden sm:block px-3 py-1.5 rounded-lg ${
+            className={`transition-colors hidden sm:block px-3 py-1.5 rounded-lg no-underline hover:no-underline ${
               pathname?.includes('/salary') || pathname?.includes('/salarios') || pathname?.includes('/gehalt')
                 ? 'text-gray-900 font-medium'
                 : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
@@ -82,7 +82,7 @@ export default function Navigation() {
           </Link>
           <Link
             href={cfg.negPath}
-            className={`transition-colors hidden sm:block px-3 py-1.5 rounded-lg ${
+            className={`transition-colors hidden sm:block px-3 py-1.5 rounded-lg no-underline hover:no-underline ${
               pathname?.includes('/negotiate') || pathname?.includes('/negociacion') || pathname?.includes('/verhandlung')
                 ? 'text-gray-900 font-medium'
                 : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
@@ -92,7 +92,7 @@ export default function Navigation() {
           </Link>
           <Link
             href={cfg.methodPath}
-            className={`transition-colors hidden md:block px-3 py-1.5 rounded-lg ${
+            className={`transition-colors hidden md:block px-3 py-1.5 rounded-lg no-underline hover:no-underline ${
               pathname === '/methodology/'
                 ? 'text-gray-900 font-medium'
                 : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
@@ -102,7 +102,7 @@ export default function Navigation() {
           </Link>
           <Link
             href={cfg.blogPath}
-            className={`transition-colors hidden md:block px-3 py-1.5 rounded-lg ${
+            className={`transition-colors hidden md:block px-3 py-1.5 rounded-lg no-underline hover:no-underline ${
               pathname?.startsWith('/blog')
                 ? 'text-gray-900 font-medium'
                 : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
@@ -126,7 +126,7 @@ export default function Navigation() {
 
           <Link
             href={cfg.homePath + '#offer-tool'}
-            className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors flex-shrink-0 ml-1"
+            className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors flex-shrink-0 ml-1 no-underline hover:no-underline"
           >
             {cfg.ctaLabel}
           </Link>
