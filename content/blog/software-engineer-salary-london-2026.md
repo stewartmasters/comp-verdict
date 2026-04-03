@@ -7,7 +7,6 @@ keyword: "software engineer salary london 2026"
 cluster: "salary-benchmarks"
 published: true
 ---
-```
 
 # Software Engineer Salary London 2026: What the Data Actually Shows
 

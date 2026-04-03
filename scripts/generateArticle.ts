@@ -414,6 +414,13 @@ async function main() {
     // Strip any preamble before the frontmatter opener
     const fmIdx = raw.indexOf("---");
     if (fmIdx > 0) raw = raw.slice(fmIdx);
+    // Strip any stray ``` line immediately after the frontmatter closing ---
+    const fmClose = raw.indexOf("---", 3);
+    if (fmClose > 0) {
+      const afterFm = raw.slice(fmClose + 3);
+      const cleanedAfterFm = afterFm.replace(/^\s*```[^\n]*\n?/, "");
+      raw = raw.slice(0, fmClose + 3) + cleanedAfterFm;
+    }
     articleContent = raw;
   } catch (err) {
     console.error("[generateArticle] Claude API call failed:", err);
