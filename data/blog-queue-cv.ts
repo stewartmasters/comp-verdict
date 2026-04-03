@@ -31,7 +31,7 @@ export const KEYWORD_QUEUE: QueuedKeyword[] = [
     cluster:         "offer-evaluation",
     wordCountTarget: 1600,
     priority:        9,
-    used:            false,
+    used:            true,
     notes:           "High intent; list format works well",
   },
   {
