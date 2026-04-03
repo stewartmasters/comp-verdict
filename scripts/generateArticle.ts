@@ -406,7 +406,15 @@ async function main() {
     });
     const block = message.content[0];
     if (block.type !== "text") throw new Error(`Unexpected response block type: ${block.type}`);
-    articleContent = block.text.trim();
+    let raw = block.text.trim();
+    // Strip markdown code fence wrapper if Claude added one (e.g. ```markdown ... ```)
+    if (raw.startsWith("```")) {
+      raw = raw.replace(/^```[^\n]*\n?/, "").replace(/\n?```$/, "").trim();
+    }
+    // Strip any preamble before the frontmatter opener
+    const fmIdx = raw.indexOf("---");
+    if (fmIdx > 0) raw = raw.slice(fmIdx);
+    articleContent = raw;
   } catch (err) {
     console.error("[generateArticle] Claude API call failed:", err);
     process.exit(1);
