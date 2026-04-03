@@ -108,7 +108,7 @@ export const KEYWORD_QUEUE: QueuedKeyword[] = [
     cluster:         "salary-benchmarks",
     wordCountTarget: 1600,
     priority:        10,
-    used:            false,
+    used:            true,
     roleSlug:        "software-engineer",
     citySlug:        "london",
     notes:           "Highest volume benchmark keyword; ONS ASHE data",
