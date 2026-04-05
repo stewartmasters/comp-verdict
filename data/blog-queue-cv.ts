@@ -41,7 +41,7 @@ export const KEYWORD_QUEUE: QueuedKeyword[] = [
     cluster:         "offer-evaluation",
     wordCountTarget: 1700,
     priority:        9,
-    used:            false,
+    used:            true,
     notes:           "Decision framework; strong CTA to tool",
   },
   {
