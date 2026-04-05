@@ -71,7 +71,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
@@ -79,6 +78,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
       <body className="bg-[#F8FAFC] text-gray-900 min-h-screen font-sans">
+        <GoogleAnalytics />
         <ConsentManager />
         {children}
       </body>
