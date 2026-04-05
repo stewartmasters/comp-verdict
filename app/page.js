@@ -223,11 +223,11 @@ export default function HomePage() {
 
       {/* Offer guide grid — with medians */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-100">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-2">
           <h2 className="text-2xl font-bold text-gray-900">Offer benchmarks by role &amp; city</h2>
           <Link
-            href="/salary/software-engineer-salary-london/"
-            className="text-sm text-blue-600 font-semibold hover:underline"
+            href="/salary/"
+            className="text-sm text-blue-600 font-semibold hover:underline shrink-0"
           >
             View all &rarr;
           </Link>
